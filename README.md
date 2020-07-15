@@ -31,7 +31,7 @@
 
 ### 프로젝트 기여 방법
 0. 작업하기 전 항상 GitHub Repository로부터 pull을 해옵니다.
-   * *git pull origin master*
+   * *git pull*
 
 1. 기본적으로 각자 이름으로 된 branch를 생성하고, 필요할 경우 해당 branch에서 추가적으로 branch를 생성합니다.
    * branch 생성 : *git branch (branch 이름)*
