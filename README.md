@@ -37,10 +37,15 @@
    * branch 생성 : *git branch (branch 이름)*
    * branch 전환 : *git checkout (branch 브랜치 이름)*
 
-2. 각자의 branch에서 작업이 끝나면, 따로 pull request를 하지 않고 master branch에 merge → push 합니다.
-   1. master branch로 전환 : *git checkout master*
-   2. 작업한 branch를 병합 : *git merge (병합할 branch 이름)*
-   3. GitHub에 push : *git push*
+2. 각자의 branch에서 작업이 끝나면, pull request하고 단톡에 알려주세요!
+   1. branch 확인 : git branch
+   2. *git add (대상)*
+   3. *git status* : 커밋되지 말아야 할 파일이 staging 되었는지 확인. staging 되었을 경우 *git reset (제외할 파일 이름)*로 제외
+   4. *git commit* : 가상환경, 데이터베이스 올라가지 않도록
+   5. git push origin (branch 이름)
+   6. GitHub에 접속, pull request
+   7. 단톡에 알려주기(변경 사항, 충돌 여부)
+   8. 이상이 없으면 merge하기
    
 3. 복구와 추적이 용이하도록 있으면 커밋을 작업 단위로 해주세요! (ex. 문구류 모델 생성)
 
