@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<title>회원 유형 결정 페이지</title>
+{% endblock %}
+
+{% block content %}
+<div>회원 유형 결정 페이지입니다.</div>
+<a href="{% url 'userSignUp' %}"><button>일반 유저(리뷰어)</button></a>
+{% endblock %}

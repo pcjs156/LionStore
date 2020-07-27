@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<title>인트로 페이지</title>
+{% endblock %}
+
+{% block content %}
+<div>인트로 페이지입니다.</div>
+<a href="{% url 'selectCustomerType' %}"><button>회원가입</button></a>
+<a href="{% url 'mainPage' %}"><button>HOME</button></a>
+{% endblock %}
