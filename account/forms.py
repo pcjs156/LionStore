@@ -3,7 +3,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import get_user_model
 from django.db import transaction
 
-from account.models import Customer, WebSeller, Stationer
+from account.models import Customer
 
 user = get_user_model()
 
@@ -27,7 +27,7 @@ class UserSignUpForm(UserCreationForm):
 
 class WebSellerSignUpForm(UserCreationForm):
     class Meta:
-        model = WebSeller
+        model = Customer
         fields = ['username', 'password1', 'password2', 'email',
                   'nickname', 'introduce', 'image',
                   'telephone', 'link']
@@ -42,7 +42,7 @@ class WebSellerSignUpForm(UserCreationForm):
 
 class StationerSignUpForm(UserCreationForm):
     class Meta:
-        model = Stationer
+        model = Customer
         fields = ['username', 'password1', 'password2', 'email',
                   'nickname', 'introduce', 'image',
                   'telephone', 'latitude', 'longitude']

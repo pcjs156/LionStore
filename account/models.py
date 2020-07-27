@@ -3,6 +3,9 @@ from django.contrib.auth.models import AbstractUser
 
 # 기본 Custom User Model / 일반 리뷰어
 class Customer(AbstractUser):
+    class Meta:
+        verbose_name = "유저"
+
     is_Customer = models.BooleanField('customer status', default=False)
     is_WebSeller = models.BooleanField('webSeller status', default=False)
     is_Stationer = models.BooleanField('stationer status', default=False)
@@ -17,31 +20,25 @@ class Customer(AbstractUser):
     # 소개글
     introduce = models.TextField(verbose_name="소개글")
 
-    def __str__(self):
-        return "[C] " + self.username
-
-    
-
-# 판매자(웹/문방구) 공통
-class Seller(Customer):
     # 연락처
     telephone = models.CharField(max_length=20, blank=False, null=False, default="", verbose_name="판매자 연락처")
 
-
-# 웹 쇼핑몰 판매자
-class WebSeller(Seller):
     # 웹페이지 메인 주소
     link = models.CharField(max_length=200, blank=False, null=False, default="", verbose_name="웹 쇼핑몰 메인 주소")
 
-    def __str__(self):
-        return "[W] " + self.username
-
-# 문방구 사장님
-class Stationer(Seller):
     # 문방구 위치 위도
     latitude = models.DecimalField(max_digits=10, decimal_places=6, default=0, verbose_name="문방구 위치 위도")
     # 문방구 위치 경도
     longitude = models.DecimalField(max_digits=10, decimal_places=6, default=0, verbose_name="문방구 위치 경도")
 
     def __str__(self):
-        return "[S] " + self.username
+        if self.is_Customer:
+            typeMarker = "[C]"
+        elif self.is_WebSeller:
+            typeMarker = "[W]"
+        elif self.is_Stationer:
+            typeMarker = "[S]"
+        else:
+            typeMarker = "[UNKNOWN]"
+        
+        return f"{typeMarker} {self.username}"

@@ -1,6 +1,4 @@
 from django.contrib import admin
-from .models import Customer, WebSeller, Stationer
+from .models import Customer
 
 admin.site.register(Customer)
-admin.site.register(WebSeller)
-admin.site.register(Stationer)
