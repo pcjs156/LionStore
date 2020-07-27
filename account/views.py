@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
-from .forms import UserSignUpForm, UserLoginForm
+from .forms import UserSignUpForm, UserLoginForm, WebSellerSignUpForm, StationerSignUpForm
 
 from django.contrib.auth import login, authenticate, logout
 
 def selectCustomerType_view(request):
     return render(request, 'selectCustomerType.html')
+
 
 def userSignUp_view(request):
     if request.method == 'POST':
@@ -28,10 +29,40 @@ def userSignUp_view(request):
 
 
 def webSellerSignUp_view(request):
-    return render(request, 'webSellerSignUpPage.html')
+    if request.method == 'POST':
+        form = WebSellerSignUpForm(request.POST)
+
+        if form.is_valid():
+            user = form.save()
+            user.save()
+
+            login(request, user)
+            return redirect("mainPage")
+        
+        return render(request, 'webSellerSignUpPage.html', {'form':form})
+
+    else :
+        form = WebSellerSignUpForm()
+        return render(request, 'webSellerSignUpPage.html', {'form':form})
+
 
 def stationerSignUp_view(request):
-    return render(request, 'stationerSignUpPage.html')
+    if request.method == 'POST':
+        form = StationerSignUpForm(request.POST)
+
+        if form.is_valid():
+            user = form.save()
+            user.save()
+
+            login(request, user)
+            return redirect("mainPage")
+        
+        return render(request, 'stationerSignUpPage.html', {'form':form})
+
+    else :
+        form = StationerSignUpForm()
+        return render(request, 'stationerSignUpPage.html', {'form':form})
+
 
 def login_view(request):
     if request.method == 'POST':

@@ -7,4 +7,29 @@
 
 {% block content %}
 <div>문방구 사장님 회원가입 페이지</div>
+<form method="POST">
+    {% csrf_token %}
+    아이디 : {{ form.username }}
+    <br>
+    비밀번호 : {{ form.password1 }}
+    <br>
+    비밀번호 확인 : {{ form.password2 }}
+    <br>
+    이메일 : {{ form.email }}
+    <br>
+    닉네임 : {{ form.nickname }}
+    <br>
+    소개글 <br>
+    {{ form.introduce }}
+    <br>
+    프로필 이미지 : {{ form.image }}
+    <br>
+    연락처 : {{ form.telephone }}
+    <br>
+    위도(테스트용) : {{ form.latitude }}
+    <br>
+    경도(테스트용) : {{ form.longitude }}
+    <br>
+    <input type="submit">
+</form>
 {% endblock %}
