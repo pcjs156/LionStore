@@ -1,13 +1,17 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 
 from .forms import UserSignUpForm, UserLoginForm, WebSellerSignUpForm, StationerSignUpForm
 
 from django.contrib.auth import login, authenticate, logout
 
+@login_required
+def accountMain_view(request):
+    return render(request, 'accountMain.html')
+
 def selectCustomerType_view(request):
     return render(request, 'selectCustomerType.html')
-
 
 def userSignUp_view(request):
     if request.method == 'POST':
