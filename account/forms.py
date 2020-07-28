@@ -15,7 +15,9 @@ class UserSignUpForm(UserCreationForm):
     class Meta:
         model = Customer
         fields = ['username', 'password1', 'password2', 'email',
-                  'nickname', 'introduce', 'image']
+                  'nickname', 'introduce', 'image',
+                  'age', 'job', 'usage',
+                  'penInterest_1', 'penInterest_2', 'penInterest_3']
     
     @transaction.atomic
     def save(self):

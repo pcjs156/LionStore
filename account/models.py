@@ -42,7 +42,7 @@ class Customer(AbstractUser):
         ("60s", "60"),
         ("etcs", "기타")
     )
-    age = models.CharField(max_length=5, blank=False, null=False, choices=AGE)
+    age = models.CharField(max_length=5, default=("etcs", "기타"), blank=False, null=False, choices=AGE, verbose_name="연령대")
 
     JOB = (
         ("J1", "학생"),
@@ -50,7 +50,7 @@ class Customer(AbstractUser):
         ("J3", "사업가"),
         ("J4", "기타"),
     )
-    job = models.CharField(max_length=10, blank=False, null=False, choices=JOB)
+    job = models.CharField(max_length=10, default=("J4", "기타"), blank=False, null=False, choices=JOB, verbose_name="직업")
 
 
     USAGE = (
@@ -60,24 +60,29 @@ class Customer(AbstractUser):
         ("U4", "필기(공부 혹은 시험)"),
         ("U5", "기타"),
     )
-    usage = models.CharField(max_length=20, blank=False, null=False, choices=USAGE)
+    usage = models.CharField(max_length=20, default=("U5", "기타"), blank=False, null=False, choices=USAGE, verbose_name="주 사용 용도")
 
-    # PEN = (
-    #     ("P1", "형광펜"),
-    #     ("P2", "유성펜"),
-    #     ("P3", "볼펜"),
-    #     ("P4", "샤프펜슬"),
-    #     ("P5", "기타"),
-    # )
     # 이 경우 펜을 복수선택할 수 있게 하려면..
     # 1. 가입 이후 ManyToManyField를 이용해 따로 설정한다.
     # 2. 최대 관심 펜 종류를 정해놓고 고정 ForeignKey? 를 설정한다.
     #    -> 이때 기본값을 '기타'로 놓는 방법으로 값이 채워지지 않는 경우가 없도록 한다.
     #       (홈페이지에서 유저의 리뷰를 볼 때 '기타'는 표시되지 않도록 한다.)
     
+    # 방법 2로 구현한다. 이때 기본 값은 "기타", 최대 관심 펜 갯수는 3개.
+    PEN = (
+        ("P1", "형광펜"),
+        ("P2", "유성펜"),
+        ("P3", "볼펜"),
+        ("P4", "샤프펜슬"),
+        ("P5", "기타"),
+    )
+    penInterest_1 = models.CharField(max_length=10, blank=False, null=False, choices=PEN, default=("P5", "기타"), verbose_name="관심 펜 1순위")
+    penInterest_2 = models.CharField(max_length=10, blank=False, null=False, choices=PEN, default=("P5", "기타"), verbose_name="관심 펜 2순위")
+    penInterest_3 = models.CharField(max_length=10, blank=False, null=False, choices=PEN, default=("P5", "기타"), verbose_name="관심 펜 3순위")
+    
 
     # 유저 태그(추가)
-    tags = models.ManyToManyField('account.CustomerTag', blank=True)
+    tags = models.ManyToManyField('account.CustomerTag', blank=True, verbose_name="유저 설명 태그")
 
     def __str__(self):
         if self.is_Customer:
