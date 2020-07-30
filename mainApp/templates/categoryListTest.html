@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<title>카테고리 목록</title>
+{% endblock %}
+
+{% block content %}
+{% for category in categoryList %}
+<div><a href="{% url 'productList' product.id %}">{{category.categoryName}}</a></div>
+{% endfor %}
+{% endblock %}

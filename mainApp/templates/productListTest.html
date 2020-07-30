@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<title>제품 목록</title>
+{% endblock %}
+
+{% block content %}
+{% for product in products %}
+<div><a href="{% url 'newReiewTest' product.id %}">{{product}}</a></div>
+{% endfor %}
+{% endblock %}
