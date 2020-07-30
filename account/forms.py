@@ -17,7 +17,7 @@ class UserSignUpForm(UserCreationForm):
         fields = ['username', 'password1', 'password2', 'email',
                   'nickname', 'introduce', 'image',
                   'age', 'job', 'usage',
-                  'penInterest_1', 'penInterest_2', 'penInterest_3']
+                  'penInterest_1', 'penInterest_2', 'penInterest_3', 'rawTagString']
     
     @transaction.atomic
     def save(self):
