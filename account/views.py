@@ -15,7 +15,7 @@ def selectCustomerType_view(request):
 
 def userSignUp_view(request):
     if request.method == 'POST':
-        form = UserSignUpForm(request.POST)
+        form = UserSignUpForm(request.POST, request.FILES)
 
         if form.is_valid():
             user = form.save()
@@ -34,7 +34,7 @@ def userSignUp_view(request):
 
 def webSellerSignUp_view(request):
     if request.method == 'POST':
-        form = WebSellerSignUpForm(request.POST)
+        form = WebSellerSignUpForm(request.POST, request.FILES)
 
         if form.is_valid():
             user = form.save()
@@ -52,7 +52,7 @@ def webSellerSignUp_view(request):
 
 def stationerSignUp_view(request):
     if request.method == 'POST':
-        form = StationerSignUpForm(request.POST)
+        form = StationerSignUpForm(request.POST, request.FILES)
 
         if form.is_valid():
             user = form.save()
@@ -70,7 +70,7 @@ def stationerSignUp_view(request):
 
 def login_view(request):
     if request.method == 'POST':
-        form = UserLoginForm(request=request, data=request.POST )
+        form = UserLoginForm(request=request, data=request.POST)
         if form.is_valid():
             username = form.cleaned_data.get("username")
             password = form.cleaned_data.get("password")

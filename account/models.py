@@ -15,7 +15,7 @@ class Customer(AbstractUser):
     
     # 사용자 대표 이미지
     # 빈 값으로 form에 입력될 경우 기본 이미지로 대체되어야 함
-    image = models.ImageField(upload_to="user_profile_image/", blank=True, null=False, verbose_name="대표 이미지")
+    image = models.ImageField(upload_to="account/profile_image", default="account/profile_image/user_default_image.png", blank=True, null=True, verbose_name="대표 이미지")
 
     # 소개글
     introduce = models.TextField(verbose_name="소개글")
@@ -88,6 +88,7 @@ class Customer(AbstractUser):
             typeMarker = "[UNKNOWN]"
         
         return f"{typeMarker} {self.username}"
+
 
 
 class CustomerTag(models.Model):
