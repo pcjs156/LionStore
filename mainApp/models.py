@@ -13,17 +13,34 @@ class Product(models.Model):
     name = models.CharField(max_length=30, verbose_name="상품 이름")
     manufacturer = models.CharField(max_length=30, verbose_name="제조사")
     description = models.TextField(verbose_name="제조사")
+    category = models.ForeignKey('ProductCategory', null=False, blank=False, on_delete=models.CASCADE, related_name="productCategory", verbose_name="소속 카테고리")
     likers = models.ManyToManyField(Customer, related_name='productLikers', verbose_name="좋아요")
 
 # 제품 이미지
 class ProductImage(models.Model):
+    class Meta:
+        verbose_name = "상품 대표 이미지"
+
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=False, related_name='imageTargetProduct', verbose_name="대상 상품")
     productImage = models.ImageField(upload_to="product_image/", null=False, verbose_name="상품 이미지")
 
 # 제품 관련 영상 링크
 class ProductVideoLink(models.Model):
+    class Meta:
+        verbose_name = "상품 관련 유튜브 영상 링크"
+
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=False, related_name='linkTargetProduct', verbose_name="대상 상품")
     videoLink = models.CharField(max_length=100, verbose_name="유튜브 링크")
+
+# 제품 카테고리
+class ProductCategory(models.Model):
+    class Meta:
+        verbose_name = "제품 카테고리"
+
+    categoryName = models.CharField(max_length=15, verbose_name="카테고리 이름")
+
+    def __str__(self):
+        return self.categoryName
 
 # 웹 판매 정보
 class WebSellInfo(models.Model):
@@ -48,6 +65,9 @@ class StationerSellInfo(models.Model):
 
 # 리뷰
 class Review(models.Model):
+    class Meta:
+        verbose_name = "제품 리뷰"
+
     author = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, related_name='reviewAuthor', verbose_name="리뷰 작성자")
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=False, related_name='reviewTargetProduct', verbose_name="대상 상품")
     totalScore = models.ForeignKey('Score', on_delete=models.CASCADE, null=False, blank=False, related_name="reviewTotalScore", verbose_name="총점")
@@ -68,6 +88,9 @@ class RangedScoreField(models.IntegerField):
 
 # 점수
 class Score(models.Model):
+    class Meta:
+        verbose_name = "제품 별점"
+
     review = models.ForeignKey(Review, on_delete=models.CASCADE, blank=False, null=False, related_name="scoreTargetReview", verbose_name="대상 리뷰")
     name = models.CharField(max_length=20, verbose_name="평가 항목")
     score = RangedScoreField(min_value=0, max_value=5, verbose_name="평가 점수")
@@ -95,5 +118,18 @@ class ProductTag(models.Model):
 
 # 리뷰 이미지
 class ReviewImage(models.Model):
+    class Meta:
+        verbose_name = "리뷰 관련 이미지"
+
     review = models.ForeignKey(Review, on_delete=models.CASCADE, null=False, related_name='reviewImageTargetReview', verbose_name="대상 리뷰")
     reviewImage = models.ImageField(upload_to="review_image/", blank=True, null=True, verbose_name="리뷰 이미지")
+
+
+# 상품 등록 요청
+class ProductRequest(models.Model):
+    class Meta:
+        verbose_name = "상품 등록 요청"
+    
+    productName = models.CharField(max_length=20, null=False, blank=False, verbose_name="제품 이름")
+    productBrand = models.CharField(max_length=20, null=True, blank=True, verbose_name="제품 브랜드")
+    productDescription = models.TextField(null=True, blank=True, verbose_name="제품 설명")
