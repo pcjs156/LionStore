@@ -6,8 +6,6 @@ def introPage_view(request):
 
 def mainPage_view(request):
     if request.user.is_authenticated:
-        print(request.user.is_Customer)
-        print(request.user.is_WebSeller)
-        print(request.user.is_Stationer)
+        print(f"{request.user}님께서 접속하셨습니다.")
 
     return render(request, 'mainPage.html')

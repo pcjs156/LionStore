@@ -77,6 +77,10 @@ class Customer(AbstractUser):
     # 유저 태그(추가)
     tags = models.ManyToManyField('account.CustomerTag', blank=True, verbose_name="유저 설명 태그")
 
+    # 유저 태그 Raw-String Data
+    # : 모든 태그들이 띄어쓰기로 구분되어 문자열로 저장되는 필드
+    rawTagString = models.TextField(null=False, blank=True, default="", verbose_name="유저 태그 목록 원본 데이터")
+
     def __str__(self):
         if self.is_Customer:
             typeMarker = "[C]"
@@ -97,3 +101,12 @@ class CustomerTag(models.Model):
 
     targetCustomer = models.ManyToManyField(Customer)
     tagBody = models.CharField(max_length=10)
+
+    def __str__(self):
+        return self.tagBody
+
+    def __eq__(self, other:str):
+        return self.tagBody == other
+
+    def __ne__(self, other:str):
+        return self.tagBody != other
