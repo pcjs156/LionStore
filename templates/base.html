@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{% static 'css/common.css' %}">
         
     <!-- head block : title / static을 추가-->
     {% block head %}
@@ -12,6 +14,11 @@
 <body>
     <header>
         {% if user.is_authenticated %}
+        {% if user.image.url != "" %}
+        <div class="profileBox">
+            <img class="profileImage" src="{{ user.image.url }}" alt="프로필 이미지">
+        </div>
+        {% endif %}
         <div>{{user.nickname}}님, 어서오세요!</div>
         <div><a href="{% url 'logOut' %}">로그아웃</a></div>
         {% else %}

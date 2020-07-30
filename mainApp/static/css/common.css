@@ -1,3 +1,19 @@
+/* base.html에 적용될 웹페이지 공통 CSS */
+
+/* 헤더의 계정 정보(로그인 등) 메뉴 우측정렬 */
 header > div {
     text-align: right;
+}
+
+/* 프로필 이미지를 원 모양으로 만들기 */
+.profileBox {
+    width: 100px;
+    height: 100px;
+    border-radius: 70%;
+    overflow: hidden;
+}
+.profileImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
