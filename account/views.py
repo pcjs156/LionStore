@@ -8,10 +8,6 @@ from account.models import Customer, CustomerTag
 
 from django.contrib.auth import login, authenticate, logout
 
-@login_required
-def accountMain_view(request):
-    return render(request, 'accountMain.html')
-
 def selectCustomerType_view(request):
     return render(request, 'selectCustomerType.html')
 
@@ -117,3 +113,33 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect("mainPage")
+
+def accountInfo_view(request):
+    return render(request, 'accountInfo.html')
+
+def interests_view(request):
+    return render(request, 'interests.html')
+
+def likeReviews_view(request):
+    return render(request, 'likeReviews.html')
+
+def modifyStationerSellInfo_view(request):
+    return render(request, 'modifyStationerSellInfo.html')
+
+def modifyUserInfo_view(request):
+    return render(request, 'modifyUserInfo.html')
+
+def modifyWebSellerInfo_view(request):
+    return render(request, 'modifyWebSellerInfo.html')
+
+def reviewList_view(request):
+    return render(request, 'reviewList.html')
+
+def selectSellerType_view(request):
+    return render(request, 'selectSellerType.html')
+
+def stationerSellInfoList_view(request):
+    return render(request, 'stationerSellInfoList.html')
+
+def webSellerInfoList_view(request):
+    return render(request, 'webSellerInfoList.html')

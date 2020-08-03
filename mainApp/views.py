@@ -6,20 +6,78 @@ from .models import Product, ProductCategory, PenReview, Score
 
 from .forms import PenReviewForm
 
-def introPage_view(request):
-    return render(request, 'introPage.html')
+def intro_view(request):
+    return render(request, 'intro.html')
 
 def mainPage_view(request):
-    if request.user.is_authenticated:
-        print(f"{request.user}님께서 접속하셨습니다.")
+    return render(request, 'main.html')
 
-    return render(request, 'newReviewTest.html')
+def newProductRequest_view(request):
+    return render(request, 'newProductRequest.html')
+
+def productDetail_view(request, category_id, prodict_id):
+    return render(request, 'productDetail.html')
+
+def productList_view(request, category_id):
+    return render(request, 'productList.html')
+
+def productRequest_view(request):
+    return render(request, 'productRequest.html')
+
+def productRequestDetail_view(request, product_request_id):
+    return render(request, 'productRequestDetail.html')
+
+def newProductRequestDetail_view(request, product_request_id):
+    return render(request, 'newProductRequestDetail.html')
+
+def productRequestModify_view(request, product_request_id):
+    return render(request, 'productRequestModify.html')
+
+def rateBackUp_view(request):
+    return render(request, 'rateBackUp.html')
+
+def reviewCreate_view(request, product_id):
+    return render(request, 'reviewCreate.html')
+
+def reviewDetail_view(request, product_id, review_id):
+    return render(request, 'reviewDetail.html')
+
+def reviewModify_view(request, product_id, review_id):
+    return render(request, 'reviewModify.html')
+
+def searchMain_view(request):
+    return render(request, 'searchMain.html')
+
+def searchResult_view(request):
+    return render(request, 'searchResult.html')
+
+def stationerSellInfoCreate_view(request, category_id, product_id):
+    return render(request, 'stationerSellInfoCreate.html')
+
+def stationerSellInfoDetail_view(request, category_id, product_id, stationerSellInfo_id):
+    return render(request, 'stationerSellInfoDetail.html')
+
+def stationerSellInfoModify_view(request, category_id, product_id, stationerSellInfo_id):
+    return render(request, 'stationerSellInfoModify.html')
+
+def webSellInfoCreate_view(request, category_id, product_id):
+    return render(request, 'webSellInfoCreate.html')
+
+def webSellInfoDetail_view(request, category_id, product_id, webSellInfo_id):
+    return render(request, 'webSellInfoDetail.html')
+
+def webSellInfoModify_view(request, category_id, product_id, webSellInfo_id):
+    return render(request, 'webSellInfoModify.html')
+
+
+# 이하 테스트용(삭제 예정) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 def categoryListTest_view(request):
     categoryList = ProductCategory.objects.all()
 
     return render(request, 'categoryListTest.html', {'categoryList':categoryList})
-
+    
 def productListTest_view(request, category_id):
     category = ProductCategory.objects.get(pk=category_id)
     products = Product.objects.filter(category=category)
