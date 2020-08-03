@@ -9,4 +9,18 @@
 
 {% block content %}
 
+<div>제품명 : {{ product.name }}</div>
+<div>제조사 : {{ product.manufacturer }}</div>
+<div>제품 설명 : {{ product.description }}</div>
+<br>
+
+{{ likeMessage }}
+<hr>
+(댓글 들어갈 예정)
+<hr>
+관련 영상 <br>
+{% for linkHash in videoLinkHashs %}
+<iframe width="200" height="180" src="https://www.youtube.com/embed/{{ linkHash }}" frameborder="0"
+     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{% endfor %}
 {% endblock %}

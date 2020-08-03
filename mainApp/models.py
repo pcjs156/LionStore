@@ -18,7 +18,7 @@ class Product(models.Model):
     likers = models.ManyToManyField(Customer, blank=True, related_name='productLikers', verbose_name="좋아요")
 
     def __str__(self):
-        return f"[{self.manufacturer}] : {self.name}"
+        return f"{self.id}. [{self.manufacturer}] : {self.name}"
 
 # 제품 이미지
 class ProductImage(models.Model):
@@ -44,7 +44,7 @@ class ProductCategory(models.Model):
     categoryName = models.CharField(max_length=15, verbose_name="카테고리 이름")
 
     def __str__(self):
-        return self.categoryName
+        return f"{self.id}. {self.categoryName}"
 
 # 웹 판매 정보
 class WebSellInfo(models.Model):

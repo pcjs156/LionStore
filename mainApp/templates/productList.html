@@ -7,7 +7,9 @@
 {% endblock %}
 
 {% block content %}
+<h3>{{ category.categoryName }} 카테고리의 제품 목록입니다.</h3>
+
 {% for product in products %}
-<div><a href="{% url 'newReiewTest' product.id %}">{{product}}</a></div>
+<div><a href="{% url 'productDetail' product.id %}">{{ product }}</a></div>
 {% endfor %}
 {% endblock %}

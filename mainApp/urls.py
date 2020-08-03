@@ -17,7 +17,12 @@ urlpatterns = [
     # 카테고리별 제품 목록
     path('productList/<int:category_id>', views.productList_view, name="productList"),
     # 제품 상세 정보
-    path('productList/<int:category_id>/<int:product_id>', views.productDetail_view, name="productDetail"),
+    path('productDetail/<int:product_id>', views.productDetail_view, name="productDetail"),
+    
+    # 좋아요 관련
+    # path('productList/productLikeProcess/<int:product_id>', views.productLikeProcess, name="productLikeProcess"),
+    # path('productList/productLike/<int:product_id>', views.productLike, name="productLike"),
+    # path('productList/productDislike/<int:product_id>', views.productDislike, name="productDislike"),
 
     # 리뷰 관련
     path('productList/<int:category_id>/<int:product_id>/newReview', views.reviewCreate_view, name="reviewCreate"),
