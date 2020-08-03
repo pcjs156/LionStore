@@ -54,3 +54,13 @@ def newReviewTest_view(request, product_id):
     else :
         form = PenReviewForm()
         return render(request, 'newReviewTest.html', {'form':form})
+
+def newMapTest_view(request):
+    if request.method == "POST":
+        print(request.POST["stationerStoreLocation"])
+
+    return render(request, 'mapTest.html')
+
+
+def newMapResult_view(request):
+    return render(request, 'mapTestResult.html')
