@@ -45,14 +45,14 @@ def userSignUp_view(request):
             connectTagToUser(user, form.cleaned_data['rawTagString'])
 
             login(request, user)
-            return redirect("mainPage")
+            return redirect("setLocation")
         
-        return render(request, 'userSignUpPage.html', {'form':form})
+        return render(request, 'userSignUp.html', {'form':form})
 
 
     else :
         form = UserSignUpForm()
-        return render(request, 'userSignUpPage.html', {'form':form})
+        return render(request, 'userSignUp.html', {'form':form})
 
 def webSellerSignUp_view(request):
     if request.method == 'POST':
@@ -65,11 +65,11 @@ def webSellerSignUp_view(request):
             login(request, user)
             return redirect("mainPage")
         
-        return render(request, 'webSellerSignUpPage.html', {'form':form})
+        return render(request, 'webSellerSignUp.html', {'form':form})
 
     else :
         form = WebSellerSignUpForm()
-        return render(request, 'webSellerSignUpPage.html', {'form':form})
+        return render(request, 'webSellerSignUp.html', {'form':form})
 
 
 def stationerSignUp_view(request):
@@ -78,16 +78,14 @@ def stationerSignUp_view(request):
 
         if form.is_valid():
             user = form.save()
-            user.save()
-
             login(request, user)
-            return redirect("mainPage")
+            return redirect("setLocation")
         
-        return render(request, 'stationerSignUpPage.html', {'form':form})
+        return render(request, 'stationerSignUp.html', {'form':form})
 
     else :
         form = StationerSignUpForm()
-        return render(request, 'stationerSignUpPage.html', {'form':form})
+        return render(request, 'stationerSignUp.html', {'form':form})
 
 
 def login_view(request):
@@ -102,12 +100,12 @@ def login_view(request):
                 login(request, user)
                 return redirect("mainPage")
 
-            return render(request, 'logInPage.html', {'form':form})
+            return render(request, 'logIn.html', {'form':form})
             
 
     else :
         form = UserLoginForm()
-        return render(request, 'logInPage.html', {'form':form})
+        return render(request, 'logIn.html', {'form':form})
 
 
 def logout_view(request):
@@ -137,6 +135,20 @@ def reviewList_view(request):
 
 def selectSellerType_view(request):
     return render(request, 'selectSellerType.html')
+
+def setLocation_view(request):
+    if request.method == "POST":
+        try :
+            coordinateTuple = eval(request.POST["rawLocation"])
+            request.user.latitude = coordinateTuple[0]
+            request.user.longitude = coordinateTuple[1]
+            request.user.save()
+            return redirect("mainPage")
+
+        except:
+            return render(request, 'setLocation.html', {'ERROR':True})
+
+    return render(request, 'setLocation.html', {'ERROR':False})
 
 def stationerSellInfoList_view(request):
     return render(request, 'stationerSellInfoList.html')

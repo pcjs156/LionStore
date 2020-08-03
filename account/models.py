@@ -26,11 +26,10 @@ class Customer(AbstractUser):
     # 웹페이지 메인 주소
     link = models.CharField(max_length=200, blank=False, null=False, default="", verbose_name="웹 쇼핑몰 메인 주소")
 
-    # 문방구 위치 위도
-    latitude = models.DecimalField(max_digits=10, decimal_places=6, default=0, verbose_name="문방구 위치 위도")
-    # 문방구 위치 경도
-    longitude = models.DecimalField(max_digits=10, decimal_places=6, default=0, verbose_name="문방구 위치 경도")
-
+    # 문방구/리뷰어 위치 위도
+    latitude = models.DecimalField(max_digits=10, decimal_places=6, default=0, verbose_name="문방구/리뷰어 위치 위도")
+    # 문방구/리뷰어 위치 경도
+    longitude = models.DecimalField(max_digits=10, decimal_places=6, default=0, verbose_name="문방구/리뷰어 위치 경도")
 
     AGE = (
         ("etcs", "기타"),

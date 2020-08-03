@@ -10,7 +10,7 @@ def intro_view(request):
     return render(request, 'intro.html')
 
 def mainPage_view(request):
-    return render(request, 'main.html')
+    return render(request, 'mainPage.html')
 
 def newProductRequest_view(request):
     return render(request, 'newProductRequest.html')
@@ -115,7 +115,7 @@ def newReviewTest_view(request, product_id):
 
 def newMapTest_view(request):
     if request.method == "POST":
-        print(request.POST["stationerStoreLocation"])
+        print(type(request.POST["stationerStoreLocation"]))
 
     return render(request, 'mapTest.html')
 

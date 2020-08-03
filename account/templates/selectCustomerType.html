@@ -9,6 +9,5 @@
 {% block content %}
 <div>회원 유형 결정 페이지입니다.</div>
 <a href="{% url 'userSignUp' %}"><button>일반 유저(리뷰어)</button></a> <br>
-<a href="{% url 'webSellerSignUp' %}"><button>웹 판매자</button></a> <br>
-<a href="{% url 'stationerSignUp' %}"><button>문방구 사장님</button></a> <br>
+<a href="{% url 'selectSellerType' %}"><button>판매자</button></a> <br>
 {% endblock %}

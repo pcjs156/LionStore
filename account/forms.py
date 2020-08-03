@@ -47,7 +47,7 @@ class StationerSignUpForm(UserCreationForm):
         model = Customer
         fields = ['username', 'password1', 'password2', 'email',
                   'nickname', 'introduce', 'image',
-                  'telephone', 'latitude', 'longitude']
+                  'telephone']
     
     @transaction.atomic
     def save(self):

@@ -16,6 +16,7 @@ urlpatterns = [
     path('signUp/user/', views.userSignUp_view, name='userSignUp'),
     path('signUp/webSeller/', views.webSellerSignUp_view, name='webSellerSignUp'),
     path('signUp/stationer/', views.stationerSignUp_view, name='stationerSignUp'),
+    path('setLocation/', views.setLocation_view, name="setLocation"),
 
     # 계정 정보 수정 관련
     path('modifyUserInfo/', views.modifyUserInfo_view, name='modifyUserInfo'),
