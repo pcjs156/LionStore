@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 
+from django.db.models.fields.files import ImageFieldFile
+
 from .models import *
 
 from .forms import PenReviewForm
@@ -84,6 +86,7 @@ def productDetail_view(request, product_id):
 
     return render(request, 'productDetail.html', content)
 
+
 # 좋아요 버튼을 눌렀을 때 좋아요가 눌려 있지 않았다면 좋아요 처리, 좋아요가 눌려 있었다면 좋아요 해제
 @login_required(login_url='/account/logIn')
 def productLikeProcess(request, product_id):
@@ -140,14 +143,13 @@ def reviewCreate_view(request, product_id):
         form = PenReviewForm(request.POST, request.FILES)
 
         product = Product.objects.get(pk=product_id)
-        new_review = form.save()
-
+        new_review : PenReview = form.save()
+        new_review.product = product
         new_review.author = request.user
         new_review.pub_date = timezone.now()
         new_review.goodPoint = request.POST['goodPoint']
         new_review.weakPoint = request.POST['weakPoint']
         new_review.save()
-
 
         new_review.totalScore = Score.objects.create(
             review=new_review, name="총점", score=int(request.POST['totalScore']))
@@ -166,6 +168,11 @@ def reviewCreate_view(request, product_id):
         new_review.versatility = Score.objects.create(
             review=new_review, name="범용성", score=int(request.POST['versatility']))
         new_review.save()
+
+        # 리뷰 이미지를 하나도 올리지 않았다면 대상 제품의 대표 이미지로 변경
+        if not hasImageField(new_review):
+            new_review.reviewImage1 = product.productImage
+            new_review.save()
 
         return productDetail_view(request, product_id)
 
