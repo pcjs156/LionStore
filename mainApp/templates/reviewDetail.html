@@ -8,4 +8,46 @@
 
 {% block content %}
 
+<div>작성자 : {{ author }}</div>
+<div>제품명 : {{ product }}</div>
+<div>장점 : {{ goodPoint }}</div>
+<div>단점 : {{ weakPoint }}</div>
+<br>
+
+<div>{{totalScore.name}}</div>
+<div class="rateit svg" data-rateit-value="{{totalScore.score}}" data-rateit-readonly="true" data-rateit-starwidth="15"
+    data-rateit-starheight="15"></div>
+
+<div>{{gripScore.name}}</div>
+<div class="rateit svg" data-rateit-value="{{gripScore.score}}" data-rateit-readonly="true"
+    aria-valuenow="{{gripScore.score}}" data-rateit-starwidth="15" data-rateit-starheight="15"></div>
+
+<div>{{lifeScore.name}}</div>
+<div class="rateit svg" data-rateit-value="{{lifeScore.score}}" data-rateit-readonly="true" data-rateit-starwidth="15"
+    data-rateit-starheight="15"></div>
+
+<div>{{durabilityScore.name}}</div>
+<div class="rateit svg" data-rateit-value="{{durabilityScore.score}}" data-rateit-readonly="true"
+    data-rateit-starwidth="15" data-rateit-starheight="15"></div>
+
+<div>{{designScore.name}}</div>
+<div class="rateit svg" data-rateit-value="{{designScore.score}}" data-rateit-readonly="true" data-rateit-starwidth="15"
+    data-rateit-starheight="15"></div>
+
+<div>{{textureScore.name}}</div>
+<div class="rateit svg" data-rateit-value="{{textureScore.score}}" data-rateit-readonly="true"
+    data-rateit-starwidth="15" data-rateit-starheight="15"></div>
+
+<div>{{costEffetivenessScore.name}}</div>
+<div class="rateit svg" data-rateit-value="{{costEffetivenessScore.score}}" data-rateit-readonly="true"
+    data-rateit-starwidth="15" data-rateit-starheight="15"></div>
+
+<div>{{versatilityScore.name}}</div>
+<div class="rateit svg" data-rateit-value="{{versatilityScore.score}}" data-rateit-readonly="true"
+    data-rateit-starwidth="15" data-rateit-starheight="15"></div>
+
+<hr>
+<div>{{ likeMessage }}</div>
+
+
 {% endblock %}

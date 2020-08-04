@@ -27,9 +27,9 @@ urlpatterns = [
     path('productDislike/<int:product_id>', views.productDislike, name="productDislike"),
 
     # 리뷰 관련
-    path('productList/<int:category_id>/<int:product_id>/newReview', views.reviewCreate_view, name="reviewCreate"),
-    path('productList/<int:category_id>/<int:product_id>/reviewDetail/<int:review_id>', views.reviewDetail_view, name="reviewDetail"),
-    path('productList/<int:category_id>/<int:product_id>/reviewModify/<int:review_id>', views.reviewModify_view, name="reviewModify"),
+    path('productList/<int:product_id>/newReview', views.reviewCreate_view, name="reviewCreate"),
+    path('reviewDetail/<int:review_id>', views.reviewDetail_view, name="reviewDetail"),
+    path('reviewModify/<int:review_id>', views.reviewModify_view, name="reviewModify"),
 
     # 웹 판매정보 관련
     path('productList/<int:category_id>/<int:product_id>/newWebSellInfo', views.webSellInfoCreate_view, name="webSellInfoCreate"),

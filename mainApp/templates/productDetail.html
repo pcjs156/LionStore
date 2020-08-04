@@ -14,21 +14,21 @@
 <div>제품 설명 : {{ product.description }}</div>
 <br>
 
-<!-- <form action="/store/productLikeProcess/{{product.id}}" method="GET" style="text-align: right;"> -->
-     {{ likeMessage }}
-     <a href="{% url 'productLikeProcess' product_id=product.id %}">
-          {% if userLike %}
-          <!-- 유저가 좋아요를 누른 경우 -->
-          ❤️
-          {% else %}
-          <!-- 유저가 좋아요를 누르지 않은 경우 -->
-          🖤
-          {% endif %}
-     </a>
-<!-- </form> -->
-
+{{ likeMessage }}
+<a href="{% url 'productLikeProcess' product_id=product.id %}">
+     {% if userLike %}
+     <!-- 유저가 좋아요를 누른 경우 -->
+     ❤️
+     {% else %}
+     <!-- 유저가 좋아요를 누르지 않은 경우 -->
+     🖤
+     {% endif %}
+</a>
 <hr>
-(댓글 들어갈 예정)
+<div><a href="{% url 'reviewCreate' product.id %}">새 리뷰 작성</a></div>
+{% for review in reviews %}
+<div><a href="{% url 'reviewDetail' review.id %}">{{ review }}</a></div>
+{% endfor %}
 <hr>
 관련 영상 <br>
 {% for linkHash in videoLinkHashs %}

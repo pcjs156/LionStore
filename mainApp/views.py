@@ -58,25 +58,29 @@ def productList_view(request, category_id):
 def productDetail_view(request, product_id):
     content = dict()
 
-    # category = ProductCategory.objects.get(pk=category_id)
-    # content['category'] = category
-
+    # 대상 제품 정보
     product = Product.objects.get(pk=product_id)
     content['product'] = product
 
+    # 좋아요 관련
     likers = [str(customer.nickname) for customer in product.likers.all()]
     if len(likers) == 0:
         likeMessage = "아직 좋아요가 눌리지 않았습니다."
     elif len(likers) == 1:
-        likeMessage = f"{likers[0]}님이 이 글을 좋아합니다."
+        likeMessage = f"{likers[0]}님이 이 제품을 좋아합니다."
     else:
-        likeMessage = f"{likers[0]}님 외 {len(likers)-1}명이 이 글을 좋아합니다."
+        likeMessage = f"{likers[0]}님 외 {len(likers)-1}명이 이 제품을 좋아합니다."
     content['likeMessage'] = likeMessage
     content['userLike'] = product.likers.filter(username=request.user.username).exists()
 
+    # 비디오 링크 관련
     videoLinks = ProductVideoLink.objects.filter(product=product)
     videoLinkHashs = [getHash(linkObj.videoLink)for linkObj in videoLinks]
     content['videoLinkHashs'] = videoLinkHashs
+
+    # 리뷰 관련
+    reviews = PenReview.objects.filter(product=product).order_by('pub_date')
+    content['reviews'] = reviews
 
     return render(request, 'productDetail.html', content)
 
@@ -132,11 +136,88 @@ def rateBackUp_view(request):
 
 @login_required(login_url='/account/logIn/')
 def reviewCreate_view(request, product_id):
-    return render(request, 'reviewCreate.html')
+    if request.method == 'POST':
+        form = PenReviewForm(request.POST, request.FILES)
+
+        product = Product.objects.get(pk=product_id)
+        new_review = form.save()
+
+        new_review.author = request.user
+        new_review.pub_date = timezone.now()
+        new_review.goodPoint = request.POST['goodPoint']
+        new_review.weakPoint = request.POST['weakPoint']
+        new_review.save()
 
 
-def reviewDetail_view(request, product_id, review_id):
-    return render(request, 'reviewDetail.html')
+        new_review.totalScore = Score.objects.create(
+            review=new_review, name="총점", score=int(request.POST['totalScore']))
+        new_review.grip = Score.objects.create(
+            review=new_review, name="그립감", score=int(request.POST['grip']))
+        new_review.life = Score.objects.create(
+            review=new_review, name="제품 수명", score=int(request.POST['life']))
+        new_review.durability = Score.objects.create(
+            review=new_review, name="내구도", score=int(request.POST['durability']))
+        new_review.design = Score.objects.create(
+            review=new_review, name="디자인", score=int(request.POST['design']))
+        new_review.texture = Score.objects.create(
+            review=new_review, name="사용감", score=int(request.POST['texture']))
+        new_review.costEffetiveness = Score.objects.create(
+            review=new_review, name="가성비", score=int(request.POST['costEffetiveness']))
+        new_review.versatility = Score.objects.create(
+            review=new_review, name="범용성", score=int(request.POST['versatility']))
+        new_review.save()
+
+        return productDetail_view(request, product_id)
+
+    else:
+        form = PenReviewForm()
+        return render(request, 'reviewCreate.html', {'form': form})
+
+
+def reviewDetail_view(request, review_id):
+    review = PenReview.objects.get(pk=review_id)
+
+    content = dict()
+
+    # 작성자
+    content['author'] = review.author.nickname
+    # 제품명
+    content['product'] = review.product.name
+    # 장점
+    content['goodPoint'] = review.goodPoint
+    # 단점
+    content['weakPoint'] = review.weakPoint
+    
+    # 제품 총점
+    content['totalScore'] = review.totalScore
+    # 그립감
+    content['gripScore'] = review.grip
+    # 수명
+    content['lifeScore'] = review.life
+    # 내구도
+    content['durabilityScore'] = review.durability
+    # 디자인
+    content['designScore'] = review.design
+    # 사용감
+    content['textureScore'] = review.texture
+    # 가성비
+    content['costEffetivenessScore'] = review.costEffetiveness
+    # 범용성
+    content['versatilityScore'] = review.versatility
+
+    # 좋아요 관련
+    likers = [str(customer.nickname) for customer in review.likers.all()]
+
+    if len(likers) == 0:
+        likeMessage = "아직 좋아요가 눌리지 않았습니다."
+    elif len(likers) == 1:
+        likeMessage = f"{likers[0]}님이 이 리뷰를 좋아합니다."
+    else:
+        likeMessage = f"{likers[0]}님 외 {len(likers)-1}명이 이 리뷰를 좋아합니다."
+    content['likeMessage'] = likeMessage
+    content['userLike'] = review.likers.filter(username=request.user.username).exists()
+
+    return render(request, 'reviewDetail.html', content)
 
 
 @login_required(login_url='/account/logIn/')
