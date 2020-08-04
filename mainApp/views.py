@@ -176,7 +176,6 @@ def reviewCreate_view(request, product_id):
 
 def reviewDetail_view(request, review_id):
     review = PenReview.objects.get(pk=review_id)
-    print(review)
 
     content = dict()
 
