@@ -175,9 +175,10 @@ def reviewCreate_view(request, product_id):
 
 
 def reviewDetail_view(request, review_id):
-    review = PenReview.objects.get(pk=review_id)
-
     content = dict()
+
+    review = PenReview.objects.get(pk=review_id)
+    content['review'] = review
 
     # 작성자
     content['author'] = review.author.nickname
@@ -219,6 +220,31 @@ def reviewDetail_view(request, review_id):
 
     return render(request, 'reviewDetail.html', content)
 
+# 좋아요 버튼을 눌렀을 때 좋아요가 눌려 있지 않았다면 좋아요 처리, 좋아요가 눌려 있었다면 좋아요 해제
+@login_required(login_url='/account/logIn')
+def reviewLikeProcess(request, review_id):
+    review = get_object_or_404(PenReview, pk=review_id)
+
+    if not review.likers.filter(username=request.user.username).exists():
+        reviewLike(request, review_id)
+    else:
+        reviewDislike(request, review_id)
+
+    return redirect(f"/store/reviewDetail/{review_id}")
+
+
+@login_required(login_url='/account/logIn/')
+def reviewLike(request, review_id):
+    review = get_object_or_404(PenReview, pk=review_id)
+    review.likers.add(request.user)
+    review.save()
+
+
+@login_required(login_url='/account/logIn/')
+def reviewDislike(request, review_id):
+    review = get_object_or_404(PenReview, pk=review_id)
+    review.likers.remove(request.user)
+    review.save()
 
 @login_required(login_url='/account/logIn/')
 def reviewModify_view(request, product_id, review_id):

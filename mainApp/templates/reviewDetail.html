@@ -47,7 +47,18 @@
     data-rateit-starwidth="15" data-rateit-starheight="15"></div>
 
 <hr>
-<div>{{ likeMessage }}</div>
+<div>
+    {{ likeMessage }}
+    <a href="{% url 'reviewLikeProcess' review_id=review.id %}">
+        {% if userLike %}
+        <!-- 유저가 좋아요를 누른 경우 -->
+        ❤️
+        {% else %}
+        <!-- 유저가 좋아요를 누르지 않은 경우 -->
+        🖤
+        {% endif %}
+    </a>
+</div>
 
 
 {% endblock %}
