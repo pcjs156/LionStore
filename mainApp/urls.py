@@ -10,7 +10,8 @@ urlpatterns = [
 
     # 제품 등록 요청 관련
     path('productRequest/', views.productRequest_view, name="productRequestList"),
-    path('productRequest/create', views.newProductRequest_view, name="newProductRequest"),
+    path('productRequest/create', views.newProductRequest_view,
+         name="newProductRequest"),
     path('productRequest/<int:product_request_id>', views.productRequestDetail_view, name="productRequestDetail"),
     path('productRequest/modify/<int:product_request_id>', views.productRequestModify_view, name="productRequestModify"),
 
@@ -18,11 +19,12 @@ urlpatterns = [
     path('productList/<int:category_id>', views.productList_view, name="productList"),
     # 제품 상세 정보
     path('productDetail/<int:product_id>', views.productDetail_view, name="productDetail"),
-    
+
     # 좋아요 관련
-    # path('productList/productLikeProcess/<int:product_id>', views.productLikeProcess, name="productLikeProcess"),
-    # path('productList/productLike/<int:product_id>', views.productLike, name="productLike"),
-    # path('productList/productDislike/<int:product_id>', views.productDislike, name="productDislike"),
+    path('productLikeProcess/<int:product_id>',
+         views.productLikeProcess, name="productLikeProcess"),
+    path('productLike/<int:product_id>', views.productLike, name="productLike"),
+    path('productDislike/<int:product_id>', views.productDislike, name="productDislike"),
 
     # 리뷰 관련
     path('productList/<int:category_id>/<int:product_id>/newReview', views.reviewCreate_view, name="reviewCreate"),
@@ -42,7 +44,7 @@ urlpatterns = [
     # 검색 관련
     path('searchMain', views.searchMain_view, name="searchMain"),
     path('searchResult', views.searchResult_view, name="searchResult"),
-    
+
 
     # 테스트용
     path('categoryList/', views.categoryListTest_view, name="categoryList"),
