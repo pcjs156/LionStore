@@ -27,7 +27,7 @@ urlpatterns = [
     path('productDislike/<int:product_id>', views.productDislike, name="productDislike"),
 
     # 리뷰 관련
-    path('productList/<int:category_id>/<int:product_id>/newReview', views.reviewCreate_view, name="reviewCreate"),
+    path('productList/<int:product_id>/newReview', views.reviewCreate_view, name="reviewCreate"),
     path('productList/<int:category_id>/<int:product_id>/reviewDetail/<int:review_id>', views.reviewDetail_view, name="reviewDetail"),
     path('productList/<int:category_id>/<int:product_id>/reviewModify/<int:review_id>', views.reviewModify_view, name="reviewModify"),
 

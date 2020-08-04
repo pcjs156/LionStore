@@ -8,5 +8,77 @@
 {% endblock %}
 
 {% block content %}
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
 
-{% endblock %}
+    장점 <br>
+    {{form.goodPoint}}
+    <br>
+
+    단점 <br>
+    {{form.weakPoint}}
+    <br>
+
+
+    총점 <br>
+    <input type="rating" name="totalScore" value="0" required="" id="id_totalScore" min="0" max="5" step="1" style="display: none;">
+    <div id="star_id_totalScore" class="rateit rateit-bg" data-rateit-backingfld="#id_totalScore"></div>
+    <br>
+
+    그립감 <br>
+    <input type="rating" name="grip" value="0" required="" id="id_grip" min="0" max="5" step="1" style="display: none;">
+    <div id="star_id_grade" class="rateit rateit-bg" data-rateit-backingfld="#id_grip"></div>
+    <br>
+
+    수명 <br>
+    <input type="rating" name="life" value="0" required="" id="id_life" min="0" max="5" step="1" style="display: none;">
+    <div id="star_id_life" class="rateit rateit-bg" data-rateit-backingfld="#id_life"></div>
+    <br>
+
+    내구도 <br>
+    <input type="rating" name="durability" value="0" required="" id="id_durability" min="0" max="5" step="1" style="display: none;">
+    <div id="star_id_durability" class="rateit rateit-bg" data-rateit-backingfld="#id_durability"></div>
+    <br>
+
+    디자인 <br>
+    <input type="rating" name="design" value="0" required="" id="id_design" min="0" max="5" step="1" style="display: none;">
+    <div id="star_id_design" class="rateit rateit-bg" data-rateit-backingfld="#id_design"></div>
+    <br>
+
+    사용감 <br>
+    <input type="rating" name="texture" value="0" required="" id="id_texture" min="0" max="5" step="1" style="display: none;">
+    <div id="star_id_texture" class="rateit rateit-bg" data-rateit-backingfld="#id_texture"></div>
+    <br>
+
+    가성비 <br>
+    <input type="rating" name="costEffetiveness" value="0" required="" id="id_costEffetiveness" min="0" max="5" step="1" style="display: none;">
+    <div id="star_id_costEffetiveness" class="rateit rateit-bg" data-rateit-backingfld="#id_costEffetiveness"></div>
+    <br>
+
+    범용성 <br>
+    <input type="rating" name="versatility" value="0" required="" id="id_versatility" min="0" max="5" step="1" style="display: none;">
+    <div id="star_id_versatility" class="rateit rateit-bg" data-rateit-backingfld="#id_versatility"></div>
+    <br>
+
+    이미지 <br>
+    {{ form.reviewImage1 }}
+    <br>
+    이미지 <br>
+    {{ form.reviewImage2 }}
+    <br>
+    이미지 <br>
+    {{ form.reviewImage3 }}
+    <br>
+    이미지 <br>
+    {{ form.reviewImage4 }}
+    <br>
+    이미지 <br>
+    {{ form.reviewImage5 }}
+    <br>
+    이미지 <br>
+    {{ form.reviewImage6 }}
+    <br>
+
+    <button type="submit">리뷰 작성</button>
+</form>
+{% endblock %} 

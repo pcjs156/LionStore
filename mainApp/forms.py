@@ -8,16 +8,16 @@ from .widgets import starWidget
 class PenReviewForm(forms.ModelForm):
     class Meta:
         model = PenReview
-        fields = ['goodPoint', 'weakPoint', 'totalScore', 
-        'grip', 'life', 'durability', 'design', 'texture', 'costEffetiveness', 'versatility',]
+        fields = ['goodPoint', 'weakPoint',
+        'reviewImage1', 'reviewImage2', 'reviewImage3', 'reviewImage4', 'reviewImage5', 'reviewImage6',]
 
-        widgets = {
-            'totalScore' : starWidget,
-            'grip' : starWidget,
-            'life' : starWidget,
-            'durability' : starWidget,
-            'design' : starWidget,
-            'texture' : starWidget,
-            'costEffetiveness' : starWidget,
-            'versatility' : starWidget,
-        }
+        # widgets = {
+        #     'totalScore' : starWidget,
+        #     'grip' : starWidget,
+        #     'life' : starWidget,
+        #     'durability' : starWidget,
+        #     'design' : starWidget,
+        #     'texture' : starWidget,
+        #     'costEffetiveness' : starWidget,
+        #     'versatility' : starWidget,
+        # }

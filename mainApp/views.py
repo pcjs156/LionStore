@@ -132,7 +132,42 @@ def rateBackUp_view(request):
 
 @login_required(login_url='/account/logIn/')
 def reviewCreate_view(request, product_id):
-    return render(request, 'reviewCreate.html')
+    if request.method == 'POST':
+        form = PenReviewForm(request.POST, request.FILES)
+
+        product = Product.objects.get(pk=product_id)
+        new_review = form.save()
+
+        new_review.author = request.user
+        new_review.pub_date = timezone.now()
+        new_review.goodPoint = request.POST['goodPoint']
+        new_review.weakPoint = request.POST['weakPoint']
+        new_review.save()
+
+
+        new_review.totalScore = Score.objects.create(
+            review=new_review, name="총점", score=int(request.POST['totalScore']))
+        new_review.grip = Score.objects.create(
+            review=new_review, name="그립감", score=int(request.POST['grip']))
+        new_review.life = Score.objects.create(
+            review=new_review, name="제품 수명", score=int(request.POST['life']))
+        new_review.durability = Score.objects.create(
+            review=new_review, name="내구도", score=int(request.POST['durability']))
+        new_review.design = Score.objects.create(
+            review=new_review, name="디자인", score=int(request.POST['design']))
+        new_review.texture = Score.objects.create(
+            review=new_review, name="사용감", score=int(request.POST['texture']))
+        new_review.costEffetiveness = Score.objects.create(
+            review=new_review, name="가성비", score=int(request.POST['costEffetiveness']))
+        new_review.versatility = Score.objects.create(
+            review=new_review, name="범용성", score=int(request.POST['versatility']))
+        new_review.save()
+
+        return productDetail_view(request, product_id)
+
+    else:
+        form = PenReviewForm()
+        return render(request, 'reviewCreate.html', {'form': form})
 
 
 def reviewDetail_view(request, product_id, review_id):
