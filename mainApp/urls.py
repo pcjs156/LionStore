@@ -20,7 +20,7 @@ urlpatterns = [
     # 제품 상세 정보
     path('productDetail/<int:product_id>', views.productDetail_view, name="productDetail"),
 
-    # 좋아요 관련
+    # 제품 좋아요 관련
     path('productLikeProcess/<int:product_id>',
          views.productLikeProcess, name="productLikeProcess"),
     path('productLike/<int:product_id>', views.productLike, name="productLike"),
@@ -30,6 +30,12 @@ urlpatterns = [
     path('productList/<int:product_id>/newReview', views.reviewCreate_view, name="reviewCreate"),
     path('reviewDetail/<int:review_id>', views.reviewDetail_view, name="reviewDetail"),
     path('reviewModify/<int:review_id>', views.reviewModify_view, name="reviewModify"),
+    
+    # 리뷰 좋아요
+    path('reviewLikeProcess/<int:review_id>',
+         views.reviewLikeProcess, name="reviewLikeProcess"),
+    path('reviewLike/<int:review_id>', views.reviewLike, name="reviewLike"),
+    path('reviewDislike/<int:review_id>', views.reviewDislike, name="reviewDislike"),
 
     # 웹 판매정보 관련
     path('productList/<int:category_id>/<int:product_id>/newWebSellInfo', views.webSellInfoCreate_view, name="webSellInfoCreate"),
