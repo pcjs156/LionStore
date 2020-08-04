@@ -25,7 +25,10 @@
      {% endif %}
 </a>
 <hr>
-<a href="{% url 'reviewCreate' product.id %}">새 리뷰 작성</a>
+<div><a href="{% url 'reviewCreate' product.id %}">새 리뷰 작성</a></div>
+{% for review in reviews %}
+<div><a href="{% url 'reviewDetail' review.id %}">{{ review }}</a></div>
+{% endfor %}
 <hr>
 관련 영상 <br>
 {% for linkHash in videoLinkHashs %}
