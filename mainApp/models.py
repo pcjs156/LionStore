@@ -16,6 +16,7 @@ class Product(models.Model):
     description = models.TextField(verbose_name="상품 설명")
     category = models.ForeignKey('ProductCategory', null=False, blank=False, on_delete=models.CASCADE, related_name="productCategory", verbose_name="소속 카테고리")
     likers = models.ManyToManyField(Customer, blank=True, related_name='productLikers', verbose_name="좋아요")
+    likeCount = models.PositiveIntegerField(default=0, verbose_name='좋아요 수')
     productImage = models.ImageField(upload_to="product_image/", null=False, verbose_name="상품 이미지")
 
     def __str__(self):
@@ -67,11 +68,12 @@ class Review(models.Model):
 
     author = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, related_name='reviewAuthor', verbose_name="리뷰 작성자")
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, related_name='reviewTargetProduct', verbose_name="대상 상품")
-    pub_date = models.DateField(null=True, blank=True, verbose_name="리뷰 작성일")
+    pub_date = models.DateTimeField(null=True, blank=True, verbose_name="리뷰 작성일")
     totalScore = models.ForeignKey('Score', on_delete=models.CASCADE, null=True, blank=False, related_name="reviewTotalScore", verbose_name="총점")
     goodPoint = models.TextField(verbose_name="장점")
     weakPoint = models.TextField(verbose_name="단점")
     likers = models.ManyToManyField(Customer, related_name='reviewLikers', verbose_name="좋아요")
+    likeCount = models.PositiveIntegerField(default=0, verbose_name='좋아요 수')
     reported = models.BooleanField(default=False, verbose_name="신고")
 
     reviewImage1 = models.ImageField(upload_to="review_image/", blank=True, null=True, verbose_name="리뷰 이미지1")

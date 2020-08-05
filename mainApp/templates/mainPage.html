@@ -21,4 +21,18 @@
 <div><a href="{% url 'productList' 젤펜.id %}">젤펜</a></div>
 <div><a href="{% url 'productList' 기타.id %}">기타</a></div>
 
+<hr>
+
+<div>최신 리뷰</div>
+{% for newReview in newReviews %}
+<div><a href="{% url 'reviewDetail' newReview.id %}">{{ newReview }}</a></div>
+{% endfor %}
+
+<br>
+
+<div>인기 리뷰</div>
+{% for popularReview in popularReviews %}
+<div><a href="{% url 'reviewDetail' popularReview.id %}">{{ popularReview }}</a></div>
+{% endfor %}
+
 {% endblock %}
