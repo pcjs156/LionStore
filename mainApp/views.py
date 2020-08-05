@@ -40,6 +40,13 @@ def mainPage_view(request):
                     '형광펜': 형광펜, '샤프펜슬': 샤프펜슬, '유성펜': 유성펜, '사인펜': 사인펜, '젤펜': 젤펜, '기타': 기타}
     content.update(categoryDict)
 
+    newReviews = PenReview.objects.all().order_by('-pub_date')[:10]
+    content['newReviews'] = newReviews
+
+    popularReviews = PenReview.objects.all().order_by('likeCount')[:10]
+    content['popularReviews'] = popularReviews
+    
+
     return render(request, 'mainPage.html', content)
 
 
@@ -103,8 +110,9 @@ def productLikeProcess(request, product_id):
 
 @login_required(login_url='/account/logIn/')
 def productLike(request, product_id, category_id):
-    product = get_object_or_404(Product, pk=product_id)
+    product : Product = get_object_or_404(Product, pk=product_id)
     product.likers.add(request.user)
+    product.likeCount += 1
     product.save()
 
 
@@ -112,6 +120,7 @@ def productLike(request, product_id, category_id):
 def productDislike(request, product_id, category_id):
     product = get_object_or_404(Product, pk=product_id)
     product.likers.remove(request.user)
+    product.likeCount -= 1
     product.save()
 
 
@@ -244,6 +253,7 @@ def reviewLikeProcess(request, review_id):
 def reviewLike(request, review_id):
     review = get_object_or_404(PenReview, pk=review_id)
     review.likers.add(request.user)
+    review.likeCount += 1
     review.save()
 
 
@@ -251,6 +261,7 @@ def reviewLike(request, review_id):
 def reviewDislike(request, review_id):
     review = get_object_or_404(PenReview, pk=review_id)
     review.likers.remove(request.user)
+    review.likeCount -= 1
     review.save()
 
 @login_required(login_url='/account/logIn/')
