@@ -58,8 +58,10 @@ def newProductRequest_view(request):
 def productList_view(request, category_id):
     content = dict()
 
-    currentCategory = ProductCategory.objects.get(pk=category_id)
-    content['products'] = Product.objects.filter(category=currentCategory)
+
+    category = ProductCategory.objects.get(pk=category_id)
+    content['category'] = category
+    content['products'] = Product.objects.filter(category=category)
 
     return render(request, 'productList.html', content)
 
@@ -90,6 +92,14 @@ def productDetail_view(request, product_id):
     # 리뷰 관련
     reviews = PenReview.objects.filter(product=product).order_by('pub_date')
     content['reviews'] = reviews
+
+    # 태그 관련
+    tags = set()
+    for review in reviews:
+        for tag in review.tags.all():
+            tags.add(tag)
+
+    content['tags'] = tags
 
     return render(request, 'productDetail.html', content)
 
@@ -146,6 +156,31 @@ def rateBackUp_view(request):
     return render(request, 'rateBackUp.html')
 
 
+def connectTagToReview(review:Review):
+    rawTagString = review.rawTagString
+    rawTags = rawTagString.split(' ')
+    existTags = ReviewTag.objects.all()
+
+    for newTagName in rawTags:
+        if len(newTagName) > 15 : continue
+
+        alreadyExists = False
+        for existTag in existTags:
+            if existTag.tag == newTagName:
+                alreadyExists = True
+                break
+        
+        if not alreadyExists:
+            print(newTagName + " 태그가 존재하지 않아 새로 생성합니다.")
+            newTag = ReviewTag.objects.create(tag=newTagName)
+            review.tags.add(newTag)
+            newTag.targetReview.add(review)
+        else:
+            existTag = ReviewTag.objects.get(tag=newTagName)
+            review.tags.add(existTag)
+            existTag.targetReview.add(review)
+
+
 @login_required(login_url='/account/logIn/')
 def reviewCreate_view(request, product_id):
     if request.method == 'POST':
@@ -158,6 +193,7 @@ def reviewCreate_view(request, product_id):
         new_review.pub_date = timezone.now()
         new_review.goodPoint = request.POST['goodPoint']
         new_review.weakPoint = request.POST['weakPoint']
+        new_review.rawTagString = request.POST['rawTagString']
         new_review.save()
 
         new_review.totalScore = Score.objects.create(
@@ -182,6 +218,9 @@ def reviewCreate_view(request, product_id):
         if not hasImageField(new_review):
             new_review.reviewImage1 = product.productImage
             new_review.save()
+
+        # 리뷰의 태그를 rawString으로부터 추출/연결
+        connectTagToReview(new_review)
 
         return productDetail_view(request, product_id)
 
@@ -238,6 +277,10 @@ def reviewDetail_view(request, review_id):
     isAuthor = (request.user == review.author)
     content['isAuthor'] = isAuthor
 
+    # 태그 목록
+    tags = review.tags.all()
+    content['tags'] = tags
+
     return render(request, 'reviewDetail.html', content)
 
 
@@ -251,6 +294,37 @@ def reviewModify_view(request, review_id):
     return render(request, 'reviewModify.html', content)
 
 
+def modifyReviewTags(review:PenReview):
+    currentRawTagString = review.rawTagString
+    currentTagNames = currentRawTagString.split(' ')
+    existTags = set(list(obj.tag for obj in review.tags.all()))
+
+    for name in currentTagNames:
+        # 15자를 넘기는 태그이면 그냥 넘어감
+        if len(name) > 15 : continue
+
+        # 이미 존재하는 태그인 경우 삭제될 태그가 아니므로 existTags에서 삭제하고 넘어감
+        if name in existTags :
+            existTags.remove(name)
+            continue
+
+        # 새로운 태그가 추가된 경우
+        if name not in existTags:
+            newTag = ReviewTag.objects.create(tag=name)
+            newTag.targetReview.add(review)
+            review.tags.add(newTag)
+    
+    # 선택받지 못한? 태그들을 리뷰와 떼어놓음
+    for tag in existTags:
+        tag = ReviewTag.objects.get(tag=tag)
+        tag.targetReview.remove(review)
+        review.tags.remove(tag)
+        tag.save()
+
+    review.save()
+
+
+
 @login_required(login_url='/account/logIn/')
 def reviewUpdate(request, review_id):
     review : PenReview = get_object_or_404(PenReview, pk=review_id)
@@ -258,6 +332,7 @@ def reviewUpdate(request, review_id):
     review.pub_date = timezone.datetime.now()
     review.goodPoint = request.POST['goodPoint']
     review.weakPoint = request.POST['weakPoint']
+    review.rawTagString = request.POST['rawTagString']
 
     review.totalScore.score = request.POST['totalScore']
     review.totalScore.save()
@@ -287,6 +362,9 @@ def reviewUpdate(request, review_id):
 
     review.save()
 
+    modifyReviewTags(review)
+
+    review.save()
 
     return redirect('/store/reviewDetail/' + str(review.id))
 

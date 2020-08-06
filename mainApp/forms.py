@@ -8,7 +8,7 @@ from .widgets import starWidget
 class PenReviewForm(forms.ModelForm):
     class Meta:
         model = PenReview
-        fields = ['goodPoint', 'weakPoint',
+        fields = ['goodPoint', 'weakPoint', 'rawTagString',
         'reviewImage1', 'reviewImage2', 'reviewImage3', 'reviewImage4', 'reviewImage5', 'reviewImage6',]
 
         # widgets = {

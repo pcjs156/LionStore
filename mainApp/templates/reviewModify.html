@@ -19,6 +19,10 @@
     <textarea name="weakPoint" id="weakPoint" cols="30" rows="10" >{{ review.weakPoint }}</textarea>
     <br>
 
+    태그 목록(공백 문자로 구분됩니다.) <br>
+    <textarea name="rawTagString" id="rawTagString" cols="30" rows="10" >{{ review.rawTagString }}</textarea>
+    <br>
+
     총점 <br>
     <input type="rating" name="totalScore" value="{{ review.totalScore.score }}" required="" id="id_totalScore" min="0" max="5" step="1"
         style="display: none;">
