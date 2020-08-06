@@ -27,7 +27,7 @@
 <hr>
 <div><a href="{% url 'reviewCreate' product.id %}">새 리뷰 작성</a></div>
 {% for review in reviews %}
-<div><a href="{% url 'reviewDetail' review.id %}">{{ review }}</a></div>
+<div><a href="{% url 'reviewDetail' review.id %}">리뷰 {{ review.id }} ({{ review.pub_date | date:"Y/m/d a h:i" }})</a></div>
 {% endfor %}
 <hr>
 관련 영상 <br>

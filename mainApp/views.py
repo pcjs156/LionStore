@@ -234,6 +234,10 @@ def reviewDetail_view(request, review_id):
     content['likeMessage'] = likeMessage
     content['userLike'] = review.likers.filter(username=request.user.username).exists()
 
+    # 현재 사용자가 해당 리뷰의 작성자인가?
+    isAuthor = (request.user == review.author)
+    content['isAuthor'] = isAuthor
+
     return render(request, 'reviewDetail.html', content)
 
 # 좋아요 버튼을 눌렀을 때 좋아요가 눌려 있지 않았다면 좋아요 처리, 좋아요가 눌려 있었다면 좋아요 해제
@@ -265,8 +269,53 @@ def reviewDislike(request, review_id):
     review.save()
 
 @login_required(login_url='/account/logIn/')
-def reviewModify_view(request, product_id, review_id):
-    return render(request, 'reviewModify.html')
+def reviewModify_view(request, review_id):
+    content = dict()
+
+    review = get_object_or_404(PenReview, pk=review_id)
+    content['review'] = review
+
+    return render(request, 'reviewModify.html', content)
+
+@login_required(login_url='/account/logIn/')
+def reviewUpdate(request, review_id):
+    review : PenReview = get_object_or_404(PenReview, pk=review_id)
+
+    review.pub_date = timezone.datetime.now()
+    review.goodPoint = request.POST['goodPoint']
+    review.weakPoint = request.POST['weakPoint']
+
+    review.totalScore.score = request.POST['totalScore']
+    review.totalScore.save()
+
+    review.grip.score = request.POST['grip']
+    review.grip.save()
+
+    review.life.score = request.POST['life']
+    review.life.save()
+
+    review.durability.score = request.POST['durability']
+    review.durability.save()
+
+    review.design.score = request.POST['design']
+    review.design.save()
+
+    review.texture.score = request.POST['texture']
+    review.texture.save()
+
+    review.costEffetiveness.score = request.POST['costEffetiveness']
+    review.costEffetiveness.save()
+
+    review.versatility.score = request.POST['versatility']
+    review.versatility.save()
+
+    review.modified = True
+
+    review.save()
+
+
+    return redirect('/store/reviewDetail/' + str(review.id))
+
 
 
 def searchMain_view(request):

@@ -74,7 +74,9 @@ class Review(models.Model):
     weakPoint = models.TextField(verbose_name="단점")
     likers = models.ManyToManyField(Customer, related_name='reviewLikers', verbose_name="좋아요")
     likeCount = models.PositiveIntegerField(default=0, verbose_name='좋아요 수')
+
     reported = models.BooleanField(default=False, verbose_name="신고")
+    modified = models.BooleanField(default=False, verbose_name="수정")
 
     reviewImage1 = models.ImageField(upload_to="review_image/", blank=True, null=True, verbose_name="리뷰 이미지1")
     reviewImage2 = models.ImageField(upload_to="review_image/", blank=True, null=True, verbose_name="리뷰 이미지2")
