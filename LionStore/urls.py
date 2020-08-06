@@ -13,4 +13,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('account/', include(account.urls)),
     path('store/', include(mainApp.urls)),
+    path('randomLike/', mainApp.views.randomLike, name="randomLike"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

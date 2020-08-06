@@ -56,10 +56,4 @@ urlpatterns = [
     # 검색 관련
     path('searchMain', views.searchMain_view, name="searchMain"),
     path('searchResult', views.searchResult_view, name="searchResult"),
-
-
-    # 테스트용
-    path('categoryList/', views.categoryListTest_view, name="categoryList"),
-    path('newReview/<int:product_id>', views.newReviewTest_view, name="newReiewTest"),
-    path('newMapTest', views.newMapTest_view, name="newMapTest"),
 ]

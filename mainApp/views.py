@@ -15,41 +15,6 @@ def intro_view(request):
     return render(request, 'intro.html')
 
 
-def mainPage_view(request):
-    content = dict()
-
-    # 테스트/개발용이므로 서비스 할 때는 빠져아 함
-    # 카테고리가 존재하지 않는 경우에만 하단의 모든 카테고리를 새로 생성하는 역할
-    initializeCategory()
-    # 랜덤으로 countLimit개까지 Product를 생성하고 임의로 카테고리를 지정
-    automativeFilling_Product(countLimit=300)
-
-    볼펜 = ProductCategory.objects.get(categoryName="볼펜")
-    만년필 = ProductCategory.objects.get(categoryName="만년필")
-    캘리그라피펜 = ProductCategory.objects.get(categoryName="캘리그라피펜")
-    연필 = ProductCategory.objects.get(categoryName="연필")
-    색연필 = ProductCategory.objects.get(categoryName="색연필")
-    형광펜 = ProductCategory.objects.get(categoryName="형광펜")
-    샤프펜슬 = ProductCategory.objects.get(categoryName="샤프펜슬")
-    유성펜 = ProductCategory.objects.get(categoryName="유성펜")
-    사인펜 = ProductCategory.objects.get(categoryName="사인펜")
-    젤펜 = ProductCategory.objects.get(categoryName="젤펜")
-    기타 = ProductCategory.objects.get(categoryName="기타")
-
-    categoryDict = {'볼펜': 볼펜, '만년필': 만년필, '캘리그라피펜': 캘리그라피펜, '연필': 연필, '색연필': 색연필,
-                    '형광펜': 형광펜, '샤프펜슬': 샤프펜슬, '유성펜': 유성펜, '사인펜': 사인펜, '젤펜': 젤펜, '기타': 기타}
-    content.update(categoryDict)
-
-    newReviews = PenReview.objects.all().order_by('-pub_date')[:10]
-    content['newReviews'] = newReviews
-
-    popularReviews = PenReview.objects.all().order_by('likeCount')[:10]
-    content['popularReviews'] = popularReviews
-    
-
-    return render(request, 'mainPage.html', content)
-
-
 @login_required(login_url='/account/logIn/')
 def newProductRequest_view(request):
     return render(request, 'newProductRequest.html')
@@ -545,65 +510,43 @@ def webSellInfoDetail_view(request, category_id, product_id, webSellInfo_id):
 def webSellInfoModify_view(request, category_id, product_id, webSellInfo_id):
     return render(request, 'webSellInfoModify.html')
 
+def mainPage_view(request):
+    content = dict()
 
-# 이하 테스트용(삭제 예정) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # 테스트/개발용이므로 서비스 할 때는 빠져아 함
+    # 카테고리가 존재하지 않는 경우에만 하단의 모든 카테고리를 새로 생성하는 역할
+    initializeCategory()
+    # 랜덤으로 countLimit개까지 Product를 생성하고 임의로 카테고리를 지정
+    automativeFilling_Product(countLimit=300)
 
+    볼펜 = ProductCategory.objects.get(categoryName="볼펜")
+    만년필 = ProductCategory.objects.get(categoryName="만년필")
+    캘리그라피펜 = ProductCategory.objects.get(categoryName="캘리그라피펜")
+    연필 = ProductCategory.objects.get(categoryName="연필")
+    색연필 = ProductCategory.objects.get(categoryName="색연필")
+    형광펜 = ProductCategory.objects.get(categoryName="형광펜")
+    샤프펜슬 = ProductCategory.objects.get(categoryName="샤프펜슬")
+    유성펜 = ProductCategory.objects.get(categoryName="유성펜")
+    사인펜 = ProductCategory.objects.get(categoryName="사인펜")
+    젤펜 = ProductCategory.objects.get(categoryName="젤펜")
+    기타 = ProductCategory.objects.get(categoryName="기타")
 
-def categoryListTest_view(request):
-    categoryList = ProductCategory.objects.all()
+    categoryDict = {'볼펜': 볼펜, '만년필': 만년필, '캘리그라피펜': 캘리그라피펜, '연필': 연필, '색연필': 색연필,
+                    '형광펜': 형광펜, '샤프펜슬': 샤프펜슬, '유성펜': 유성펜, '사인펜': 사인펜, '젤펜': 젤펜, '기타': 기타}
+    content.update(categoryDict)
 
-    return render(request, 'categoryListTest.html', {'categoryList': categoryList})
+    newReviews = PenReview.objects.all().order_by('-pub_date')[:10]
+    content['newReviews'] = newReviews
 
-# def productListTest_view(request, category_id):
-#     category = ProductCategory.objects.get(pk=category_id)
-#     products = Product.objects.filter(category=category)
+    popularReviews = PenReview.objects.all().order_by('likeCount')[:10]
+    content['popularReviews'] = popularReviews
+    
 
-#     return render(request, 'productListTest.html', {'products':products})
+    return render(request, 'mainPage.html', content)
 
+def randomLike(request):
+    # 로그인 되어 있을 경우 제품과 리뷰에 랜덤하게 좋아요를 누름
+    likeProcess_RandomProducts(request, 50)
+    likeProcess_RandomReviews(request, 50)
 
-def newReviewTest_view(request, product_id):
-    if request.method == 'POST':
-        form = PenReviewForm(request.POST)
-
-        product = Product.objects.get(pk=product_id)
-        new_review = PenReview(product=product)
-        new_review.author = request.user
-        new_review.pub_date = timezone.now()
-        new_review.goodPoint = request.POST['goodPoint']
-        new_review.weakPoint = request.POST['weakPoint']
-        new_review.save()
-
-        new_review.totalScore = Score.objects.create(
-            review=new_review, name="총점", score=int(request.POST['totalScore']))
-        new_review.grip = Score.objects.create(
-            review=new_review, name="그립감", score=int(request.POST['grip']))
-        new_review.life = Score.objects.create(
-            review=new_review, name="제품 수명", score=int(request.POST['life']))
-        new_review.durability = Score.objects.create(
-            review=new_review, name="내구도", score=int(request.POST['durability']))
-        new_review.design = Score.objects.create(
-            review=new_review, name="디자인", score=int(request.POST['design']))
-        new_review.texture = Score.objects.create(
-            review=new_review, name="사용감", score=int(request.POST['texture']))
-        new_review.costEffetiveness = Score.objects.create(
-            review=new_review, name="가성비", score=int(request.POST['costEffetiveness']))
-        new_review.versatility = Score.objects.create(
-            review=new_review, name="범용성", score=int(request.POST['versatility']))
-
-        new_review.save()
-        return redirect('mainPage')
-
-    else:
-        form = PenReviewForm()
-        return render(request, 'newReviewTest.html', {'form': form})
-
-
-def newMapTest_view(request):
-    if request.method == "POST":
-        print(type(request.POST["stationerStoreLocation"]))
-
-    return render(request, 'mapTest.html')
-
-
-def newMapResult_view(request):
-    return render(request, 'mapTestResult.html')
+    return redirect('mainPage')
