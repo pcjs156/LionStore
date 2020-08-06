@@ -7,10 +7,38 @@
 {% endblock %}
 
 {% block content %}
-
 <form action="{% url 'searchResult' %}" method="GET">
-    제품명 검색 : <input type="search" name="query">
-    <input type="submit" value="검색">
-</form>
+    <div id="accordion" style="text-align: center;">
+        <div class="card" style="width: 60rem;">
+            <div class="card-header">
+                <a class="card-link" data-toggle="collapse" href="#collapseOne">
+                    키워드 검색
+                </a>
+            </div>
+            <div id="collapseOne" class="collapse show" data-parent="#accordion">
+                <div>입력받은 키워드가 제품명에 포함된 제품을 검색합니다.</div>
+                <div id="collapseOne" class="row collapse in">
+                    <input type="search" name="keywordQuery">
+                    <input type="submit" value="검색">
+                </div>
+            </div>
+        </div>
 
+        <div class="card" style="width: 60rem;">
+            <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
+                <div class="card-header">
+                    태그 검색
+            </a>
+        </div>
+        <div id="collapseTwo" class="collapse" data-parent="#accordion">
+            <div>공백으로 나뉘어 입력된 태그들과 적어도 하나 겹치는 제품을 검색합니다.</div>
+            <div id="collapseTwo" class="row collapse">
+                <input type="search" name="tagQuery">
+                <input type="submit" value="검색">
+            </div>
+        </div>
+    </div>
+    </div>
+
+</form>
 {% endblock %}

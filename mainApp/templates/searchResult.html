@@ -11,20 +11,20 @@
 
 <h3>{{ statusMessage }}</h3>
 
+<!-- 검색 성공 -->
+{% if not searchFailed %}
+<!-- 키워드 검색인 경우 -->
+{% if isKeywordSearch %}
 {% for product in searchResult %}
 <div><a href="{% url 'productDetail' product.id %}">{{ product }}</a></div>
 {% endfor %}
 
-{% if searchResult.has_previous %}
-<a href="?page=1">맨 앞으로</a>
-<a href="?page={{ searchResult.previous_page_number }}">이전으로</a>
+<!-- 태그 검색인 경우 -->
+{% else %}
 {% endif %}
-<span>{{ searchResult.number }}</span>
-<span>/</span>
-<span>{{ searchResult.paginator.num_pages }}</span>
-{% if searchResult.has_next %}
-<a href="?page={{ searchResult.next_page_number }}">다음으로</a>
-<a href="?page={{ searchResult.paginator.num_pages }}">맨 뒤로</a>
+{% for pair in searchResult %}
+<div><a href="{% url 'productDetail' pair.product.id %}"> 유사도 {{ pair.cnt }} : {{ pair.product }}</a></div>
+{% endfor %}
 {% endif %}
 
 {% endblock %}
