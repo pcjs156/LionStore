@@ -21,10 +21,10 @@ class Customer(AbstractUser):
     introduce = models.TextField(verbose_name="소개글")
 
     # 연락처
-    telephone = models.CharField(max_length=20, blank=False, null=False, default="", verbose_name="판매자 연락처")
+    telephone = models.CharField(max_length=20, blank=False, null=True, default="", verbose_name="판매자 연락처")
 
     # 웹페이지 메인 주소
-    link = models.CharField(max_length=200, blank=False, null=False, default="", verbose_name="웹 쇼핑몰 메인 주소")
+    link = models.CharField(max_length=200, blank=False, null=True, default="", verbose_name="웹 쇼핑몰 메인 주소")
 
     # 문방구/리뷰어 위치 위도
     latitude = models.DecimalField(max_digits=10, decimal_places=6, default=0, verbose_name="문방구/리뷰어 위치 위도")
@@ -37,14 +37,14 @@ class Customer(AbstractUser):
         ("20s", "20대"),
         ("30s", "30대"),
     )
-    age = models.CharField(max_length=5, default=("etcs", "기타"), blank=False, null=False, choices=AGE, verbose_name="연령대")
+    age = models.CharField(max_length=5, default=("etcs", "기타"), blank=False, null=True, choices=AGE, verbose_name="연령대")
 
     JOB = (
         ("J0", "기타"),
         ("J1", "학생"),
         ("J2", "아티스트"),
     )
-    job = models.CharField(max_length=10, default=("J0", "기타"), blank=False, null=False, choices=JOB, verbose_name="직업")
+    job = models.CharField(max_length=10, default=("J0", "기타"), blank=False, null=True, choices=JOB, verbose_name="직업")
 
 
     USAGE = (
@@ -55,7 +55,7 @@ class Customer(AbstractUser):
         ("U4", "다이어리 꾸미기"),
         ("U5", "캘리그라피"),
     )
-    usage = models.CharField(max_length=20, default=("U0", "기타"), blank=False, null=False, choices=USAGE, verbose_name="주 사용 용도")
+    usage = models.CharField(max_length=20, default=("U0", "기타"), blank=False, null=True, choices=USAGE, verbose_name="주 사용 용도")
 
     PEN = (
         ("P0", "기타"),
@@ -68,9 +68,9 @@ class Customer(AbstractUser):
         ("P7", "유성펜"),
         ("P8", "젤펜"),
     )
-    penInterest_1 = models.CharField(max_length=10, blank=False, null=False, choices=PEN, default=("P0", "기타"), verbose_name="관심 펜 1순위")
-    penInterest_2 = models.CharField(max_length=10, blank=False, null=False, choices=PEN, default=("P0", "기타"), verbose_name="관심 펜 2순위")
-    penInterest_3 = models.CharField(max_length=10, blank=False, null=False, choices=PEN, default=("P0", "기타"), verbose_name="관심 펜 3순위")
+    penInterest_1 = models.CharField(max_length=10, blank=False, null=True, choices=PEN, default=("P0", "기타"), verbose_name="관심 펜 1순위")
+    penInterest_2 = models.CharField(max_length=10, blank=False, null=True, choices=PEN, default=("P0", "기타"), verbose_name="관심 펜 2순위")
+    penInterest_3 = models.CharField(max_length=10, blank=False, null=True, choices=PEN, default=("P0", "기타"), verbose_name="관심 펜 3순위")
     
 
     # 유저 태그(추가)
@@ -78,7 +78,7 @@ class Customer(AbstractUser):
 
     # 유저 태그 Raw-String Data
     # : 모든 태그들이 띄어쓰기로 구분되어 문자열로 저장되는 필드
-    rawTagString = models.TextField(null=False, blank=True, default="", verbose_name="유저 태그 목록 원본 데이터")
+    rawTagString = models.TextField(null=True, blank=True, default="", verbose_name="유저 태그 목록 원본 데이터")
 
     def __str__(self):
         if self.is_Customer:

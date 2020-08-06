@@ -2,6 +2,7 @@ from faker import Faker
 import random
 
 from .models import PenReview
+from . import views
 
 CATEGORY_NAMES = tuple("볼펜 만년필 캘리그라피펜 연필 색연필 형광펜 샤프펜슬 유성펜 사인펜 젤펜 기타".split(' '))
 
@@ -47,3 +48,21 @@ def hasImageField(instance:Review):
     ]
 
     return len(list(filter(lambda x : x, imageFields))) != 0
+
+
+def likeProcess_RandomReviews(request, num=10):
+    if not request.user.is_authenticated:
+        return
+    
+    reviews = PenReview.objects.all()
+    for _ in range(num):
+        views.reviewLikeProcess(request, random.choice(reviews).id)
+
+
+def likeProcess_RandomProducts(request, num=10):
+    if not request.user.is_authenticated:
+        return
+    
+    products = Product.objects.all()
+    for _ in range(num):
+        views.productLikeProcess(request, random.choice(products).id)
