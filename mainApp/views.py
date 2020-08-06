@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 
-from django.db.models.fields.files import ImageFieldFile
+from django.core.paginator import Paginator
 
 from .models import *
 
@@ -22,7 +22,7 @@ def mainPage_view(request):
     # 카테고리가 존재하지 않는 경우에만 하단의 모든 카테고리를 새로 생성하는 역할
     initializeCategory()
     # 랜덤으로 countLimit개까지 Product를 생성하고 임의로 카테고리를 지정
-    automativeFilling_Product(countLimit=50)
+    automativeFilling_Product(countLimit=300)
 
     볼펜 = ProductCategory.objects.get(categoryName="볼펜")
     만년필 = ProductCategory.objects.get(categoryName="만년필")
@@ -58,10 +58,15 @@ def newProductRequest_view(request):
 def productList_view(request, category_id):
     content = dict()
 
-
     category = ProductCategory.objects.get(pk=category_id)
     content['category'] = category
-    content['products'] = Product.objects.filter(category=category)
+
+    products = Product.objects.filter(category=category)
+    paginator = Paginator(products, 10)
+    page = request.GET.get('page')
+    products = paginator.get_page(page)
+    content['products'] = products
+
 
     return render(request, 'productList.html', content)
 
