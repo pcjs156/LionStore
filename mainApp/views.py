@@ -420,8 +420,80 @@ def searchMain_view(request):
     return render(request, 'searchMain.html')
 
 
+def getTopRelatedReviews(countLimit, rawTagString:str):
+    inputTagNames = set(rawTagString.split(' '))
+    reviews = PenReview.objects.all()
+
+    productTagPair = dict()
+
+    for review in reviews:
+        product = review.product
+        if product not in productTagPair:
+            productTagPair[product] = getTagNames(review)
+        else:
+            productTagPair[product].update(getTagNames(review))
+
+
+    for product, tagSet in productTagPair.items():
+        productTagPair[product] = len(inputTagNames & tagSet)
+
+    tagSimilarity = list((product, count) for product, count in productTagPair.items())
+    tagSimilarity.sort(key=lambda pair: pair[1], reverse=True)
+
+    return tagSimilarity[:countLimit]
+
+
+def getTagNames(review:Review):
+    tags = review.tags.all()
+    result = set()
+
+    for tag in tags:
+        result.add(tag.tag)
+
+    return result
+
+
 def searchResult_view(request):
-    return render(request, 'searchResult.html')
+    class Pair:
+        def __init__(self, product, cnt):
+            self.product = product
+            self.cnt = cnt
+
+    content = dict()
+
+    isKeywordSearch = False
+
+    keywordQuery = request.GET['keywordQuery']
+    if keywordQuery:
+        searchResult = Product.objects.filter(name__contains=keywordQuery)
+        statusMessage = f"키워드 검색 결과 {len(searchResult)}개의 제품이 검색되었습니다."
+        isKeywordSearch = True
+        content['searchResult'] = searchResult
+        content['statusMessage'] = statusMessage
+
+    else:
+        tagQuery = request.GET['tagQuery']
+        if tagQuery:
+            similarityPair = getTopRelatedReviews(20, tagQuery)
+            statusMessage = f"태그 검색 결과"
+            
+            searchResult = list(Pair(similarityPair[i][0], similarityPair[i][1]) for i in range(len(similarityPair)))
+            content['searchResult'] = searchResult
+
+            content['statusMessage'] = statusMessage
+
+        else:
+            searchResult = []
+            statusMessage = "검색어를 입력해 주세요!"
+            content['searchResult'] = searchResult
+            content['statusMessage'] = statusMessage
+
+    searchFailed = (len(searchResult) == 0)
+    content['searchFailed'] = searchFailed
+    
+    content['isKeywordSearch'] = isKeywordSearch
+
+    return render(request, 'searchResult.html', content)
 
 
 @login_required(login_url='/account/logIn/')

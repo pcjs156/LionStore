@@ -9,4 +9,22 @@
 
 {% block content %}
 
+<h3>{{ statusMessage }}</h3>
+
+<!-- 검색 성공 -->
+{% if not searchFailed %}
+<!-- 키워드 검색인 경우 -->
+{% if isKeywordSearch %}
+{% for product in searchResult %}
+<div><a href="{% url 'productDetail' product.id %}">{{ product }}</a></div>
+{% endfor %}
+
+<!-- 태그 검색인 경우 -->
+{% else %}
+{% endif %}
+{% for pair in searchResult %}
+<div><a href="{% url 'productDetail' pair.product.id %}"> 유사도 {{ pair.cnt }} : {{ pair.product }}</a></div>
+{% endfor %}
+{% endif %}
+
 {% endblock %}
