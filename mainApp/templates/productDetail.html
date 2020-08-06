@@ -8,6 +8,7 @@
 {% endblock %}
 
 {% block content %}
+<a href="{% url 'productList' product.category.id %}">제품 목록 보기</a>
 
 <div>제품명 : {{ product.name }}</div>
 <div>제조사 : {{ product.manufacturer }}</div>
@@ -29,7 +30,15 @@
 {% for review in reviews %}
 <div><a href="{% url 'reviewDetail' review.id %}">리뷰 {{ review.id }} ({{ review.pub_date | date:"Y/m/d a h:i" }})</a></div>
 {% endfor %}
+
 <hr>
+<div style="font-weight: bold;">태그목록</div>
+{% for tag in tags %}
+<div>{{ tag }}</div>
+{% endfor %}
+
+<hr>
+
 관련 영상 <br>
 {% for linkHash in videoLinkHashs %}
 <iframe width="200" height="180" src="https://www.youtube.com/embed/{{ linkHash }}" frameborder="0"

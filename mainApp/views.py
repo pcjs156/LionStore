@@ -58,8 +58,10 @@ def newProductRequest_view(request):
 def productList_view(request, category_id):
     content = dict()
 
-    currentCategory = ProductCategory.objects.get(pk=category_id)
-    content['products'] = Product.objects.filter(category=currentCategory)
+
+    category = ProductCategory.objects.get(pk=category_id)
+    content['category'] = category
+    content['products'] = Product.objects.filter(category=category)
 
     return render(request, 'productList.html', content)
 
@@ -90,6 +92,14 @@ def productDetail_view(request, product_id):
     # 리뷰 관련
     reviews = PenReview.objects.filter(product=product).order_by('pub_date')
     content['reviews'] = reviews
+
+    # 태그 관련
+    tags = set()
+    for review in reviews:
+        for tag in review.tags.all():
+            tags.add(tag)
+
+    content['tags'] = tags
 
     return render(request, 'productDetail.html', content)
 

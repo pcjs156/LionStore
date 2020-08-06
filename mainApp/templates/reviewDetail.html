@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% block content %}
+<a href="{% url 'productDetail' review.product.id %}">제품 보기</a>
 
 {% if review.modified %}
 <div>{{ review.pub_date | date:"Y년 m월 d일 a h시 i분" }}에 수정됨</div>
