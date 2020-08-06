@@ -128,6 +128,15 @@ class ReviewTag(models.Model):
     def __str__(self):
         return self.tag
 
+class Comment(models.Model):
+    review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name="commentTargetReview", verbose_name="대상 리뷰")
+    author = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='commentAuthor', verbose_name="리뷰 작성자")
+    pub_date = models.DateTimeField(verbose_name="리뷰 작성(수정)일")
+    body = models.TextField(verbose_name="댓글 내용")
+
+    def __str__(self):
+        return f"{body[:10]}.. (by {author.nickname}, on {pub_date}" 
+
 
 # 상품 등록 요청
 class ProductRequest(models.Model):

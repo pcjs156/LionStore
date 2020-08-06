@@ -289,6 +289,10 @@ def reviewDetail_view(request, review_id):
     tags = review.tags.all()
     content['tags'] = tags
 
+    # 댓글 목록
+    comments = Comment.objects.filter(review=review).order_by('-pub_date')
+    content['comments'] = comments
+
     return render(request, 'reviewDetail.html', content)
 
 
@@ -330,7 +334,6 @@ def modifyReviewTags(review:PenReview):
         tag.save()
 
     review.save()
-
 
 
 @login_required(login_url='/account/logIn/')
@@ -414,6 +417,25 @@ def reviewDislike(request, review_id):
     review.likeCount -= 1
     review.save()
 
+
+@login_required(login_url='/account/logIn/')
+def commentCreate(request, review_id):
+    new_comment = Comment(
+        author=request.user, pub_date=timezone.datetime.now(),
+        review=PenReview.objects.get(pk=review_id), body=request.POST['body']
+    )
+
+    new_comment.save()
+
+    return redirect('/store/reviewDetail/' + str(review_id))
+
+@login_required(login_url='/account/logIn/')
+def commentDelete(request, comment_id):
+    target_comment : Comment = get_object_or_404(Comment, pk=comment_id)
+    review_id : PenReview = target_comment.review.id
+    target_comment.delete()
+
+    return redirect('/store/reviewDetail/' + str(review_id))
 
 
 def searchMain_view(request):

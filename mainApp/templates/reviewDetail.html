@@ -71,6 +71,30 @@
 
 <hr>
 
+<form action="/store/commentCreate/{{ review.id }}" method="POST">
+    {% csrf_token %}
+    <input type="text" name="body">
+    <button type="submit">작성</button>
+</form>
+
+{% for comment in comments %}
+<div class="card">
+    <div class="card-header">
+        {{ comment.author.nickname }}
+    </div>
+    <div class="card-body">
+        {{ comment.body }}
+    </div>
+    <div class="card-footer">
+        on {{ comment.pub_date | date:"Y/m/d a h:i"}}
+        <a href="{% url 'commentDelete' comment.id %}">댓글 삭제</a>
+    </div>
+</div>
+<br>
+{% endfor %}
+
+<hr>
+
 <div>태그 목록</div>
 {% for tag in tags %}
 <div style="font-weight: bold;">{{ tag }}</div>
