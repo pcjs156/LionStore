@@ -22,6 +22,8 @@
 <div><a href="{% url 'productList' 기타.id %}">기타</a></div>
 
 <hr>
+<a href="{% url 'searchMain' %}"><button class="btn btn-primary">제품명으로 검색하기</button></a>
+<hr>
 
 <div>최신 리뷰</div>
 {% for newReview in newReviews %}

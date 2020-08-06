@@ -9,4 +9,22 @@
 
 {% block content %}
 
+<h3>{{ statusMessage }}</h3>
+
+{% for product in searchResult %}
+<div><a href="{% url 'productDetail' product.id %}">{{ product }}</a></div>
+{% endfor %}
+
+{% if searchResult.has_previous %}
+<a href="?page=1">맨 앞으로</a>
+<a href="?page={{ searchResult.previous_page_number }}">이전으로</a>
+{% endif %}
+<span>{{ searchResult.number }}</span>
+<span>/</span>
+<span>{{ searchResult.paginator.num_pages }}</span>
+{% if searchResult.has_next %}
+<a href="?page={{ searchResult.next_page_number }}">다음으로</a>
+<a href="?page={{ searchResult.paginator.num_pages }}">맨 뒤로</a>
+{% endif %}
+
 {% endblock %}

@@ -8,4 +8,9 @@
 
 {% block content %}
 
+<form action="{% url 'searchResult' %}" method="GET">
+    제품명 검색 : <input type="search" name="query">
+    <input type="submit" value="검색">
+</form>
+
 {% endblock %}

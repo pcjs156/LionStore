@@ -421,7 +421,22 @@ def searchMain_view(request):
 
 
 def searchResult_view(request):
-    return render(request, 'searchResult.html')
+    content = dict()
+
+    query = request.GET['query']
+
+    if query:
+        searchResult = Product.objects.filter(name__contains=query)
+        statusMessage = f"검색 결과 {len(searchResult)}개의 제품이 검색되었습니다."
+
+    else:
+        searchResult = []
+        statusMessage = "검색어를 입력해 주세요!"
+
+    content['searchResult'] = searchResult
+    content['statusMessage'] = statusMessage
+
+    return render(request, 'searchResult.html', content)
 
 
 @login_required(login_url='/account/logIn/')
