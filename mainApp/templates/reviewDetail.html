@@ -53,6 +53,7 @@
     data-rateit-starwidth="15" data-rateit-starheight="15"></div>
 
 <hr>
+
 <div style="text-align: right;">
     {{ likeMessage }}
     <a href="{% url 'reviewLikeProcess' review_id=review.id %}">
@@ -64,10 +65,17 @@
         🖤
         {% endif %}
     </a>
-
-
-
 </div>
+
+<hr>
+
+<div>태그 목록</div>
+{% for tag in tags %}
+<div style="font-weight: bold;">{{ tag }}</div>
+{% endfor %}
+
+<hr>
+
 
 {% if isAuthor %}
 <div><a href="{% url 'reviewModify' review.id %}">리뷰 수정</a></div>

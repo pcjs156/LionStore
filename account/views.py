@@ -19,8 +19,8 @@ def connectTagToUser(user:Customer, rawString:str):
     
     # 새로 만들어질 태그가 이미 존재한다면 새로 생성하지 않는다.
     for newTagName in rawTags:
-        if len(newTagName) < 10 : continue
-        
+        if len(newTagName) > 10 : continue
+
         alreadyExists = False
         for existTag in existTags:
             if existTag.tagBody == newTagName:

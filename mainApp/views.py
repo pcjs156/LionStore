@@ -153,7 +153,7 @@ def connectTagToReview(review:Review):
 
     for newTagName in rawTags:
         if len(newTagName) > 15 : continue
-        
+
         alreadyExists = False
         for existTag in existTags:
             if existTag.tag == newTagName:
@@ -267,6 +267,10 @@ def reviewDetail_view(request, review_id):
     isAuthor = (request.user == review.author)
     content['isAuthor'] = isAuthor
 
+    # 태그 목록
+    tags = review.tags.all()
+    content['tags'] = tags
+
     return render(request, 'reviewDetail.html', content)
 
 
@@ -280,6 +284,37 @@ def reviewModify_view(request, review_id):
     return render(request, 'reviewModify.html', content)
 
 
+def modifyReviewTags(review:PenReview):
+    currentRawTagString = review.rawTagString
+    currentTagNames = currentRawTagString.split(' ')
+    existTags = set(list(obj.tag for obj in review.tags.all()))
+
+    for name in currentTagNames:
+        # 15자를 넘기는 태그이면 그냥 넘어감
+        if len(name) > 15 : continue
+
+        # 이미 존재하는 태그인 경우 삭제될 태그가 아니므로 existTags에서 삭제하고 넘어감
+        if name in existTags :
+            existTags.remove(name)
+            continue
+
+        # 새로운 태그가 추가된 경우
+        if name not in existTags:
+            newTag = ReviewTag.objects.create(tag=name)
+            newTag.targetReview.add(review)
+            review.tags.add(newTag)
+    
+    # 선택받지 못한? 태그들을 리뷰와 떼어놓음
+    for tag in existTags:
+        tag = ReviewTag.objects.get(tag=tag)
+        tag.targetReview.remove(review)
+        review.tags.remove(tag)
+        tag.save()
+
+    review.save()
+
+
+
 @login_required(login_url='/account/logIn/')
 def reviewUpdate(request, review_id):
     review : PenReview = get_object_or_404(PenReview, pk=review_id)
@@ -287,6 +322,7 @@ def reviewUpdate(request, review_id):
     review.pub_date = timezone.datetime.now()
     review.goodPoint = request.POST['goodPoint']
     review.weakPoint = request.POST['weakPoint']
+    review.rawTagString = request.POST['rawTagString']
 
     review.totalScore.score = request.POST['totalScore']
     review.totalScore.save()
@@ -316,6 +352,9 @@ def reviewUpdate(request, review_id):
 
     review.save()
 
+    modifyReviewTags(review)
+
+    review.save()
 
     return redirect('/store/reviewDetail/' + str(review.id))
 
