@@ -85,6 +85,8 @@ class Review(models.Model):
     reviewImage5 = models.ImageField(upload_to="review_image/", blank=True, null=True, verbose_name="리뷰 이미지5")
     reviewImage6 = models.ImageField(upload_to="review_image/", blank=True, null=True, verbose_name="리뷰 이미지6")
 
+    tags = models.ManyToManyField('ReviewTag', blank=True)
+    rawTagString = models.TextField(null=False, blank=True, default="", verbose_name="제품 태그 목록 원본 데이터")
 
 # 점수
 class Score(models.Model):
@@ -115,12 +117,15 @@ class PenReview(Review):
         return f"{self.product.name} 리뷰 (by {self.author.nickname}, on {self.pub_date})"
 
 # 상품의 특성
-class ProductTag(models.Model):
+class ReviewTag(models.Model):
     class Meta:
-        verbose_name = "상품 태그"
+        verbose_name = "리뷰 태그"
 
-    review = models.ForeignKey(Review, on_delete=models.CASCADE, blank=False, null=False, related_name="tagTargetReview", verbose_name="대상 리뷰")
+    targetReview = models.ManyToManyField('Review', blank=True, verbose_name="가리키는 상품")
     tag = models.CharField(max_length=15, verbose_name="상품 태그")
+
+    def __str__(self):
+        return self.tag
 
 
 # 상품 등록 요청

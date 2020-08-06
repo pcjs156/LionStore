@@ -19,6 +19,10 @@
     {{form.weakPoint}}
     <br>
 
+    태그(띄어쓰기로 구분) <br>
+    {{ form.rawTagString }}
+    <br>
+
 
     총점 <br>
     <input type="rating" name="totalScore" value="0" required="" id="id_totalScore" min="0" max="5" step="1"
@@ -123,15 +127,6 @@
         {{ form.reviewImage6 }}
     </div>
     <br>
-
-    <a class="btn btn-primary" data-toggle="collapse" data-target="#collapseExample" role="button" aria-expanded="false"
-        aria-controls="collapseExample">
-        Link with href
-    </a>
-    <div class="collapse" id="collapseExample">
-        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim
-        keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-    </div>
 
     <button type="submit">리뷰 작성</button>
 </form>

@@ -146,6 +146,31 @@ def rateBackUp_view(request):
     return render(request, 'rateBackUp.html')
 
 
+def connectTagToReview(review:Review):
+    rawTagString = review.rawTagString
+    rawTags = rawTagString.split(' ')
+    existTags = ReviewTag.objects.all()
+
+    for newTagName in rawTags:
+        if len(newTagName) > 15 : continue
+        
+        alreadyExists = False
+        for existTag in existTags:
+            if existTag.tag == newTagName:
+                alreadyExists = True
+                break
+        
+        if not alreadyExists:
+            print(newTagName + " 태그가 존재하지 않아 새로 생성합니다.")
+            newTag = ReviewTag.objects.create(tag=newTagName)
+            review.tags.add(newTag)
+            newTag.targetReview.add(review)
+        else:
+            existTag = ReviewTag.objects.get(tag=newTagName)
+            review.tags.add(existTag)
+            existTag.targetReview.add(review)
+
+
 @login_required(login_url='/account/logIn/')
 def reviewCreate_view(request, product_id):
     if request.method == 'POST':
@@ -158,6 +183,7 @@ def reviewCreate_view(request, product_id):
         new_review.pub_date = timezone.now()
         new_review.goodPoint = request.POST['goodPoint']
         new_review.weakPoint = request.POST['weakPoint']
+        new_review.rawTagString = request.POST['rawTagString']
         new_review.save()
 
         new_review.totalScore = Score.objects.create(
@@ -182,6 +208,9 @@ def reviewCreate_view(request, product_id):
         if not hasImageField(new_review):
             new_review.reviewImage1 = product.productImage
             new_review.save()
+
+        # 리뷰의 태그를 rawString으로부터 추출/연결
+        connectTagToReview(new_review)
 
         return productDetail_view(request, product_id)
 
