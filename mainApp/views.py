@@ -240,33 +240,6 @@ def reviewDetail_view(request, review_id):
 
     return render(request, 'reviewDetail.html', content)
 
-# 좋아요 버튼을 눌렀을 때 좋아요가 눌려 있지 않았다면 좋아요 처리, 좋아요가 눌려 있었다면 좋아요 해제
-@login_required(login_url='/account/logIn')
-def reviewLikeProcess(request, review_id):
-    review = get_object_or_404(PenReview, pk=review_id)
-
-    if not review.likers.filter(username=request.user.username).exists():
-        reviewLike(request, review_id)
-    else:
-        reviewDislike(request, review_id)
-
-    return redirect(f"/store/reviewDetail/{review_id}")
-
-
-@login_required(login_url='/account/logIn/')
-def reviewLike(request, review_id):
-    review = get_object_or_404(PenReview, pk=review_id)
-    review.likers.add(request.user)
-    review.likeCount += 1
-    review.save()
-
-
-@login_required(login_url='/account/logIn/')
-def reviewDislike(request, review_id):
-    review = get_object_or_404(PenReview, pk=review_id)
-    review.likers.remove(request.user)
-    review.likeCount -= 1
-    review.save()
 
 @login_required(login_url='/account/logIn/')
 def reviewModify_view(request, review_id):
@@ -276,6 +249,7 @@ def reviewModify_view(request, review_id):
     content['review'] = review
 
     return render(request, 'reviewModify.html', content)
+
 
 @login_required(login_url='/account/logIn/')
 def reviewUpdate(request, review_id):
@@ -315,6 +289,44 @@ def reviewUpdate(request, review_id):
 
 
     return redirect('/store/reviewDetail/' + str(review.id))
+
+
+@login_required(login_url='/account/logIn/')
+def reviewDelete(request, review_id):
+    review : PenReview = get_object_or_404(PenReview, pk=review_id)
+    product_id = review.product.id
+
+    review.delete()
+
+    return redirect('/store/productDetail/' + str(product_id))
+
+# 좋아요 버튼을 눌렀을 때 좋아요가 눌려 있지 않았다면 좋아요 처리, 좋아요가 눌려 있었다면 좋아요 해제
+@login_required(login_url='/account/logIn')
+def reviewLikeProcess(request, review_id):
+    review = get_object_or_404(PenReview, pk=review_id)
+
+    if not review.likers.filter(username=request.user.username).exists():
+        reviewLike(request, review_id)
+    else:
+        reviewDislike(request, review_id)
+
+    return redirect(f"/store/reviewDetail/{review_id}")
+
+
+@login_required(login_url='/account/logIn/')
+def reviewLike(request, review_id):
+    review = get_object_or_404(PenReview, pk=review_id)
+    review.likers.add(request.user)
+    review.likeCount += 1
+    review.save()
+
+
+@login_required(login_url='/account/logIn/')
+def reviewDislike(request, review_id):
+    review = get_object_or_404(PenReview, pk=review_id)
+    review.likers.remove(request.user)
+    review.likeCount -= 1
+    review.save()
 
 
 

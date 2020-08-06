@@ -31,6 +31,7 @@ urlpatterns = [
     path('reviewDetail/<int:review_id>', views.reviewDetail_view, name="reviewDetail"),
     path('reviewModify/<int:review_id>', views.reviewModify_view, name="reviewModify"),
     path('reviewUpdate/<int:review_id>', views.reviewUpdate, name="reviewUpdate"),
+    path('reviewDelete/<int:review_id>', views.reviewDelete, name="reviewDelete"),
 
     # 리뷰 좋아요
     path('reviewLikeProcess/<int:review_id>',
