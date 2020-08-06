@@ -8,6 +8,12 @@
 
 {% block content %}
 
+{% if review.modified %}
+<div>{{ review.pub_date | date:"Y년 m월 d일 a h시 i분" }}에 수정됨</div>
+{% else %}
+<div>{{ review.pub_date | date:"Y년 m월 d일 a h시 i분" }}에 작성됨</div>
+{% endif %}
+
 <div>작성자 : {{ author }}</div>
 <div>제품명 : {{ product }}</div>
 <div>장점 : {{ goodPoint }}</div>
@@ -47,7 +53,7 @@
     data-rateit-starwidth="15" data-rateit-starheight="15"></div>
 
 <hr>
-<div>
+<div style="text-align: right;">
     {{ likeMessage }}
     <a href="{% url 'reviewLikeProcess' review_id=review.id %}">
         {% if userLike %}
@@ -58,7 +64,38 @@
         🖤
         {% endif %}
     </a>
+
+
+
 </div>
 
+{% if isAuthor %}
+<div><a href="{% url 'reviewModify' review.id %}">리뷰 수정</a></div>
+
+<!-- Button trigger modal -->
+<a href="" data-toggle="modal" data-target="#exampleModal">게시글 삭제하기</a>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">리뷰 {{ review.id }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                삭제하시겠습니까?
+            </div>
+            <div class="modal-footer">
+                <a href="{% url 'reviewDelete' review.id %}"><button type="button" class="btn btn-danger">예</button></a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">아니오</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
 
 {% endblock %}
