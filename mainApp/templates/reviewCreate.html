@@ -11,6 +11,10 @@
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
 
+    한줄평 <br>
+    <input type="text" name="comment" id="comment">
+    <br>
+
     장점 <br>
     {{form.goodPoint}}
     <br>

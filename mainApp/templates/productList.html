@@ -14,4 +14,16 @@
 {% for product in products %}
 <div><a href="{% url 'productDetail' product.id %}">{{ product }}</a></div>
 {% endfor %}
+
+{% if products.has_previous %}
+<a href="?page=1">맨 앞으로</a>
+<a href="?page={{ products.previous_page_number }}">이전으로</a>
+{% endif %}
+<span>{{ products.number }}</span>
+<span>/</span>
+<span>{{ products.paginator.num_pages }}</span>
+{% if products.has_next %}
+<a href="?page={{ products.next_page_number }}">다음으로</a>
+<a href="?page={{ products.paginator.num_pages }}">맨 뒤로</a>
+{% endif %}
 {% endblock %}
