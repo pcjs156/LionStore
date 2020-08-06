@@ -191,6 +191,7 @@ def reviewCreate_view(request, product_id):
         new_review.product = product
         new_review.author = request.user
         new_review.pub_date = timezone.now()
+        new_review.comment = request.POST['comment']
         new_review.goodPoint = request.POST['goodPoint']
         new_review.weakPoint = request.POST['weakPoint']
         new_review.rawTagString = request.POST['rawTagString']
@@ -239,6 +240,8 @@ def reviewDetail_view(request, review_id):
     content['author'] = review.author.nickname
     # 제품명
     content['product'] = review.product.name
+    # 한줄평
+    content['comment'] = review.comment
     # 장점
     content['goodPoint'] = review.goodPoint
     # 단점

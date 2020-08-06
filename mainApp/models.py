@@ -70,6 +70,7 @@ class Review(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, related_name='reviewTargetProduct', verbose_name="대상 상품")
     pub_date = models.DateTimeField(null=True, blank=True, verbose_name="리뷰 작성일")
     totalScore = models.ForeignKey('Score', on_delete=models.CASCADE, null=True, blank=False, related_name="reviewTotalScore", verbose_name="총점")
+    comment = models.CharField(max_length=50, default="", null=False, blank=False, verbose_name="한줄평")
     goodPoint = models.TextField(verbose_name="장점")
     weakPoint = models.TextField(verbose_name="단점")
     likers = models.ManyToManyField(Customer, related_name='reviewLikers', verbose_name="좋아요")
