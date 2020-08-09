@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 
 from .models import *
+from account.models import CustomerTag
 
 from .forms import PenReviewForm
 from .forms import NewProductRequestForm
@@ -56,11 +57,10 @@ def productDetail_view(request, product_id):
     content['videoLinkHashs'] = videoLinkHashs
 
     # 리뷰 관련
-    reviews = PenReview.objects.filter(product=product).order_by('pub_date')
+    reviews = PenReview.objects.filter(product=product).order_by('-pub_date')
     paginator = Paginator(reviews, 10)
     page = request.GET.get('page')
     reviews = paginator.get_page(page)
-    print("reviews:", reviews)
     content['reviews'] = reviews
 
     # 태그 관련
@@ -265,9 +265,13 @@ def reviewDetail_view(request, review_id):
     isAuthor = (request.user == review.author)
     content['isAuthor'] = isAuthor
 
-    # 태그 목록
-    tags = review.tags.all()
-    content['tags'] = tags
+    # 상품 태그 목록
+    productTags = review.tags.all()
+    content['productTags'] = productTags
+
+    # 사용자 태그 목록
+    userTags = review.author.tags.all()
+    content['userTags'] = userTags
 
     # 댓글 목록
     comments = Comment.objects.filter(review=review).order_by('-pub_date')

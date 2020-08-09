@@ -15,6 +15,18 @@
 <div>{{ review.pub_date | date:"Y년 m월 d일 a h시 i분" }}에 작성됨</div>
 {% endif %}
 
+
+{% if review.author.is_Customer %}
+<br>
+<div>
+    <div>리뷰어 태그</div>
+    {% for tag in userTags %}
+    <span>{{ tag }}, </span>
+    {% endfor %}
+</div>
+<br>
+{% endif %}
+
 <div>작성자 : {{ author }}</div>
 <div>제품명 : {{ product }}</div>
 <div>한줄평 : {{ comment }} </div>
@@ -96,7 +108,7 @@
 <hr>
 
 <div>태그 목록</div>
-{% for tag in tags %}
+{% for tag in productTags %}
 <div style="font-weight: bold;">{{ tag }}</div>
 {% endfor %}
 
