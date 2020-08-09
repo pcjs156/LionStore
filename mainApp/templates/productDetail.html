@@ -25,7 +25,17 @@
      🖤
      {% endif %}
 </a>
+
 <hr>
+
+<!-- 인기순 정렬로 전환 -->
+{% if popularitySort %}
+<div><span>인기순 정렬</span> / <span><a href="{% url 'productDetail' product.id %}?sort=new">최신순정렬</a></span></div>
+<!-- 최신순 정렬로 전환 -->
+{% else %}
+<div><span><a href="{% url 'productDetail' product.id %}?sort=popularity">인기순 정렬</a></span> / <span>최신순정렬</span></div>
+{% endif %}
+
 <div><a href="{% url 'reviewCreate' product.id %}">새 리뷰 작성</a></div>
 {% for review in reviews %}
 <div><a href="{% url 'reviewDetail' review.id %}">리뷰 {{ review.id }} ({{ review.pub_date | date:"Y/m/d a h:i" }})</a></div>

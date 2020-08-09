@@ -22,7 +22,7 @@
 
 <!-- 제품 목록 -->
 {% for product in products %}
-<div><a href="{% url 'productDetail' product.id %}">{{ product }}</a></div>
+<div><a href="{% url 'productDetail' product.id %}?sort=popularity">{{ product }}</a></div>
 {% endfor %}
 
 

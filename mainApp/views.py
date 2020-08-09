@@ -23,15 +23,20 @@ def productList_view(request, category_id):
     category = ProductCategory.objects.get(pk=category_id)
     content['category'] = category
 
-    sortBy = request.GET['sort']
-    # 기본값 : 인기순 정렬
-    if sortBy == 'popularity':
-        products = Product.objects.filter(category=category).order_by('likeCount')
+    try:
+        sortBy = request.GET['sort']
+        # 기본값 : 인기순 정렬
+        if sortBy == 'popularity':
+            products = Product.objects.filter(category=category).order_by('-likeCount')
+            popularitySort = True
+        # 기타 : 최신순 정렬
+        else:
+            products = Product.objects.filter(category=category).order_by('-registerDate')
+            popularitySort = False
+    except:
+        products = Product.objects.filter(category=category).order_by('-likeCount')
         popularitySort = True
-    # 기타 : 최신순 정렬
-    else:
-        products = Product.objects.filter(category=category).order_by('-registerDate')
-        popularitySort = False
+
 
     content['popularitySort'] = popularitySort
 
@@ -68,7 +73,20 @@ def productDetail_view(request, product_id):
     content['videoLinkHashs'] = videoLinkHashs
 
     # 리뷰 관련
-    reviews = PenReview.objects.filter(product=product).order_by('-pub_date')
+    # 인기순 정렬인 경우
+    try:
+        popularitySort = request.GET['sort']
+        if popularitySort == 'popularity':
+            content['popularitySort'] = True
+            reviews = PenReview.objects.filter(product=product).order_by('-likeCount')
+        else:
+            content['popularitySort'] = False
+            reviews = PenReview.objects.filter(product=product).order_by('-pub_date')
+    # 혹시 몰라서,, 기본 정렬 방식을 인기순으로 예외처리
+    except:
+        content['popularitySort'] = True
+        reviews = PenReview.objects.filter(product=product).order_by('-likeCount')
+
     paginator = Paginator(reviews, 10)
     page = request.GET.get('page')
     reviews = paginator.get_page(page)
@@ -590,7 +608,7 @@ def mainPage_view(request):
     newReviews = PenReview.objects.all().order_by('-pub_date')[:10]
     content['newReviews'] = newReviews
 
-    popularReviews = PenReview.objects.all().order_by('likeCount')[:10]
+    popularReviews = PenReview.objects.all().order_by('-likeCount')[:10]
     content['popularReviews'] = popularReviews
     
 
