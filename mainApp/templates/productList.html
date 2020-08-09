@@ -11,19 +11,52 @@
 
 <h3>{{ category.categoryName }} 카테고리의 제품 목록입니다.</h3>
 
+<!-- 인기순 정렬로 전환 -->
+{% if popularitySort %}
+<div><span>인기순 정렬</span> / <span><a href="{% url 'productList' category.id %}?page={{ products.number }}&sort=new">최신순정렬</a></span></div>
+<!-- 최신순 정렬로 전환 -->
+{% else %}
+<div><span><a href="{% url 'productList' category.id %}?page={{ products.number }}&sort=popularity">인기순 정렬</a></span> / <span>최신순정렬</span></div>
+{% endif %}
+
+
+<!-- 제품 목록 -->
 {% for product in products %}
 <div><a href="{% url 'productDetail' product.id %}">{{ product }}</a></div>
 {% endfor %}
 
+
+<!-- 인기순 정렬인 경우의 페이지네이션 -->
+{% if popularitySort %}
+
 {% if products.has_previous %}
-<a href="?page=1">맨 앞으로</a>
-<a href="?page={{ products.previous_page_number }}">이전으로</a>
+<a href="?page=1&sort=popularity">맨 앞으로</a>
+<a href="?page={{ products.previous_page_number }}&sort=popularity">이전으로</a>
 {% endif %}
 <span>{{ products.number }}</span>
 <span>/</span>
 <span>{{ products.paginator.num_pages }}</span>
 {% if products.has_next %}
-<a href="?page={{ products.next_page_number }}">다음으로</a>
-<a href="?page={{ products.paginator.num_pages }}">맨 뒤로</a>
+<a href="?page={{ products.next_page_number }}&sort=popularity">다음으로</a>
+<a href="?page={{ products.paginator.num_pages }}&sort=popularity">맨 뒤로</a>
 {% endif %}
+
+
+<!-- 최신순 정렬인 경우의 페이지네이션 -->
+{% else %}
+
+{% if products.has_previous %}
+<a href="?page=1&sort=new">맨 앞으로</a>
+<a href="?page={{ products.previous_page_number }}&sort=new">이전으로</a>
+{% endif %}
+<span>{{ products.number }}</span>
+<span>/</span>
+<span>{{ products.paginator.num_pages }}</span>
+{% if products.has_next %}
+<a href="?page={{ products.next_page_number }}&sort=new">다음으로</a>
+<a href="?page={{ products.paginator.num_pages }}&sort=new">맨 뒤로</a>
+{% endif %}
+
+{% endif %}
+
 {% endblock %}

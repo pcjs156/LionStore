@@ -23,7 +23,18 @@ def productList_view(request, category_id):
     category = ProductCategory.objects.get(pk=category_id)
     content['category'] = category
 
-    products = Product.objects.filter(category=category)
+    sortBy = request.GET['sort']
+    # 기본값 : 인기순 정렬
+    if sortBy == 'popularity':
+        products = Product.objects.filter(category=category).order_by('likeCount')
+        popularitySort = True
+    # 기타 : 최신순 정렬
+    else:
+        products = Product.objects.filter(category=category).order_by('-registerDate')
+        popularitySort = False
+
+    content['popularitySort'] = popularitySort
+
     paginator = Paginator(products, 10)
     page = request.GET.get('page')
     products = paginator.get_page(page)
@@ -373,6 +384,7 @@ def reviewDelete(request, review_id):
 
     return redirect('/store/productDetail/' + str(product_id))
 
+
 # 좋아요 버튼을 눌렀을 때 좋아요가 눌려 있지 않았다면 좋아요 처리, 좋아요가 눌려 있었다면 좋아요 해제
 @login_required(login_url='/account/logIn')
 def reviewLikeProcess(request, review_id):
@@ -412,6 +424,7 @@ def commentCreate(request, review_id):
     new_comment.save()
 
     return redirect('/store/reviewDetail/' + str(review_id))
+
 
 @login_required(login_url='/account/logIn/')
 def commentDelete(request, comment_id):

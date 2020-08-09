@@ -14,6 +14,7 @@ class Product(models.Model):
     name = models.CharField(max_length=30, verbose_name="상품 이름")
     manufacturer = models.CharField(max_length=30, verbose_name="제조사")
     description = models.TextField(verbose_name="상품 설명")
+    registerDate = models.DateTimeField(auto_now_add=True, verbose_name="등록일")
     category = models.ForeignKey('ProductCategory', null=False, blank=False, on_delete=models.CASCADE, related_name="productCategory", verbose_name="소속 카테고리")
     likers = models.ManyToManyField(Customer, blank=True, related_name='productLikers', verbose_name="좋아요")
     likeCount = models.PositiveIntegerField(default=0, verbose_name='좋아요 수')
