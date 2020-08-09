@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.db import transaction
 
 from .models import PenReview
+from .models import ProductRequest
 from .widgets import starWidget
 
 class PenReviewForm(forms.ModelForm):
@@ -21,3 +22,9 @@ class PenReviewForm(forms.ModelForm):
         #     'costEffetiveness' : starWidget,
         #     'versatility' : starWidget,
         # }
+
+
+class NewProductRequestForm(forms.ModelForm):
+    class Meta:
+        model = ProductRequest
+        fields = ['productName', 'productBrand', 'productDescription',]

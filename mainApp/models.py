@@ -137,3 +137,6 @@ class ProductRequest(models.Model):
     productName = models.CharField(max_length=20, null=False, blank=False, verbose_name="제품 이름")
     productBrand = models.CharField(max_length=20, null=True, blank=True, verbose_name="제품 브랜드")
     productDescription = models.TextField(null=True, blank=True, verbose_name="제품 설명")
+
+    def __str__(self):
+        return self.productName

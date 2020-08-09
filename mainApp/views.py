@@ -7,6 +7,7 @@ from django.core.paginator import Paginator
 from .models import *
 
 from .forms import PenReviewForm
+from .forms import NewProductRequestForm
 
 from .tools import *
 
@@ -52,7 +53,15 @@ def mainPage_view(request):
 
 @login_required(login_url='/account/logIn/')
 def newProductRequest_view(request):
-    return render(request, 'newProductRequest.html')
+    if request.method == 'POST':
+        form = NewProductRequestForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('productRequestList')
+
+    else:
+        form = NewProductRequestForm()
+        return render(request, 'newProductRequest.html', {'form':form})
 
 
 def productList_view(request, category_id):
@@ -140,11 +149,14 @@ def productDislike(request, product_id, category_id):
 
 
 def productRequest_view(request):
-    return render(request, 'productRequest.html')
+    requestLists = ProductRequest.objects.all()
+    return render(request, 'productRequest.html', {'requestLists':requestLists})
 
 
 def productRequestDetail_view(request, product_request_id):
-    return render(request, 'productRequestDetail.html')
+    productRequest = get_object_or_404(ProductRequest, pk=product_request_id)
+    return render(request, 'productRequestDetail.html', {'productRequest':productRequest})
+    
 
 
 @login_required(login_url='/account/logIn/')

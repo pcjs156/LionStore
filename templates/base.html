@@ -43,6 +43,7 @@
         {% endif %}
         <div>{{user.nickname}}님, 어서오세요!</div>
         <div><a href="{% url 'logOut' %}">로그아웃</a></div>
+        <div><a href="{% url 'productRequestList' %}">상품 등록</a></div>
         {% else %}
         <div><a href="{% url 'selectCustomerType' %}">회원가입</a></div>
         <div><a href="{% url 'logIn' %}">로그인</a></div>
