@@ -16,19 +16,6 @@ def intro_view(request):
     return render(request, 'intro.html')
 
 
-@login_required(login_url='/account/logIn/')
-def newProductRequest_view(request):
-    if request.method == 'POST':
-        form = NewProductRequestForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('productRequestList')
-
-    else:
-        form = NewProductRequestForm()
-        return render(request, 'newProductRequest.html', {'form':form})
-
-
 def productList_view(request, category_id):
     content = dict()
 
@@ -113,21 +100,33 @@ def productDislike(request, product_id, category_id):
     product.save()
 
 
+@login_required(login_url='/account/logIn/')
 def productRequest_view(request):
-    requestLists = ProductRequest.objects.all()
+    requestLists = ProductRequest.objects.filter(author=request.user)
     return render(request, 'productRequest.html', {'requestLists':requestLists})
 
 
+@login_required(login_url='/account/logIn/')
+def newProductRequest_view(request):
+    if request.method == 'POST':
+        form = NewProductRequestForm(request.POST)
+        if form.is_valid():
+            newProductRequest :ProductRequest = form.save(commit=False)
+            newProductRequest.author = request.user
+            newProductRequest.save()
+            
+            return redirect('productRequestList')
+
+    else:
+        form = NewProductRequestForm()
+        return render(request, 'newProductRequest.html', {'form':form})
+
+
+@login_required(login_url='/account/logIn/')
 def productRequestDetail_view(request, product_request_id):
     productRequest = get_object_or_404(ProductRequest, pk=product_request_id)
     return render(request, 'productRequestDetail.html', {'productRequest':productRequest})
     
-
-
-@login_required(login_url='/account/logIn/')
-def newProductRequestDetail_view(request, product_request_id):
-    return render(request, 'newProductRequestDetail.html')
-
 
 @login_required(login_url='/account/logIn/')
 def productRequestModify_view(request, product_request_id):

@@ -143,9 +143,11 @@ class ProductRequest(models.Model):
     class Meta:
         verbose_name = "상품 등록 요청"
     
+    author = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name="productRequestAuthor", verbose_name="제품 등록 요청자")
     productName = models.CharField(max_length=20, null=False, blank=False, verbose_name="제품 이름")
     productBrand = models.CharField(max_length=20, null=True, blank=True, verbose_name="제품 브랜드")
     productDescription = models.TextField(null=True, blank=True, verbose_name="제품 설명")
+    isChecked = models.BooleanField(default=False, verbose_name="확인여부")
 
     def __str__(self):
         return self.productName

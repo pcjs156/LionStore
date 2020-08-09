@@ -10,10 +10,13 @@
 
 <form method="POST">
     {% csrf_token %}
-    <table>
-        {{form.as_table}}
-    </table>
-    
+    제품명 : {{ form.productName }}
+    <br>
+    제조사 : {{ form.productBrand }}
+    <br>
+    제품 설명 <br>
+    {{ form.productDescription }}
+    <br>
     <input class="btn btn-dark" type="submit" value="작성">
 
 </form>
