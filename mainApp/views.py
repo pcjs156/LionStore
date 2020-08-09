@@ -57,6 +57,10 @@ def productDetail_view(request, product_id):
 
     # 리뷰 관련
     reviews = PenReview.objects.filter(product=product).order_by('pub_date')
+    paginator = Paginator(reviews, 10)
+    page = request.GET.get('page')
+    reviews = paginator.get_page(page)
+    print("reviews:", reviews)
     content['reviews'] = reviews
 
     # 태그 관련
