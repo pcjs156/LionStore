@@ -436,7 +436,12 @@ def commentDelete(request, comment_id):
 
 
 def searchMain_view(request):
-    return render(request, 'searchMain.html')
+    content = dict()
+
+    content['error'] = False
+    content['ERROR_MESSAGE'] = ""
+
+    return render(request, 'searchMain.html', content)
 
 
 def getTopRelatedReviews(countLimit, rawTagString:str):
@@ -452,14 +457,15 @@ def getTopRelatedReviews(countLimit, rawTagString:str):
         else:
             productTagPair[product].update(getTagNames(review))
 
-
     for product, tagSet in productTagPair.items():
         productTagPair[product] = len(inputTagNames & tagSet)
 
     tagSimilarity = list((product, count) for product, count in productTagPair.items())
-    tagSimilarity.sort(key=lambda pair: pair[1], reverse=True)
 
-    return tagSimilarity[:countLimit]
+    result = list(filter(lambda pair: pair[1] != 0, tagSimilarity))
+    result.sort(key=lambda pair: pair[1], reverse=True)
+
+    return result[:countLimit]
 
 
 def getTagNames(review:Review):
@@ -472,7 +478,36 @@ def getTagNames(review:Review):
     return result
 
 
-def searchResult_view(request):
+def keywordSearchResult_view(request):
+    content = dict()
+
+    keywordQuery = request.GET['keywordQuery']
+    popularitySort = request.GET['sort']
+
+    if keywordQuery:
+        if popularitySort == 'popularity':
+            content['popularitySort'] = True
+            searchResult = Product.objects.filter(name__contains=keywordQuery).order_by('likeCount')
+        else:
+            content['popularitySort'] = False
+            searchResult = Product.objects.filter(name__contains=keywordQuery).order_by('-registerDate')
+
+        statusMessage = f"키워드 검색 결과 {len(searchResult)}개의 제품이 검색되었습니다."
+        content['searchResult'] = searchResult
+        content['statusMessage'] = statusMessage
+        content['keywordQuery'] = keywordQuery
+
+
+    else:
+        content = dict()
+        content['error'] = True
+        content['ERROR_MESSAGE'] = "검색어를 입력해 주세요!"
+        return render(request, 'searchMain.html', content)
+    
+    return render(request, 'keywordSearchResult.html', content)
+
+
+def tagSearchResult_view(request):
     class Pair:
         def __init__(self, product, cnt):
             self.product = product
@@ -480,39 +515,24 @@ def searchResult_view(request):
 
     content = dict()
 
-    isKeywordSearch = False
+    tagQuery = request.GET['tagQuery']
 
-    keywordQuery = request.GET['keywordQuery']
-    if keywordQuery:
-        searchResult = Product.objects.filter(name__contains=keywordQuery)
-        statusMessage = f"키워드 검색 결과 {len(searchResult)}개의 제품이 검색되었습니다."
-        isKeywordSearch = True
-        content['searchResult'] = searchResult
-        content['statusMessage'] = statusMessage
-
-    else:
-        tagQuery = request.GET['tagQuery']
+    if tagQuery:
         if tagQuery:
             similarityPair = getTopRelatedReviews(20, tagQuery)
-            statusMessage = f"태그 검색 결과"
+            statusMessage = f"태그 검색 결과 {len(similarityPair)}개의 제품이 검색되었습니다."
             
             searchResult = list(Pair(similarityPair[i][0], similarityPair[i][1]) for i in range(len(similarityPair)))
             content['searchResult'] = searchResult
-
             content['statusMessage'] = statusMessage
 
-        else:
-            searchResult = []
-            statusMessage = "검색어를 입력해 주세요!"
-            content['searchResult'] = searchResult
-            content['statusMessage'] = statusMessage
-
-    searchFailed = (len(searchResult) == 0)
-    content['searchFailed'] = searchFailed
+    else:
+        content = dict()
+        content['error'] = True
+        content['ERROR_MESSAGE'] = "검색어를 입력해 주세요!"
+        return render(request, 'searchMain.html', content)
     
-    content['isKeywordSearch'] = isKeywordSearch
-
-    return render(request, 'searchResult.html', content)
+    return render(request, 'tagSearchResult.html', content)
 
 
 @login_required(login_url='/account/logIn/')

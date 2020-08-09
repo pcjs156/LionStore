@@ -55,5 +55,6 @@ urlpatterns = [
 
     # 검색 관련
     path('searchMain', views.searchMain_view, name="searchMain"),
-    path('searchResult', views.searchResult_view, name="searchResult"),
+    path('keywordSearchResult', views.keywordSearchResult_view, name="keywordSearchResult"),
+    path('tagSearchResult', views.tagSearchResult_view, name="tagSearchResult"),
 ]

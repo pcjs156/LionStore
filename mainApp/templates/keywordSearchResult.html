@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<title>제품 검색 결과</title>
+<!-- 제품 검색 결과 리스트가 노출되며, Pagination을 사용할 경우 url이 살짝 달라질 수도 있다.
+     각 제품 목록 구성 요소를 클릭하면 productDetail.html로 넘어간다. -->
+{% endblock %}
+
+{% block content %}
+
+<h3>{{ statusMessage }}</h3>
+
+<div><a href="{% url 'searchMain' %}">다시 검색하기</a></div>
+
+<!-- 인기순 정렬로 전환 -->
+{% if popularitySort %}
+<div><span>인기순 정렬</span> / <span><a href="{% url 'keywordSearchResult' %}?sort=new&keywordQuery={{ keywordQuery }}">최신순정렬</a></span></div>
+<!-- 최신순 정렬로 전환 -->
+{% else %}
+<div><span><a href="{% url 'keywordSearchResult' %}?sort=popularity&keywordQuery={{ keywordQuery }}">인기순 정렬</a></span> / <span>최신순정렬</span></div>
+{% endif %}
+
+{% for product in searchResult %}
+<div><a href="{% url 'productDetail' product.id %}">{{ product }}</a></div>
+{% endfor %}
+
+{% endblock %}

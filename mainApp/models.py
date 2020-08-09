@@ -116,7 +116,7 @@ class PenReview(Review):
     versatility = models.ForeignKey(Score, on_delete=models.CASCADE, blank=False, null=True, related_name='versatility', verbose_name="범용성")
 
     def __str__(self):
-        return f"{self.product.name} 리뷰 (by {self.author.nickname}, on {self.pub_date})"
+        return f"{self.id}. {self.product.name} 리뷰 (by {self.author.nickname}, on {self.pub_date})"
 
 # 상품의 특성
 class ReviewTag(models.Model):

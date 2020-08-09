@@ -7,38 +7,45 @@
 {% endblock %}
 
 {% block content %}
-<form action="{% url 'searchResult' %}" method="GET">
-    <div id="accordion" style="text-align: center;">
-        <div class="card" style="width: 60rem;">
-            <div class="card-header">
-                <a class="card-link" data-toggle="collapse" href="#collapseOne">
-                    키워드 검색
-                </a>
+
+{% if error %}
+<h1 style="color: red; text-align: center;">{{ ERROR_MESSAGE }}</h1>
+{% endif %}
+
+<div id="accordion" style="text-align: center;">
+    <form action="{% url 'keywordSearchResult' %}" method="GET">
+        <div class="card">
+            <div id="headingOne" class="card-header collapsed" data-toggle="collapse" data-target="#collapseOne"
+                aria-expanded="false" aria-controls="collapseOne">
+                키워드 검색
             </div>
-            <div id="collapseOne" class="collapse show" data-parent="#accordion">
-                <div>입력받은 키워드가 제품명에 포함된 제품을 검색합니다.</div>
-                <div id="collapseOne" class="row collapse in">
+
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="card-body">
+                    <div>입력받은 키워드가 제품명에 포함된 제품을 검색합니다.</div>
                     <input type="search" name="keywordQuery">
+                    <input type="text" name="sort" value="popularity" style="display: none; visibility: hidden;">
                     <input type="submit" value="검색">
                 </div>
             </div>
         </div>
+    </form>
 
-        <div class="card" style="width: 60rem;">
-            <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
-                <div class="card-header">
-                    태그 검색
-            </a>
-        </div>
-        <div id="collapseTwo" class="collapse" data-parent="#accordion">
-            <div>공백으로 나뉘어 입력된 태그들과 적어도 하나 겹치는 제품을 검색합니다.</div>
-            <div id="collapseTwo" class="row collapse">
-                <input type="search" name="tagQuery">
-                <input type="submit" value="검색">
+    <form action="{% url 'tagSearchResult' %}" method="GET">
+        <div class="card">
+            <div id="headingTwo" class="card-header collapsed" data-toggle="collapse" data-target="#collapseTwo"
+                aria-expanded="false" aria-controls="collapseTwo">
+                태그 검색
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                <div class="card-body">
+                    <div>공백으로 나뉘어 입력된 태그들과 적어도 하나 겹치는 제품을 검색합니다.</div>
+                    <input type="search" name="tagQuery">
+                    <input type="submit" value="검색">
+                </div>
             </div>
         </div>
-    </div>
-    </div>
+    </form>
+</div>
 
-</form>
 {% endblock %}
