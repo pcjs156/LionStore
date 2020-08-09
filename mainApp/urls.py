@@ -14,6 +14,7 @@ urlpatterns = [
          name="newProductRequest"),
     path('productRequest/<int:product_request_id>', views.productRequestDetail_view, name="productRequestDetail"),
     path('productRequest/modify/<int:product_request_id>', views.productRequestModify_view, name="productRequestModify"),
+    path('productRequest/delete/<int:product_request_id>', views.productRequestDelete_view, name="productRequestDelete"),
 
     # 카테고리별 제품 목록
     path('productList/<int:category_id>', views.productList_view, name="productList"),

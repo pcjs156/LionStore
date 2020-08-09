@@ -7,5 +7,15 @@
 {% endblock %}
 
 {% block content %}
+<h3>등록 요청한 제품의 수정페이지 입니다.</h3>
+<hr><hr>
+
+<form method="POST">
+    {% csrf_token %}
+    <table>
+        {{form.as_table}}
+    </table>
+    <input class="btn btn-dark" type="submit" value="수정">
+</form>
 
 {% endblock %}

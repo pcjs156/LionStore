@@ -15,9 +15,11 @@
 
 <h3>등록 요청한 상품 리스트</h3>
 <div>
-    {% for ProductRequest in requestLists %}
+    {% for productRequest in productRequests %}
         <hr>
-        <p>{{ProductRequest}}</p>
+        <a href="{% url 'productRequestDetail' productRequest.id%}">
+        <p>{{productRequest}}</p>
+    </a>
     {% endfor %}
 </div>
 {% endblock %}

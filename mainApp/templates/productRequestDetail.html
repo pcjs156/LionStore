@@ -8,11 +8,15 @@
 
 {% block content %}
 <h3>등록 요청한 제품의 상세페이지 입니다.</h3>
-<br><br>
-<h2>{{productRequest.productName}}</h2>
-<hr>
-<p>{{productRequest.productBrand}}</p>
-<hr>
-<p>{{productRequest.productDescription}}</p>
+<hr><hr>
+
+<div>작성자: {{ productRequest.author }}</div><hr>
+<div>제품명: {{ productRequest.productName }}</div><hr>
+<div>제조사: {{ productRequest.productBrand }}</div><hr>
+<div>제품 설명: {{ productRequest.productDescription }}</div><hr>
+<br>
+<a href="{% url 'productRequestList' %}">뒤로가기</a>
+/ <a href="{% url 'productRequestModify' productRequest.id%}">수정하기</a>
+/ <a href="{% url 'productRequestDelete' productRequest.id%}">삭제하기</a>
 
 {% endblock %}
