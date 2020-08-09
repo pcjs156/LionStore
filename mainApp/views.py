@@ -135,8 +135,8 @@ def productDislike(request, product_id, category_id):
 
 @login_required(login_url='/account/logIn/')
 def productRequest_view(request):
-    requestLists = ProductRequest.objects.filter(author=request.user)
-    return render(request, 'productRequest.html', {'requestLists':requestLists})
+    productRequests = ProductRequest.objects.filter(author=request.user)
+    return render(request, 'productRequest.html', {'productRequests':productRequests})
 
 
 @login_required(login_url='/account/logIn/')
@@ -163,7 +163,25 @@ def productRequestDetail_view(request, product_request_id):
 
 @login_required(login_url='/account/logIn/')
 def productRequestModify_view(request, product_request_id):
-    return render(request, 'productRequestModify.html')
+    productRequest = get_object_or_404(ProductRequest, pk=product_request_id)
+    if request.method == 'POST':
+        form = NewProductRequestForm(request.POST, instance=productRequest)
+        if form.is_valid():
+            newProductRequest :ProductRequest = form.save(commit=False)
+            newProductRequest.author = request.user
+            newProductRequest.save()
+            return redirect('productRequestList')
+
+    else:
+        form = NewProductRequestForm(instance=productRequest)
+        return render(request, 'productRequestModify.html', {'form':form})
+
+
+@login_required(login_url='/account/logIn/')
+def productRequestDelete_view(request, product_request_id):
+    delete_request = get_object_or_404(ProductRequest, pk=product_request_id)
+    delete_request.delete()
+    return redirect('productRequestList')
 
 
 def rateBackUp_view(request):
