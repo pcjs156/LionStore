@@ -8,4 +8,14 @@
 
 {% block content %}
 
+<form method="POST">
+    {% csrf_token %}
+    <table>
+        {{form.as_table}}
+    </table>
+    
+    <input class="btn btn-dark" type="submit" value="작성">
+
+</form>
+
 {% endblock %}
