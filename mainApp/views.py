@@ -7,8 +7,7 @@ from django.core.paginator import Paginator
 from .models import *
 from account.models import CustomerTag
 
-from .forms import PenReviewForm
-from .forms import NewProductRequestForm
+from .forms import *
 
 from .tools import *
 
@@ -324,6 +323,10 @@ def reviewDetail_view(request, review_id):
     comments = Comment.objects.filter(review=review).order_by('-pub_date')
     content['comments'] = comments
 
+    #사진 목록
+    images = [review.reviewImage1, review.reviewImage2, review.reviewImage3, review.reviewImage4, review.reviewImage5, review.reviewImage6]
+    content['images'] = images
+
     return render(request, 'reviewDetail.html', content)
 
 
@@ -335,36 +338,6 @@ def reviewModify_view(request, review_id):
     content['review'] = review
 
     return render(request, 'reviewModify.html', content)
-
-
-def modifyReviewTags(review:PenReview):
-    currentRawTagString = review.rawTagString
-    currentTagNames = currentRawTagString.split(' ')
-    existTags = set(list(obj.tag for obj in review.tags.all()))
-
-    for name in currentTagNames:
-        # 15자를 넘기는 태그이면 그냥 넘어감
-        if len(name) > 15 : continue
-
-        # 이미 존재하는 태그인 경우 삭제될 태그가 아니므로 existTags에서 삭제하고 넘어감
-        if name in existTags :
-            existTags.remove(name)
-            continue
-
-        # 새로운 태그가 추가된 경우
-        if name not in existTags:
-            newTag = ReviewTag.objects.create(tag=name)
-            newTag.targetReview.add(review)
-            review.tags.add(newTag)
-    
-    # 선택받지 못한? 태그들을 리뷰와 떼어놓음
-    for tag in existTags:
-        tag = ReviewTag.objects.get(tag=tag)
-        tag.targetReview.remove(review)
-        review.tags.remove(tag)
-        tag.save()
-
-    review.save()
 
 
 @login_required(login_url='/account/logIn/')
@@ -409,6 +382,53 @@ def reviewUpdate(request, review_id):
     review.save()
 
     return redirect('/store/reviewDetail/' + str(review.id))
+
+
+@login_required(login_url='/account/logIn/')
+def reviewImageModify_view(request, review_id, imageIdx):
+    if request.method == "POST":
+        form = ReviewImageModifyingForm(request.POST, request.FILES)
+
+        review = PenReview.objects.get(pk=review_id)
+        tmp = form.save()
+        exec(f"review.reviewImage{imageIdx+1} = tmp.reviewImage1")
+        review.save()
+
+        return reviewDetail_view(request, review_id)
+
+    else:
+        form = ReviewImageModifyingForm()
+        return render(request, 'reviewImageModify.html', {'form':form, 'review_id':review_id, 'imageIdx':imageIdx})
+
+
+def modifyReviewTags(review:PenReview):
+    currentRawTagString = review.rawTagString
+    currentTagNames = currentRawTagString.split(' ')
+    existTags = set(list(obj.tag for obj in review.tags.all()))
+
+    for name in currentTagNames:
+        # 15자를 넘기는 태그이면 그냥 넘어감
+        if len(name) > 15 : continue
+
+        # 이미 존재하는 태그인 경우 삭제될 태그가 아니므로 existTags에서 삭제하고 넘어감
+        if name in existTags :
+            existTags.remove(name)
+            continue
+
+        # 새로운 태그가 추가된 경우
+        if name not in existTags:
+            newTag = ReviewTag.objects.create(tag=name)
+            newTag.targetReview.add(review)
+            review.tags.add(newTag)
+    
+    # 선택받지 못한? 태그들을 리뷰와 떼어놓음
+    for tag in existTags:
+        tag = ReviewTag.objects.get(tag=tag)
+        tag.targetReview.remove(review)
+        review.tags.remove(tag)
+        tag.save()
+
+    review.save()
 
 
 @login_required(login_url='/account/logIn/')
