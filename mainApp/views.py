@@ -390,15 +390,41 @@ def reviewImageModify_view(request, review_id, imageIdx):
         form = ReviewImageModifyingForm(request.POST, request.FILES)
 
         review = PenReview.objects.get(pk=review_id)
-        tmp = form.save()
-        exec(f"review.reviewImage{imageIdx+1} = tmp.reviewImage1")
-        review.save()
+        tmp = form.save(commit=False)
+        if tmp.reviewImage1 is not None:
+            exec(f"review.reviewImage{imageIdx+1} = tmp.reviewImage1")
+            review.modified = True
+            review.save()
 
         return reviewDetail_view(request, review_id)
 
     else:
+        content = dict()
+
         form = ReviewImageModifyingForm()
-        return render(request, 'reviewImageModify.html', {'form':form, 'review_id':review_id, 'imageIdx':imageIdx})
+        content['form'] = form
+
+        review = PenReview.objects.get(pk=review_id)
+        content['review'] = review
+
+        content['imageIdx'] = imageIdx
+        exec(f"content['image'] = review.reviewImage{imageIdx+1}")
+
+        return render(request, 'reviewImageModify.html', content)
+
+
+@login_required(login_url='/account/logIn/')
+def reviewImageDelete(request, review_id, imageIdx):
+    review : PenReview = PenReview.objects.get(pk=review_id)
+    review.modified = True
+    exec(f"review.reviewImage{imageIdx+1} = None")
+
+    if not hasImageField(review):
+        review.reviewImage1 = review.product.productImage
+
+    review.save()
+
+    return reviewDetail_view(request, review_id)
 
 
 def modifyReviewTags(review:PenReview):

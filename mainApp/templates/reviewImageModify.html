@@ -17,6 +17,7 @@
     <br>
     <input type="submit" value="수정 완료">
 </form>
-<a href="{% url 'reviewDetail' review_id %}"><button>취소</button></a>
+<a href="{% url 'reviewImageDelete' review.id imageIdx %}"><button>이미지 삭제</button></a>
+<a href="{% url 'reviewDetail' review.id %}"><button>취소</button></a>
 
 {% endblock %}
