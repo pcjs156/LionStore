@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path
 
 from . import views
+from . import tools
 
 # /store/...
 urlpatterns = [
@@ -47,17 +48,18 @@ urlpatterns = [
     path('reviewDislike/<int:review_id>', views.reviewDislike, name="reviewDislike"),
 
     # 웹 판매정보 관련
-    path('productList/<int:category_id>/<int:product_id>/newWebSellInfo', views.webSellInfoCreate_view, name="webSellInfoCreate"),
-    path('productList/<int:category_id>/<int:product_id>/webSellInfoDetail/<int:webSellInfo_id>', views.webSellInfoDetail_view, name="webSellInfoDetail"),
-    path('productList/<int:category_id>/<int:product_id>/webSellInfoModify/<int:webSellInfo_id>', views.webSellInfoModify_view, name="webSellInfoModify"),
+    path('productList/<int:product_id>/newWebSellInfo', views.webSellInfoCreate_view, name="webSellInfoCreate"),
+    path('productList/<int:product_id>/webSellInfoModify/<int:webSellInfo_id>', views.webSellInfoModify_view, name="webSellInfoModify"),
+    path('productList/<int:product_id>/webSellInfoDelete/<int:webSellInfo_id>', views.webSellInfoDelete, name="webSellInfoDelete"),
 
     # 문구점 판매정보 관련
-    path('productList/<int:category_id>/<int:product_id>/newReview', views.stationerSellInfoCreate_view, name="stationerSellInfoCreate"),
-    path('productList/<int:category_id>/<int:product_id>/stationerSellInfoDetail/<int:stationerSellInfo_id>', views.stationerSellInfoDetail_view, name="stationerSellInfoDetail"),
-    path('productList/<int:category_id>/<int:product_id>/stationerSellInfoModify/<int:stationerSellInfo_id>', views.stationerSellInfoModify_view, name="stationerSellInfoModify"),
+    path('productList/<int:product_id>/newReview', views.stationerSellInfoCreate_view, name="stationerSellInfoCreate"),
+    path('productList/<int:product_id>/stationerSellInfoModify/<int:stationerSellInfo_id>', views.stationerSellInfoModify_view, name="stationerSellInfoModify"),
 
     # 검색 관련
     path('searchMain', views.searchMain_view, name="searchMain"),
     path('keywordSearchResult', views.keywordSearchResult_view, name="keywordSearchResult"),
     path('tagSearchResult', views.tagSearchResult_view, name="tagSearchResult"),
+
+    path('redirectExternalLink/<path:link>', tools.redirectExternalLink, name='redirectExternalLink'),
 ]

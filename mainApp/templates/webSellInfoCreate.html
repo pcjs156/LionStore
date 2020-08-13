@@ -8,4 +8,21 @@
 
 {% block content %}
 
+<!-- 이미 판매 정보를 등록한 경우 -->
+{% if alreadyExists %}
+    <div>이미 판매 정보를 등록하셨습니다!</div>
+    <div><a href="{% url 'productDetail' product.id %}">돌아가기</a></div>
+    <div><a href="{% url 'webSellInfoModify' product_id=product.id webSellInfo_id=createdInfo.id %}">수정하기</a></div>
+
+<!-- 판매 정보를 등록한 적이 없는 경우 -->
+{% else %}
+    <form method="POST">
+        {% csrf_token %}
+        <div>판매 링크 : {{ form.link }}</div>
+        <div>판매가 : {{ form.price }}</div>
+
+        <input type="submit" value="등록">
+    </form>
+{% endif %}
+
 {% endblock %}

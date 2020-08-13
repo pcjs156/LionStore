@@ -87,6 +87,28 @@
 
 <hr>
 
+<!-- 웹 판매자인 경우에만 판매정보 입력 가능 -->
+{% if user.is_WebSeller %}
+<a href="{% url 'webSellInfoCreate' product_id=product.id %}">웹 판매정보 추가</a>
+{% endif %}
+
+{% for info in webSellInfoList %}
+<div>
+     <div>판매자 : {{ info.seller.nickname }}</div>
+     <div>가격 : {{ info.price }}원</div>
+     <div><a href="{% url 'redirectExternalLink' link=info.link %}">구입하러 가기</a></div>
+     {% if info.seller == user %}
+     <div>
+          <div><a href="{% url 'webSellInfoDelete' product_id=product.id webSellInfo_id=info.id %}">판매정보 삭제하기</a></div>
+          <div><a href="{% url 'webSellInfoModify' product_id=product.id webSellInfo_id=info.id %}">판매정보 수정하기</a></div>
+     </div>
+     {% endif %}
+</div>
+<br>
+{% endfor %}
+
+<hr>
+
 관련 영상 <br>
 {% for linkHash in videoLinkHashs %}
 <iframe width="200" height="180" src="https://www.youtube.com/embed/{{ linkHash }}" frameborder="0"

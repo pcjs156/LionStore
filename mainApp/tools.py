@@ -1,3 +1,5 @@
+from django.http import HttpResponseRedirect
+
 from faker import Faker
 import random
 
@@ -66,3 +68,7 @@ def likeProcess_RandomProducts(request, num=10):
     products = Product.objects.all()
     for _ in range(num):
         views.productLikeProcess(request, random.choice(products).id)
+
+
+def redirectExternalLink(request, link):
+    return HttpResponseRedirect(link)

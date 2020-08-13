@@ -8,4 +8,12 @@
 
 {% block content %}
 
+<form method="POST">
+    {% csrf_token %}
+    <div>판매 링크 : {{ form.link }}</div>
+    <div>판매가 : {{ form.price }}</div>
+
+    <input type="submit" value="등록">
+</form>
+
 {% endblock %}

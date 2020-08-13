@@ -4,6 +4,8 @@ from django.db import transaction
 
 from .models import PenReview
 from .models import ProductRequest
+from .models import WebSellInfo, StationerSellInfo
+
 from .widgets import starWidget
 
 class PenReviewForm(forms.ModelForm):
@@ -21,3 +23,8 @@ class NewProductRequestForm(forms.ModelForm):
     class Meta:
         model = ProductRequest
         fields = ['productName', 'productBrand', 'productDescription',]
+
+class WebSellInfoForm(forms.ModelForm):
+    class Meta:
+        model = WebSellInfo
+        fields = ['link', 'price']
