@@ -12,12 +12,10 @@ class PenReviewForm(forms.ModelForm):
         fields = ['goodPoint', 'weakPoint', 'rawTagString',
         'reviewImage1', 'reviewImage2', 'reviewImage3', 'reviewImage4', 'reviewImage5', 'reviewImage6',]
 
-
 class ReviewImageModifyingForm(forms.ModelForm):
     class Meta:
         model = PenReview
         fields = ['reviewImage1']
-
 
 class NewProductRequestForm(forms.ModelForm):
     class Meta:

@@ -70,7 +70,7 @@ class Review(models.Model):
     author = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, related_name='reviewAuthor', verbose_name="리뷰 작성자")
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, related_name='reviewTargetProduct', verbose_name="대상 상품")
     pub_date = models.DateTimeField(null=True, blank=True, verbose_name="리뷰 작성일")
-    totalScore = models.ForeignKey('Score', on_delete=models.CASCADE, null=True, blank=False, related_name="reviewTotalScore", verbose_name="총점")
+    totalScore = models.DecimalField(max_digits=2, decimal_places=1, null=True, blank=False, verbose_name="총점")
     comment = models.CharField(max_length=50, default="", null=False, blank=False, verbose_name="한줄평")
     goodPoint = models.TextField(verbose_name="장점")
     weakPoint = models.TextField(verbose_name="단점")
