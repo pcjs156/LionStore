@@ -229,8 +229,6 @@ def reviewCreate_view(request, product_id):
         new_review.rawTagString = request.POST['rawTagString']
         new_review.save()
 
-        new_review.totalScore = Score.objects.create(
-            review=new_review, name="총점", score=int(request.POST['totalScore']))
         new_review.grip = Score.objects.create(
             review=new_review, name="그립감", score=int(request.POST['grip']))
         new_review.life = Score.objects.create(
@@ -245,6 +243,10 @@ def reviewCreate_view(request, product_id):
             review=new_review, name="가성비", score=int(request.POST['costEffetiveness']))
         new_review.versatility = Score.objects.create(
             review=new_review, name="범용성", score=int(request.POST['versatility']))
+
+        scores = [new_review.grip, new_review.life, new_review.durability, new_review.design, new_review.texture, new_review.costEffetiveness, new_review.versatility]
+        new_review.totalScore = sum(map(lambda x: x.score, scores)) / len(scores)
+
         new_review.save()
 
         # 리뷰 이미지를 하나도 올리지 않았다면 대상 제품의 대표 이미지로 변경
@@ -376,29 +378,30 @@ def reviewUpdate(request, review_id):
     review.weakPoint = request.POST['weakPoint']
     review.rawTagString = request.POST['rawTagString']
 
-    review.totalScore.score = request.POST['totalScore']
-    review.totalScore.save()
 
-    review.grip.score = request.POST['grip']
+    review.grip.score = int(request.POST['grip'])
     review.grip.save()
 
-    review.life.score = request.POST['life']
+    review.life.score = int(request.POST['life'])
     review.life.save()
 
-    review.durability.score = request.POST['durability']
+    review.durability.score = int(request.POST['durability'])
     review.durability.save()
 
-    review.design.score = request.POST['design']
+    review.design.score = int(request.POST['design'])
     review.design.save()
 
-    review.texture.score = request.POST['texture']
+    review.texture.score = int(request.POST['texture'])
     review.texture.save()
 
-    review.costEffetiveness.score = request.POST['costEffetiveness']
+    review.costEffetiveness.score = int(request.POST['costEffetiveness'])
     review.costEffetiveness.save()
 
-    review.versatility.score = request.POST['versatility']
+    review.versatility.score = int(request.POST['versatility'])
     review.versatility.save()
+    
+    scores = [review.grip, review.life, review.durability, review.design, review.texture, review.costEffetiveness, review.versatility]
+    review.totalScore = sum(map(lambda x: x.score, scores)) / len(scores)
 
     review.modified = True
 

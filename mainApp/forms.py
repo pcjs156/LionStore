@@ -12,17 +12,6 @@ class PenReviewForm(forms.ModelForm):
         fields = ['goodPoint', 'weakPoint', 'rawTagString',
         'reviewImage1', 'reviewImage2', 'reviewImage3', 'reviewImage4', 'reviewImage5', 'reviewImage6',]
 
-        # widgets = {
-        #     'totalScore' : starWidget,
-        #     'grip' : starWidget,
-        #     'life' : starWidget,
-        #     'durability' : starWidget,
-        #     'design' : starWidget,
-        #     'texture' : starWidget,
-        #     'costEffetiveness' : starWidget,
-        #     'versatility' : starWidget,
-        # }
-
 
 class NewProductRequestForm(forms.ModelForm):
     class Meta:
