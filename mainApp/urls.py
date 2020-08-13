@@ -33,6 +33,8 @@ urlpatterns = [
     path('reviewModify/<int:review_id>', views.reviewModify_view, name="reviewModify"),
     path('reviewUpdate/<int:review_id>', views.reviewUpdate, name="reviewUpdate"),
     path('reviewDelete/<int:review_id>', views.reviewDelete, name="reviewDelete"),
+    path('reviewImageModify/<int:review_id>/<int:imageIdx>', views.reviewImageModify_view, name="reviewImageModify"),
+    path('reviewImageDelete/<int:review_id>/<int:imageIdx>', views.reviewImageDelete, name="reviewImageDelete"),
 
      # 댓글 관련
      path('commentCreate/<int:review_id>', views.commentCreate, name="commentCreate"),
