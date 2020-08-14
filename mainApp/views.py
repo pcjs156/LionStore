@@ -115,7 +115,6 @@ def productDetail_view(request, product_id):
     content['hasStationerSellInfo'] = hasStationerSellInfo
 
     # 지도 관련
-    content['nullLocation'] = False
     # 판매정보가 있다면?
     # -> 판매정보가 없는 경우 지도가 표시되지 않으므로(hasStationerSellInfo가 False이므로) 중심좌표가 입력될 필요 없다.
     if hasStationerSellInfo:
@@ -126,7 +125,9 @@ def productDetail_view(request, product_id):
             centerLatLon = centerLatitude, centerLongitude = randInfo.seller.latitude, randInfo.seller.longitude
             zoomLevel = getZoomLevel(centerLatLon, stationerSellInfoList)
             content['zoomLevel'] = zoomLevel
-        
+            content['nullLocation'] = False
+            content['centerLatitude'], content['centerLongitude'] = centerLatLon
+
         # 위치정보가 정의되는 Stationer/Customer라면
         else:
             # 만약 위치정보를 설정하지 않았다면
@@ -139,8 +140,10 @@ def productDetail_view(request, product_id):
                 centerLatLon = centerLatitude, centerLongitude = request.user.latitude, request.user.longitude
                 zoomLevel = getZoomLevel(centerLatLon, stationerSellInfoList)
                 content['zoomLevel'] = zoomLevel
+                content['nullLocation'] = False
 
-                content['centerLatitude'], content['centerLongitude'] = centerLatitude, centerLongitude
+
+                content['centerLatitude'], content['centerLongitude'] = centerLatLon
     
 
     return render(request, 'productDetail.html', content)

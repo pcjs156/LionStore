@@ -129,8 +129,6 @@
 <div>
      <div>판매자 : {{ info.seller.nickname }}</div>
      <div>가격 : {{ info.price }}원</div>
-     <div>위도 : {{ info.seller.latitude }}</div>
-     <div>경도 : {{ info.seller.longitude}}</div>
      {% if info.seller == user %}
      <div>
           <div><a href="{% url 'stationerSellInfoDelete' product_id=product.id stationerSellInfo_id=info.id %}">판매정보 삭제하기</a></div>
@@ -148,39 +146,11 @@
 
 
 <script>
-{% if user.is_WebSeller %}
-// 웹 판매자인 경우
-// HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
-if (navigator.geolocation) {
-    // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-    navigator.geolocation.getCurrentPosition(function(position) {
-        
-        var lat = position.coords.latitude, // 위도
-            lon = position.coords.longitude; // 경도
-        
-        var locPosition = new kakao.maps.LatLng(lat, lon); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다   
-      });
-    
-} else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
-    var locPosition = new kakao.maps.LatLng({{ centerLatitude }}, {{ centerLongitude }});
-}
-
-var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-    mapOption = { 
-        center: locPosition, // 지도의 중심좌표
-        level: {{ zoomLevel }} // 지도의 확대 레벨
-    };
-
-{% else %}
-// 웹 판매자가 아닌 경우
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
     mapOption = { 
         center: new kakao.maps.LatLng({{ centerLatitude }}, {{ centerLongitude }}), // 지도의 중심좌표
         level: {{ zoomLevel }} // 지도의 확대 레벨
     };
-{% endif %}
-
-
 
 var map = new kakao.maps.Map(mapContainer, mapOption);
 
