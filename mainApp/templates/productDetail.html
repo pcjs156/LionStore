@@ -114,6 +114,16 @@
 <div><a href="{% url 'stationerSellInfoCreate' product_id=product.id %}">문구점 판매정보 추가</a></div>
 {% endif %}
 
+<!-- 판매정보가 등록된 경우 -->
+{% if hasStationerSellInfo %}
+<!-- 위치 정보가 입력되어 있는가? -->
+{% if nullLocation %}
+<div>위치 정보가 입력되지 않았습니다.</div>
+<div>해당 기능을 이용하시려면 <a href="{% url 'setLocation' %}">위치를 설정</a>해주세요.</div>
+{% else %}
+<div id="map" style="width:100%;height:350px;"></div>
+{% endif %}
+
 {% for info in stationerSellInfoList %}
 <div>
      <div>판매자 : {{ info.seller.nickname }}</div>
@@ -130,6 +140,76 @@
 <br>
 {% endfor %}
 
+<!-- 판매정보가 등록되지 않은 경우 -->
+{% else %}
+<div>판매정보가 등록되지 않았습니다!</div>
+{% endif %}
+
+
+<script>
+// 웹 판매자인 경우
+{% if user.is_WebSeller %}
+// HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
+if (navigator.geolocation) {
+    // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+    navigator.geolocation.getCurrentPosition(function(position) {
+        
+        var lat = position.coords.latitude, // 위도
+            lon = position.coords.longitude; // 경도
+        
+        var locPosition = new kakao.maps.LatLng(lat, lon); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다   
+      });
+    
+} else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
+    var locPosition = new kakao.maps.LatLng({{ centerLatitude }}, {{ centerLongitude }});
+}
+
+var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+    mapOption = { 
+        center: locPosition, // 지도의 중심좌표
+        level: {{ zoomLevel }} // 지도의 확대 레벨
+    };
+
+// 웹 판매자가 아닌 경우
+{% else %}
+var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+    mapOption = { 
+        center: new kakao.maps.LatLng({{ centerLatitude }}, {{ centerLongitude }}), // 지도의 중심좌표
+        level: {{ zoomLevel }} // 지도의 확대 레벨
+    };
+{% endif %}
+
+
+
+var map = new kakao.maps.Map(mapContainer, mapOption);
+
+{% for info in stationerSellInfoList %}
+
+// 마커가 표시될 위치입니다 
+var markerPosition  = new kakao.maps.LatLng({{ info.seller.latitude }}, {{ info.seller.longitude }}); 
+
+// 마커를 생성합니다
+var marker = new kakao.maps.Marker({
+    position: markerPosition
+});
+
+// 마커가 지도 위에 표시되도록 설정합니다
+marker.setMap(map);
+
+var iwContent = '<div style="padding: 2px;">{{ info.seller.nickname }} : {{ info.price }}</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+    iwPosition = new kakao.maps.LatLng({{ info.seller.latitude }}, {{ info.seller.longitude }}); //인포윈도우 표시 위치입니다
+
+// 인포윈도우를 생성합니다
+var infowindow = new kakao.maps.InfoWindow({
+    position : iwPosition, 
+    content : iwContent 
+});
+  
+// 마커 위에 인포윈도우를 표시합니다. 두번째 파라미터인 marker를 넣어주지 않으면 지도 위에 표시됩니다
+infowindow.open(map, marker); 
+
+{% endfor %}
+</script>
 <hr>
 
 관련 영상 <br>

@@ -10,6 +10,9 @@ from account.models import CustomerTag
 from .forms import *
 
 from .tools import *
+from kakaoMapApp.tools import *
+
+from random import choice
 
 
 def intro_view(request):
@@ -107,7 +110,41 @@ def productDetail_view(request, product_id):
     stationerSellInfoList = StationerSellInfo.objects.filter(product=product)
     content['stationerSellInfoList'] = stationerSellInfoList
 
+    # 등록된 문구점 판매정보가 없다면 지도를 표시할 수 없으므로 표시해놓음
+    hasStationerSellInfo = len(stationerSellInfoList) > 0
+    content['hasStationerSellInfo'] = hasStationerSellInfo
+
+    # 지도 관련
+    content['nullLocation'] = False
+    # 판매정보가 있다면?
+    # -> 판매정보가 없는 경우 지도가 표시되지 않으므로(hasStationerSellInfo가 False이므로) 중심좌표가 입력될 필요 없다.
+    if hasStationerSellInfo:
+        # 위치정보가 정의되지 않는 WebSeller라면
+        if request.user.is_WebSeller:
+            # 등록된 판매정보 중 임의로 골라 중앙으로 설정
+            randInfo = choice(stationerSellInfoList)
+            centerLatLon = centerLatitude, centerLongitude = randInfo.seller.latitude, randInfo.seller.longitude
+            zoomLevel = getZoomLevel(centerLatLon, stationerSellInfoList)
+            content['zoomLevel'] = zoomLevel
+        
+        # 위치정보가 정의되는 Stationer/Customer라면
+        else:
+            # 만약 위치정보를 설정하지 않았다면
+            if (request.user.latitude == 0 and request.user.longitude == 0):
+                # 지도를 표시하지 않을 것이므로 중심좌표 설정 X
+                content['nullLocation'] = True
+            # 만약 위치정보를 설정했다면
+            else:
+                # 중심좌표를 등록된 위치로 설정
+                centerLatLon = centerLatitude, centerLongitude = request.user.latitude, request.user.longitude
+                zoomLevel = getZoomLevel(centerLatLon, stationerSellInfoList)
+                content['zoomLevel'] = zoomLevel
+
+    content['centerLatitude'], content['centerLongitude'] = centerLatitude, centerLongitude
+    
+
     return render(request, 'productDetail.html', content)
+    
 
 
 # 좋아요 버튼을 눌렀을 때 좋아요가 눌려 있지 않았다면 좋아요 처리, 좋아요가 눌려 있었다면 좋아요 해제
