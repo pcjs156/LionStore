@@ -372,6 +372,16 @@ def reviewDetail_view(request, review_id):
     #사진 목록
     images = [review.reviewImage1, review.reviewImage2, review.reviewImage3, review.reviewImage4, review.reviewImage5, review.reviewImage6]
     content['images'] = images
+    
+    # 사진을 추가할 수 있는가?(사진이 6장 미만 등록되어 있는가?)
+    imageCnt = len(list(filter(lambda x: x, images)))
+    content['imageLeft'] = 6 - imageCnt
+    canAddImage = imageCnt < 6
+    content['canAddImage'] = canAddImage
+
+    # 사진을 추가로 받는 form
+    newImageForm = ReviewImageAddForm()
+    content['newImageForm'] = newImageForm
 
     return render(request, 'reviewDetail.html', content)
 
@@ -429,6 +439,27 @@ def reviewUpdate(request, review_id):
     review.save()
 
     return redirect('/store/reviewDetail/' + str(review.id))
+
+
+@login_required(login_url='/account/logIn/')
+def reviewImageAdd(request, review_id):
+    form = ReviewImageAddForm(request.POST, request.FILES)
+
+    review = PenReview.objects.get(pk=review_id)
+    tmp = form.save(commit=False)
+    if tmp.reviewImage1 is not None:
+        images = [review.reviewImage1, review.reviewImage2, review.reviewImage3, review.reviewImage4, review.reviewImage5, review.reviewImage6]
+        for i in range(len(images)):
+            if images[i]:
+                continue
+            else:
+                exec(f"review.reviewImage{i+1} = tmp.reviewImage1")
+                break
+        review.modified = True
+        review.save()
+    images = [review.reviewImage1, review.reviewImage2, review.reviewImage3, review.reviewImage4, review.reviewImage5, review.reviewImage6]
+
+    return redirect('reviewDetail', review_id=review_id)
 
 
 @login_required(login_url='/account/logIn/')

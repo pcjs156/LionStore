@@ -19,6 +19,11 @@ class ReviewImageModifyingForm(forms.ModelForm):
         model = PenReview
         fields = ['reviewImage1']
 
+class ReviewImageAddForm(forms.ModelForm):
+    class Meta:
+        model = PenReview
+        fields = ['reviewImage1']
+
 class NewProductRequestForm(forms.ModelForm):
     class Meta:
         model = ProductRequest

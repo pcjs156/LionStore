@@ -41,6 +41,11 @@
 
 {% endfor %}
 
+{% if canAddImage and isAuthor %}
+<!-- Button trigger modal -->
+<div><a href="" data-toggle="modal" data-target="#reviewImageAddModal">리뷰 이미지 추가하기</a></div>
+{% endif %}
+
 <div>작성자 : {{ author }}</div>
 <div>제품명 : {{ product }}</div>
 <div>한줄평 : {{ comment }} </div>
@@ -133,15 +138,15 @@
 <div><a href="{% url 'reviewModify' review.id %}">리뷰 수정</a></div>
 
 <!-- Button trigger modal -->
-<a href="" data-toggle="modal" data-target="#exampleModal">게시글 삭제하기</a>
+<a href="" data-toggle="modal" data-target="#deleteModal">게시글 삭제하기</a>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">리뷰 {{ review.id }}</h5>
+                <h5 class="modal-title" id="deleteModalLabel">리뷰 {{ review.id }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -152,6 +157,32 @@
             <div class="modal-footer">
                 <a href="{% url 'reviewDelete' review.id %}"><button type="button" class="btn btn-danger">예</button></a>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">아니오</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="reviewImageAddModal" tabindex="-1" role="dialog" aria-labelledby="reviewImageAddModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reviewImageAddModalLabel">리뷰 이미지 추가 : {{ imageLeft }}장 가능</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'reviewImageAdd' review.id %}" enctype="multipart/form-data" method="POST">
+                    {% csrf_token %}
+                    {{ newImageForm.reviewImage1 }}
+                    <br>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" value="업로드" class="btn btn-success" style="text-align: right;">
+                </form>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
             </div>
         </div>
     </div>
