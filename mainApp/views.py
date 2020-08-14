@@ -140,7 +140,7 @@ def productDetail_view(request, product_id):
                 zoomLevel = getZoomLevel(centerLatLon, stationerSellInfoList)
                 content['zoomLevel'] = zoomLevel
 
-     content['centerLatitude'], content['centerLongitude'] = centerLatitude, centerLongitude
+                content['centerLatitude'], content['centerLongitude'] = centerLatitude, centerLongitude
     
 
     return render(request, 'productDetail.html', content)
