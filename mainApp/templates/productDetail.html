@@ -109,6 +109,29 @@
 
 <hr>
 
+<!-- 문구점 사장님인 경우에만 판매정보 입력 가능 -->
+{% if user.is_Stationer %}
+<div><a href="{% url 'stationerSellInfoCreate' product_id=product.id %}">문구점 판매정보 추가</a></div>
+{% endif %}
+
+{% for info in stationerSellInfoList %}
+<div>
+     <div>판매자 : {{ info.seller.nickname }}</div>
+     <div>가격 : {{ info.price }}원</div>
+     <div>위도 : {{ info.seller.latitude }}</div>
+     <div>경도 : {{ info.seller.longitude}}</div>
+     {% if info.seller == user %}
+     <div>
+          <div><a href="{% url 'stationerSellInfoDelete' product_id=product.id stationerSellInfo_id=info.id %}">판매정보 삭제하기</a></div>
+          <div><a href="{% url 'stationerSellInfoModify' product_id=product.id stationerSellInfo_id=info.id %}">판매정보 수정하기</a></div>
+     </div>
+     {% endif %}
+</div>
+<br>
+{% endfor %}
+
+<hr>
+
 관련 영상 <br>
 {% for linkHash in videoLinkHashs %}
 <iframe width="200" height="180" src="https://www.youtube.com/embed/{{ linkHash }}" frameborder="0"

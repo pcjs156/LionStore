@@ -8,4 +8,23 @@
 
 {% block content %}
 
+<!-- 위치 정보가 입력되지 않은 경우 -->
+{% if nullLocation %}
+<div>위치 정보가 입력되지 않았습니다!</div>
+<div><a href="{% url 'setLocation' %}">위치정보 입력하기</a></div>
+<!-- 위치 정보가 입력된 경우 -->
+{% else %}
+    {% if alreadyExists %}
+    <div>이미 판매 정보를 등록하셨습니다!</div>
+    <div><a href="{% url 'productDetail' product.id %}">돌아가기</a></div>
+    <div><a href="{% url 'stationerSellInfoModify' product_id=product.id stationerSellInfo_id=createdInfo.id %}">수정하기</a></div>
+    {% else %}
+        <form method="POST">
+            {% csrf_token %}
+            <div>가격 : {{ form.price }}</div>
+            <input type="submit" value="등록">
+        </form>
+    {% endif %}
+{% endif %}
+
 {% endblock %}

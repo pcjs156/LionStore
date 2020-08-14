@@ -103,6 +103,10 @@ def productDetail_view(request, product_id):
     webSellInfoList = WebSellInfo.objects.filter(product=product)
     content['webSellInfoList'] = webSellInfoList
 
+    # 문구점 판매정보 목록
+    stationerSellInfoList = StationerSellInfo.objects.filter(product=product)
+    content['stationerSellInfoList'] = stationerSellInfoList
+
     return render(request, 'productDetail.html', content)
 
 
@@ -185,10 +189,6 @@ def productRequestDelete_view(request, product_request_id):
     delete_request = get_object_or_404(ProductRequest, pk=product_request_id)
     delete_request.delete()
     return redirect('productRequestList')
-
-
-def rateBackUp_view(request):
-    return render(request, 'rateBackUp.html')
 
 
 def connectTagToReview(review:Review):
@@ -626,35 +626,103 @@ def tagSearchResult_view(request):
 
 @login_required(login_url='/account/logIn/')
 def stationerSellInfoCreate_view(request, product_id):
-    return render(request, 'stationerSellInfoCreate.html')
+    if request.method == 'POST':
+        # try:
+        #     stationerSellInfos = StationerSellInfo.objects.get(product=product)
+        # except:
+        #     stationerSellInfos = []
 
+        # alreadyExists = False
+        # for info in stationerSellInfos:
+        #     if info.seller == request.user:
+        #         alreadyExists = True
+        #         break
 
-def stationerSellInfoDetail_view(request, product_id, stationerSellInfo_id):
-    return render(request, 'stationerSellInfoDetail.html')
+        # if alreadyExists:
+        #     return redirect('productDetail', product_id=product_id)
+
+        form = StationerSellInfoForm(request.POST)
+        new_sellInfo : StationerSellInfo = form.save(commit=False)
+        new_sellInfo.product = Product.objects.get(pk=product_id)
+        new_sellInfo.seller = request.user
+
+        new_sellInfo.save()
+
+        return redirect('productDetail', product_id=product_id)
+
+    else:
+        content = dict()
+        
+        # 위치정보를 입력하지 않았으면(위도 경도가 기본값 : 0이면) 이용 불가능
+        userInstance : Customer = request.user
+        content['nullLocation'] = (userInstance.latitude == 0 and userInstance.longitude == 0)
+
+        product = Product.objects.get(pk=product_id)
+        content['product'] = product
+
+        try:
+            stationerSellInfos = StationerSellInfo.objects.filter(product=product)
+
+        except:
+            stationerSellInfos = []
+
+        alreadyExists = False
+        for info in stationerSellInfos:
+            if info.seller == request.user:
+                createdInfo = info
+                content['createdInfo'] = createdInfo
+                alreadyExists = True
+                break
+
+        content['alreadyExists'] = alreadyExists
+        form = StationerSellInfoForm()
+        content['form'] = form
+
+        return render(request, 'stationerSellInfoCreate.html', content)
 
 
 @login_required(login_url='/account/logIn/')
 def stationerSellInfoModify_view(request, product_id, stationerSellInfo_id):
-    return render(request, 'stationerSellInfoModify.html')
+    stationerSellInfo : StationerSellInfo = get_object_or_404(StationerSellInfo, pk=stationerSellInfo_id)
+
+    if request.method == "POST":
+        form = StationerSellInfoForm(request.POST)
+        if form.is_valid():
+            stationerSellInfo.price = form.cleaned_data['price']
+            stationerSellInfo.save()
+
+            return redirect('productDetail', product_id=product_id)
+    
+    else:
+        form = StationerSellInfoForm(instance=stationerSellInfo)
+        return render(request, 'stationerSellInfoModify.html', {'form':form})
+
+
+@login_required(login_url='/account/logIn/')
+def stationerSellInfoDelete(request, product_id, stationerSellInfo_id):
+    targetInfo = get_object_or_404(StationerSellInfo, pk=stationerSellInfo_id)
+    targetInfo.delete()
+
+    return redirect('productDetail', product_id=product_id)
 
 
 @login_required(login_url='/account/logIn/')
 def webSellInfoCreate_view(request, product_id):
     if request.method == 'POST':
-        try:
-            webSellInfos = WebSellInfo.objects.get(product=product)
+        # try:
+        #     webSellInfos = WebSellInfo.objects.get(product=product)
 
-        except:
-            webSellInfos = []
+        # except:
+        #     webSellInfos = []
 
-        alreadyExists = False
-        for info in webSellInfos:
-            if info.seller == request.user:
-                alreadyExists = True
-                break
+        # alreadyExists = False
+        # for info in webSellInfos:
+        #     if info.seller == request.user:
+        #         alreadyExists = True
+        #         break
 
-        if alreadyExists:
-            return productDetail_view(request, product_id)
+        # if alreadyExists:
+        #     return redirect('productDetail', product_id=product_id)
 
         form = WebSellInfoForm(request.POST)
         new_sellInfo : WebSellInfo = form.save(commit=False)
@@ -751,6 +819,7 @@ def mainPage_view(request):
     
 
     return render(request, 'mainPage.html', content)
+
 
 def randomLike(request):
     # 로그인 되어 있을 경우 제품과 리뷰에 랜덤하게 좋아요를 누름

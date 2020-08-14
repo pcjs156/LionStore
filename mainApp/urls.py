@@ -53,8 +53,9 @@ urlpatterns = [
     path('productList/<int:product_id>/webSellInfoDelete/<int:webSellInfo_id>', views.webSellInfoDelete, name="webSellInfoDelete"),
 
     # 문구점 판매정보 관련
-    path('productList/<int:product_id>/newReview', views.stationerSellInfoCreate_view, name="stationerSellInfoCreate"),
+    path('productList/<int:product_id>/newStationerSellInfo', views.stationerSellInfoCreate_view, name="stationerSellInfoCreate"),
     path('productList/<int:product_id>/stationerSellInfoModify/<int:stationerSellInfo_id>', views.stationerSellInfoModify_view, name="stationerSellInfoModify"),
+    path('productList/<int:product_id>/stationerSellInfoDelete/<int:stationerSellInfo_id>', views.stationerSellInfoDelete, name="stationerSellInfoDelete"),
 
     # 검색 관련
     path('searchMain', views.searchMain_view, name="searchMain"),

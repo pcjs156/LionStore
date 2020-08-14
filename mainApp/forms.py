@@ -28,3 +28,9 @@ class WebSellInfoForm(forms.ModelForm):
     class Meta:
         model = WebSellInfo
         fields = ['link', 'price']
+
+
+class StationerSellInfoForm(forms.ModelForm):
+    class Meta:
+        model = StationerSellInfo
+        fields = ['price']
