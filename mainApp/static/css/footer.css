@@ -1,0 +1,19 @@
+i {
+    margin: 7px;
+}
+
+.iconContainer {
+    text-align: center;
+    margin: 2rem;
+}
+
+.linkContainer {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+#lionStoreTitle {
+    text-align: center;
+    font-size: large;
+    font-weight: bold;
+}
