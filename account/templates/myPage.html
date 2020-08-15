@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<title>마이페이지</title>
+<!-- 좋아요를 누른 리뷰 목록, 좋아요를 누른 제품 목록, 작성한 리뷰 목록, 등록한 판매 정보 목록 -->
+{% endblock %}
+
+{% block content %}
+
+<div>좋아요를 누른 리뷰 리스트</div>
+{% for review in likeReviewList %}
+<div><a href="{% url 'reviewDetail' review.id %}">{{ review }}</a></div>
+{% endfor %}
+<br>
+
+<div>좋아요를 누른 제품 리스트</div>
+{% for product in likeProductList %}
+<div><a href="{% url 'productDetail' product.id %}">{{ product }}</a></div>
+{% endfor %}
+<br>
+
+<div>작성한 리뷰 리스트</div>
+{% for review in myReviews %}
+<div><a href="{% url 'reviewDetail' review.id %}">{{ review }}</a></div>
+{% endfor %}
+<br>
+
+
+{% if user.is_WebSeller %}
+<!-- 웹 판매자인 경우 -->
+<!-- 따로 디테일 페이지가 없어 바로 수정 페이지로 넘어가도록 함 -->
+<div>등록한 웹 판매정보 목록</div>
+
+{% for info in webSellInfoList %}
+<div><a href="{% url 'webSellInfoModify' product_id=info.product.id webSellInfo_id=info.id %}">{{ info.product.name }}에 등록한 판매정보</a></div>
+{% endfor %}
+
+{% endif %}
+
+{% if user.is_Stationer %}
+<!-- 문구점 사장님인 경우 -->
+<!-- 따로 디테일 페이지가 없어 바로 수정 페이지로 넘어가도록 함 -->
+<div>등록한 문구점 판매정보 목록</div>
+
+{% for info in stationerSellInfoList %}
+<div><a href="{% url 'stationerSellInfoModify' product_id=info.product.id stationerSellInfo_id=info.id %}">{{ info.product.name }}에 등록한 판매정보</a></div>
+{% endfor %}
+
+{% endif %}
+
+{% endblock %}

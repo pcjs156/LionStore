@@ -5,8 +5,8 @@ from . import views
 
 # /account/...
 urlpatterns = [
-    # 계정 정보 메인 페이지
-    path('', views.stationerSignUp_view, name='stationerSignUp'),
+    # 마이 페이지
+    path('myPage/', views.myPage_view, name='myPage'),
 
     # 로그인 / 로그아웃 / 회원가입 관련
     path('logIn/', views.login_view, name='logIn'),
@@ -22,13 +22,6 @@ urlpatterns = [
     path('modifyUserInfo/', views.modifyUserInfo_view, name='modifyUserInfo'),
     path('modifyWebSellerInfo/', views.modifyWebSellerInfo_view, name='modifyWebSellerInfo'),
     path('modifyStationerInfo/', views.modifyStationerSellInfo_view, name='modifyStationerInfo'),
-    
-    # 좋아요를 누른 제품 목록
-    path('interests/', views.interests_view, name='interests'),
-    # 좋아요를 누른 리뷰 목록
-    path('likeReviews/', views.likeReviews_view, name='likeReviews'),
-    # 작성한 리뷰 목록
-    path('reviewList/', views.reviewList_view, name='reviewList'),
 
     # 작성한 웹 판매 정보 목록
     path('webSellInfoList/', views.webSellerInfoList_view, name='webSellInfoList'),
