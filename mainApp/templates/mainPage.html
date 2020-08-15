@@ -8,7 +8,24 @@
 {% endblock %}
 
 {% block content %}
-<div>메인 페이지입니다.</div>
+<div>
+     <div>키워드 검색</div>
+     <div>입력받은 키워드가 제품명에 포함된 제품을 검색합니다.</div>
+     <input type="search" name="keywordQuery">
+     <input type="text" name="sort" value="popularity" style="display: none; visibility: hidden;">
+     <input type="submit" value="검색">
+</div>
+
+<br>
+
+<div>
+     <div>태그 검색</div>
+     <div>공백으로 나뉘어 입력된 태그들과 적어도 하나 겹치는 제품을 검색합니다.</div>
+     <input type="search" name="tagQuery">
+     <input type="submit" value="검색">
+</div>
+
+<br>
 
 <!-- 기본값 : 인기순 정렬 -->
 <div><a href="{% url 'productList' 볼펜.id %}?sort=popularity">볼펜</a></div>
