@@ -101,7 +101,7 @@ class Score(models.Model):
 
     review = models.ForeignKey(Review, on_delete=models.CASCADE, blank=False, null=True, related_name="scoreTargetReview", verbose_name="대상 리뷰")
     name = models.CharField(max_length=20, verbose_name="평가 항목")
-    score = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)], default=0, verbose_name="평가 점수")
+    score = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)], default=1, verbose_name="평가 점수")
 
     def __str__(self):
         return self.name + " : " + str(self.score) + "점"

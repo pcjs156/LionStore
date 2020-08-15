@@ -12,6 +12,8 @@ from .forms import *
 from .tools import *
 from kakaoMapApp.tools import *
 
+from .recommendation import *
+
 from random import choice
 
 
@@ -856,6 +858,22 @@ def webSellInfoDelete(request, product_id, webSellInfo_id):
 
     return redirect('productDetail', product_id=product_id)
 
+
+@login_required(login_url='/account/logIn/')
+def userRecommendation_view(request):
+    content = dict()
+    content['error'] = False
+
+
+    user = request.user
+    topSimilarity = orderby_similarity(user)
+    
+    if len(topSimilarity) == 0:
+        content['error'] = True
+
+    content['topSimilarity'] = topSimilarity
+
+    return render(request, 'userRecommendation.html', content)
 
 def mainPage_view(request):
     content = dict()

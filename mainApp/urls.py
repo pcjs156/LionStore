@@ -62,6 +62,10 @@ urlpatterns = [
     path('searchMain', views.searchMain_view, name="searchMain"),
     path('keywordSearchResult', views.keywordSearchResult_view, name="keywordSearchResult"),
     path('tagSearchResult', views.tagSearchResult_view, name="tagSearchResult"),
+    
+    # 추천
+    path('userRecommendation', views.userRecommendation_view, name="userRecommendation"),
 
+    # 외부 링크로 리다이렉트 하기 위한 url
     path('redirectExternalLink/<path:link>', tools.redirectExternalLink, name='redirectExternalLink'),
 ]
