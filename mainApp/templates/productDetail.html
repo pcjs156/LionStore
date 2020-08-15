@@ -94,10 +94,18 @@
 
 {% for info in webSellInfoList %}
 <div>
+     {% if info.price == cheapestWebPrice %}
+     <!-- 최저가인 경우 붉은 색으로 보이도록 표시 -->
+     <div style="color: red;">판매자 : {{ info.seller.nickname }}</div>
+     <div style="color: red;">가격 : {{ info.price }}원</div>
+     {% else %}
      <div>판매자 : {{ info.seller.nickname }}</div>
      <div>가격 : {{ info.price }}원</div>
+     {% endif %}
      <div><a href="{% url 'redirectExternalLink' link=info.link %}">구입하러 가기</a></div>
+
      {% if info.seller == user %}
+     <!-- 판매자인 경우 수정/삭제 기능에 접근 가능 -->
      <div>
           <div><a href="{% url 'webSellInfoDelete' product_id=product.id webSellInfo_id=info.id %}">판매정보 삭제하기</a></div>
           <div><a href="{% url 'webSellInfoModify' product_id=product.id webSellInfo_id=info.id %}">판매정보 수정하기</a></div>
@@ -127,9 +135,17 @@
 
 {% for info in stationerSellInfoList %}
 <div>
+     {% if info.price == cheapestStationerPrice %}
+     <!-- 최저가인 경우 붉은 색으로 보이도록 표시 -->
+     <div style="color: red;">판매자 : {{ info.seller.nickname }}</div>
+     <div style="color: red;">가격 : {{ info.price }}원</div>
+     {% else %}
      <div>판매자 : {{ info.seller.nickname }}</div>
      <div>가격 : {{ info.price }}원</div>
+     {% endif %}
+
      {% if info.seller == user %}
+     <!-- 판매자인 경우 수정/삭제 기능에 접근 가능 -->
      <div>
           <div><a href="{% url 'stationerSellInfoDelete' product_id=product.id stationerSellInfo_id=info.id %}">판매정보 삭제하기</a></div>
           <div><a href="{% url 'stationerSellInfoModify' product_id=product.id stationerSellInfo_id=info.id %}">판매정보 수정하기</a></div>
