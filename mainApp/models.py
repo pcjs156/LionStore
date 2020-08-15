@@ -140,7 +140,7 @@ class Comment(models.Model):
     body = models.TextField(verbose_name="댓글 내용")
 
     def __str__(self):
-        return f"{body[:10]}.. (by {author.nickname}, on {pub_date}" 
+        return f"{self.body[:10]}.. (by {self.author.nickname}, on {self.pub_date}" 
 
 
 # 상품 등록 요청
