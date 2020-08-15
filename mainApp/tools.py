@@ -14,8 +14,6 @@ from mainApp.models import Product, ProductCategory, Review
 def initializeCategory():
     # 카테고리 리스트가 비었을 때만 사용하기
     if len(ProductCategory.objects.all()) != 0:
-        print("@@@@@ 카테고리 초기화를 진행하지 않습니다.")
-        print("@@@@@ 카테고리가 없을 때만 사용할 수 있습니다.")
         return
     
     for name in CATEGORY_NAMES:

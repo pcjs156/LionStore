@@ -863,8 +863,6 @@ def mainPage_view(request):
     # 테스트/개발용이므로 서비스 할 때는 빠져아 함
     # 카테고리가 존재하지 않는 경우에만 하단의 모든 카테고리를 새로 생성하는 역할
     initializeCategory()
-    # 랜덤으로 countLimit개까지 Product를 생성하고 임의로 카테고리를 지정
-    automativeFilling_Product(countLimit=300)
 
     볼펜 = ProductCategory.objects.get(categoryName="볼펜")
     만년필 = ProductCategory.objects.get(categoryName="만년필")
