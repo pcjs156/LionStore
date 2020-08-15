@@ -32,6 +32,9 @@
 
     <link rel="stylesheet" href="{% static 'css/common.css' %}">
 
+    <!-- 웹 페이지 아이콘 -->
+    <link rel="icon shortcut" type="image/x-icon" href="{% static '/img/common/lionIcon.png' %}">
+    
     <!-- head block : title / static을 추가-->
     {% block head %}
     {% endblock %}
@@ -58,7 +61,6 @@
     </header>
 
     <hr>
-
     {% block content %}
     {% endblock %}
     <hr>

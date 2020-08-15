@@ -1,7 +1,7 @@
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
     mapOption = {
-        center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
-        level: 1 // 지도의 확대 레벨
+        center: new kakao.maps.LatLng(37.6104607,126.9973371), // 지도의 중심좌표
+        level: 4 // 지도의 확대 레벨
     };
 
 // 지도를 생성합니다    
@@ -23,12 +23,8 @@ kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
                 '<div>도로명주소 : ' + result[0].road_address.address_name + '</div>' +
                 '<input name="rawLocation" type="text" maxlength="30" required id="id_rawLocation" style="visibility:hidden; display:none;" value="' + mouseEvent.latLng + '"> </input>' : '';
 
-                detailAddr += '<div>지번 주소 : ' + result[0].address.address_name + '</div>';
 
-            var content = '<div class="bAddr">' +
-                '<span class="title">법정동 주소정보</span>' +
-                detailAddr +
-                '</div>';
+            var content = '<div class="bAddr">' + detailAddr + '</div>';
 
             // 마커를 클릭한 위치에 표시합니다 
             marker.setPosition(mouseEvent.latLng);
