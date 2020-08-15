@@ -39,7 +39,7 @@ def automativeFilling_Product(countLimit=10):
 
 # 유튜브 링크로부터 해쉬값을 뽑아옴
 def getHash(rawLink):
-    return rawLink.split('=')[1]
+    return rawLink.split('/')[-1]
 
 
 # 리뷰에 이미지를 하나도 등록하지 않았는지 확인
