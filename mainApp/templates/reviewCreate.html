@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block content %}
-<form method="POST" enctype="multipart/form-data">
+<form method="POST" enctype="multipart/form-data" id="form">
     {% csrf_token %}
 
     한줄평 <br>
@@ -26,6 +26,11 @@
     태그(띄어쓰기로 구분) <br>
     {{ form.rawTagString }}
     <br>
+
+    <div id='tagBox'>
+
+    </div>
+    <input type='button' onclick='addTag();' value='추가' />
 
     그립감 <br>
     <input type="rating" name="grip" value="0" required="" id="id_grip" min="0" max="5" step="1" style="display: none;">
@@ -83,8 +88,8 @@
     </div>
     <br>
 
-
-    <a href="#imageUploader2" data-toggle="collapse" aria-expanded="false" aria-controls="imageUploaderCollapse2" data-target="#imageUploaderCollapse2">
+    <a href="#imageUploader2" data-toggle="collapse" aria-expanded="false" aria-controls="imageUploaderCollapse2"
+        data-target="#imageUploaderCollapse2">
         이미지2
     </a>
     <div class="collapse" id="imageUploaderCollapse2">
@@ -92,7 +97,8 @@
     </div>
     <br>
 
-    <a href="#imageUploader3" data-toggle="collapse" aria-expanded="false" aria-controls="imageUploaderCollapse3" data-target="#imageUploaderCollapse3">
+    <a href="#imageUploader3" data-toggle="collapse" aria-expanded="false" aria-controls="imageUploaderCollapse3"
+        data-target="#imageUploaderCollapse3">
         이미지3
     </a>
     <div class="collapse" id="imageUploaderCollapse3">
@@ -100,7 +106,8 @@
     </div>
     <br>
 
-    <a href="#imageUploader4" data-toggle="collapse" aria-expanded="false" aria-controls="imageUploaderCollapse4" data-target="#imageUploaderCollapse4">
+    <a href="#imageUploader4" data-toggle="collapse" aria-expanded="false" aria-controls="imageUploaderCollapse4"
+        data-target="#imageUploaderCollapse4">
         이미지4
     </a>
     <div class="collapse" id="imageUploaderCollapse4">
@@ -108,7 +115,8 @@
     </div>
     <br>
 
-    <a href="#imageUploader5" data-toggle="collapse" aria-expanded="false" aria-controls="imageUploaderCollapse5" data-target="#imageUploaderCollapse5">
+    <a href="#imageUploader5" data-toggle="collapse" aria-expanded="false" aria-controls="imageUploaderCollapse5"
+        data-target="#imageUploaderCollapse5">
         이미지5
     </a>
     <div class="collapse" id="imageUploaderCollapse5">
@@ -116,7 +124,8 @@
     </div>
     <br>
 
-    <a href="#imageUploader6" data-toggle="collapse" aria-expanded="false" aria-controls="imageUploaderCollapse6" data-target="#imageUploaderCollapse6">
+    <a href="#imageUploader6" data-toggle="collapse" aria-expanded="false" aria-controls="imageUploaderCollapse6"
+        data-target="#imageUploaderCollapse6">
         이미지6
     </a>
     <div class="collapse" id="imageUploaderCollapse6">
@@ -126,4 +135,45 @@
 
     <button type="submit">리뷰 작성</button>
 </form>
+
+<script type='text/javascript'>
+
+    String.format = function() {
+    // The string containing the format items (e.g. "{0}")
+    // will and always has to be the first argument.
+    var theString = arguments[0];
+    
+    // start with the second argument (i = 1)
+    for (var i = 1; i < arguments.length; i++) {
+        // "gm" = RegEx options for Global search (more than one instance)
+        // and for Multiline search
+        var regEx = new RegExp("\\{" + (i - 1) + "\\}", "gm");
+        theString = theString.replace(regEx, arguments[i]);
+    }
+    
+    return theString;
+}
+
+    var tagIdx = 0;
+
+    // 태그 인덱스는 0부터 시작
+    function addTag() {
+        var containerDiv = document.createElement('div');
+        containerDiv.setAttribute('name', String.format("tagContainer{0}", tagIdx));
+
+        containerDiv.innerHTML = String.format("<input name='tag{0}'></input>", tagIdx) +
+            String.format("<i class='fa fa-trash-o' aria-hidden='true' onclick='delTag(\"tag{0}\");'></i>", tagIdx);
+        document.getElementById('tagBox').appendChild(containerDiv);
+
+        tagIdx++;
+    }
+
+    function delTag(idx) {
+        tagIdx--;
+        
+        var parent = document.getElementsById("tagBox");
+        var target = document.getElementsByName(String.format("tagContainer{0}", tagIdx));
+        parent.removeChild(target);
+    }
+</script>
 {% endblock %}
