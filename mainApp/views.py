@@ -123,6 +123,10 @@ def productDetail_view(request, product_id):
         cheapestWebPrice = min(webSellInfoList, key=lambda info: info.price).price
         content['cheapestWebPrice'] = cheapestWebPrice
 
+    # 웹 판매정보가 있는지 표시
+    hasWebSellInfo = len(webSellInfoList) > 0
+    content['hasWebSellInfo'] = hasWebSellInfo
+
     # 문구점 판매정보 목록
     stationerSellInfoList = StationerSellInfo.objects.filter(product=product)
     content['stationerSellInfoList'] = stationerSellInfoList
