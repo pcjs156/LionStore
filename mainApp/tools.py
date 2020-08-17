@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from faker import Faker
 import random
 
-from .models import PenReview
+from .models import PenReview, ProductCategory
 from . import views
 
 CATEGORY_NAMES = tuple("볼펜 만년필 캘리그라피펜 연필 색연필 형광펜 샤프펜슬 유성펜 사인펜 젤펜 기타".split(' '))
@@ -70,3 +70,11 @@ def likeProcess_RandomProducts(request, num=10):
 
 def redirectExternalLink(request, link):
     return HttpResponseRedirect(link)
+
+
+def getCategoryId(categoryName):
+    return ProductCategory.objects.get(categoryName=categoryName).id
+
+def redirectByCategoryName(request, categoryName):
+    id = getCategoryId(categoryName)
+    return views.productList_view(request, id)

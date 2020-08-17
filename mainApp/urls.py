@@ -71,4 +71,7 @@ urlpatterns = [
 
     # 외부 링크로 리다이렉트 하기 위한 url
     path('redirectExternalLink/<path:link>', tools.redirectExternalLink, name='redirectExternalLink'),
+
+     # 카테고리 이름으로 productList에 Redirect
+     path('redirectByCategoryName/<categoryName>', tools.redirectByCategoryName, name="redirectByCategoryName"),
 ]
