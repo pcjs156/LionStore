@@ -41,8 +41,28 @@
 <div><a href="{% url 'productList' 기타.id %}?sort=popularity">기타</a></div>
 
 <hr>
-<a href="{% url 'searchMain' %}"><button class="btn btn-primary">검색</button></a>
-<hr>
+
+{% if user.is_authenticated %}
+     {% if not error %}
+     <div>추천 리뷰 : 리뷰 성향이 비슷한 상위 {{ topSimilarity_users_len }}명의 유저가 작성한 리뷰</div>
+          {% for reviewer in topSimilarity_users %}
+          <div>
+               <div>{{ reviewer.nickname }}님의 리뷰</div>
+               {% for reviewList in topSimilarityReviews %}
+                    {% for review in reviewList %}
+                    <div><a href="{% url 'reviewDetail' review.id %}">{{ review }}</a></div>
+                    {% endfor %}
+               {% endfor %}
+          </div>
+          <br>
+          {% endfor %}
+     {% else %}
+     <div>데이터가 부족해 리뷰 추천이 불가능합니다 ㅠㅠ 리뷰를 작성해보시는건 어떨까요?</div>
+     {% endif %}
+{% else %}
+     <div>추천 리뷰 기능을 이용하시려면 <a href="{% url 'logIn' %}">로그인</a>하시거나 <a href="{% url 'selectCustomerType' %}">회원가입</a>해주세요!</div>
+     <br>
+{% endif %}
 
 <div>최신 리뷰</div>
 {% for newReview in newReviews %}

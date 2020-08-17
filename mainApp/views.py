@@ -905,7 +905,6 @@ def userRecommendation_view(request):
     content = dict()
     content['error'] = False
 
-
     user = request.user
     topSimilarity = orderby_similarity(user)
     
@@ -939,12 +938,29 @@ def mainPage_view(request):
                     '형광펜': 형광펜, '샤프펜슬': 샤프펜슬, '유성펜': 유성펜, '사인펜': 사인펜, '젤펜': 젤펜, '기타': 기타}
     content.update(categoryDict)
 
+    # 새 리뷰
     newReviews = PenReview.objects.all().order_by('-pub_date')[:10]
     content['newReviews'] = newReviews
 
+    # 인기 리뷰
     popularReviews = PenReview.objects.all().order_by('-likeCount')[:10]
     content['popularReviews'] = popularReviews
     
+    # 맞춤 리뷰
+    try:
+        topSimilarity_pair = orderby_similarity(request.user, 5)
+        topSimilarity_users = list(map(lambda pair: pair[0], topSimilarity_pair))
+        content['error'] = (len(topSimilarity_users) == 0) # 리뷰를 작성한 적이 없거나, 자기와 겹치는 리뷰 성향이 없는 경우
+        content['topSimilarity_users'] = topSimilarity_users
+        content['topSimilarity_users_len'] = len(topSimilarity_users)
+
+        topSimilarityReviews = list()
+        for user in topSimilarity_users:
+            topSimilarityReviews.append(PenReview.objects.filter(author=user).order_by('-likeCount')[:5])
+        content['topSimilarityReviews'] = topSimilarityReviews
+
+    except:
+        content['error'] = True
 
     return render(request, 'mainPage.html', content)
 
