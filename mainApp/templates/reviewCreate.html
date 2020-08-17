@@ -27,10 +27,9 @@
     {{ form.rawTagString }}
     <br>
 
-    <div id='tagBox'>
-
-    </div>
-    <input type='button' onclick='addTag();' value='추가' />
+    태그 목록(공백 문자로 구분됩니다.) <br>
+    <textarea name="rawTagString" id="rawTagString" cols="30" rows="10" >{{ review.rawTagString }}</textarea>
+    <br>
 
     그립감 <br>
     <input type="rating" name="grip" value="0" required="" id="id_grip" min="0" max="5" step="1" style="display: none;">
@@ -130,44 +129,4 @@
     <button type="submit">리뷰 작성</button>
 </form>
 
-<script type='text/javascript'>
-
-    String.format = function() {
-    // The string containing the format items (e.g. "{0}")
-    // will and always has to be the first argument.
-    var theString = arguments[0];
-    
-    // start with the second argument (i = 1)
-    for (var i = 1; i < arguments.length; i++) {
-        // "gm" = RegEx options for Global search (more than one instance)
-        // and for Multiline search
-        var regEx = new RegExp("\\{" + (i - 1) + "\\}", "gm");
-        theString = theString.replace(regEx, arguments[i]);
-    }
-    
-    return theString;
-}
-
-    var tagIdx = 0;
-
-    // 태그 인덱스는 0부터 시작
-    function addTag() {
-        var containerDiv = document.createElement('div');
-        containerDiv.setAttribute('name', String.format("tagContainer{0}", tagIdx));
-
-        containerDiv.innerHTML = String.format("<input name='tag{0}'></input>", tagIdx) +
-            String.format("<i class='fa fa-trash-o' aria-hidden='true' onclick='delTag(\"tag{0}\");'></i>", tagIdx);
-        document.getElementById('tagBox').appendChild(containerDiv);
-
-        tagIdx++;
-    }
-
-    function delTag(idx) {
-        tagIdx--;
-        
-        var parent = document.getElementsById("tagBox");
-        var target = document.getElementsByName(String.format("tagContainer{0}", tagIdx));
-        parent.removeChild(target);
-    }
-</script>
 {% endblock %}
