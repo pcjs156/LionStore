@@ -298,10 +298,8 @@ def reviewCreate_view(request, product_id):
             review=new_review, name="사용감", score=int(request.POST['texture']))
         new_review.costEffetiveness = Score.objects.create(
             review=new_review, name="가성비", score=int(request.POST['costEffetiveness']))
-        new_review.versatility = Score.objects.create(
-            review=new_review, name="범용성", score=int(request.POST['versatility']))
 
-        scores = [new_review.grip, new_review.life, new_review.durability, new_review.design, new_review.texture, new_review.costEffetiveness, new_review.versatility]
+        scores = [new_review.grip, new_review.life, new_review.durability, new_review.design, new_review.texture, new_review.costEffetiveness]
         new_review.totalScore = sum(map(lambda x: x.score, scores)) / len(scores)
 
         new_review.save()
@@ -352,8 +350,6 @@ def reviewDetail_view(request, review_id):
     content['textureScore'] = review.texture
     # 가성비
     content['costEffetivenessScore'] = review.costEffetiveness
-    # 범용성
-    content['versatilityScore'] = review.versatility
 
     # 좋아요 관련
     likers = [str(customer.nickname) for customer in review.likers.all()]
@@ -438,10 +434,7 @@ def reviewUpdate(request, review_id):
     review.costEffetiveness.score = int(request.POST['costEffetiveness'])
     review.costEffetiveness.save()
 
-    review.versatility.score = int(request.POST['versatility'])
-    review.versatility.save()
-    
-    scores = [review.grip, review.life, review.durability, review.design, review.texture, review.costEffetiveness, review.versatility]
+    scores = [review.grip, review.life, review.durability, review.design, review.texture, review.costEffetiveness]
     review.totalScore = sum(map(lambda x: x.score, scores)) / len(scores)
 
     review.modified = True
