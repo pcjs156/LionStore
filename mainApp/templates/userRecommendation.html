@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<title>비슷한 유저 추천</title>
+<!-- 코사인 유사도를 이용한 사용자 기반 협업 필터링 -->
+{% endblock %}
+
+{% block content %}
+
+<!-- 자신과 겹치는 제품 리뷰가 없는 경우 에러메시지 -->
+{% if error %}
+    <div>에러! 아직 리뷰를 작성하지 않으셨거나, 다른 유저와 같은 제품을 리뷰한 적이 없습니다.</div>
+{% else %}
+    {% for user in topSimilarity %}
+    <div>{{ user }}</div>
+    {% endfor %}
+{% endif %}
+
+{% endblock %}

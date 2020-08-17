@@ -62,9 +62,13 @@ urlpatterns = [
     path('searchMain', views.searchMain_view, name="searchMain"),
     path('keywordSearchResult', views.keywordSearchResult_view, name="keywordSearchResult"),
     path('tagSearchResult', views.tagSearchResult_view, name="tagSearchResult"),
+    
+    # 추천
+    path('userRecommendation', views.userRecommendation_view, name="userRecommendation"),
 
     # 특정 태그가 달려있는 제품의 목록
     path('tagProduct/<int:productTag_id>', views.tagProduct_view, name="tagProduct"),
 
+    # 외부 링크로 리다이렉트 하기 위한 url
     path('redirectExternalLink/<path:link>', tools.redirectExternalLink, name='redirectExternalLink'),
 ]
