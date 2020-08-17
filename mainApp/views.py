@@ -89,6 +89,20 @@ def productDetail_view(request, product_id):
         content['popularitySort'] = True
         reviews = PenReview.objects.filter(product=product).order_by('-likeCount')
 
+    # 리뷰를 작성한 적이 있는가?
+    try:
+        myReview = list(filter(lambda r: r.author == request.user, reviews))
+        reviewCreated = (len(myReview) > 0)
+        content['reviewCreated'] = reviewCreated
+        
+        myReview = list(filter(lambda r: r.author == request.user, reviews))[0]
+        content['myReview'] = myReview
+        print(myReview)
+
+    except:
+        content['reviewCreated'] = False
+
+
     paginator = Paginator(reviews, 10)
     page = request.GET.get('page')
     reviews = paginator.get_page(page)

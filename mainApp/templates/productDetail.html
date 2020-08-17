@@ -36,7 +36,14 @@
 <div><span><a href="{% url 'productDetail' product.id %}?sort=popularity">인기순 정렬</a></span> / <span>최신순정렬</span></div>
 {% endif %}
 
+{% if not reviewCreated %}
+<!-- 리뷰를 작성하지 않은 경우 -->
 <div><a href="{% url 'reviewCreate' product.id %}">새 리뷰 작성</a></div>
+{% else %}
+<!-- 리뷰를 이미 작성한 경우 -->
+<div><a href="{% url 'reviewDetail' myReview.id %}">작성한 리뷰 보기</a></div>
+{% endif %}
+
 {% for review in reviews %}
 <div><a href="{% url 'reviewDetail' review.id %}">리뷰 {{ review.id }} ({{ review.pub_date | date:"Y/m/d a h:i" }})</a></div>
 {% endfor %}
