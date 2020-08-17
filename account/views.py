@@ -1,15 +1,17 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, authenticate, logout
 
 from .forms import UserSignUpForm, UserLoginForm, WebSellerSignUpForm, StationerSignUpForm
 
 from account.models import Customer, CustomerTag
+from mainApp.models import *
 
-from django.contrib.auth import login, authenticate, logout
 
 def selectCustomerType_view(request):
     return render(request, 'selectCustomerType.html')
+
 
 def connectTagToUser(user:Customer, rawString:str):
     # 일반 str문자열 : 띄어쓰기를 기준으로 태그 정보가 나누어져 있음
@@ -37,6 +39,7 @@ def connectTagToUser(user:Customer, rawString:str):
 
         newTag.targetCustomer.add(user)
 
+
 def userSignUp_view(request):
     if request.method == 'POST':
         form = UserSignUpForm(request.POST, request.FILES)
@@ -55,6 +58,7 @@ def userSignUp_view(request):
     else :
         form = UserSignUpForm()
         return render(request, 'userSignUp.html', {'form':form})
+
 
 def webSellerSignUp_view(request):
     if request.method == 'POST':
@@ -114,29 +118,65 @@ def logout_view(request):
     logout(request)
     return redirect("mainPage")
 
-def accountInfo_view(request):
-    return render(request, 'accountInfo.html')
-
-def interests_view(request):
-    return render(request, 'interests.html')
-
-def likeReviews_view(request):
-    return render(request, 'likeReviews.html')
 
 def modifyStationerSellInfo_view(request):
     return render(request, 'modifyStationerSellInfo.html')
 
+
 def modifyUserInfo_view(request):
     return render(request, 'modifyUserInfo.html')
+
 
 def modifyWebSellerInfo_view(request):
     return render(request, 'modifyWebSellerInfo.html')
 
-def reviewList_view(request):
-    return render(request, 'reviewList.html')
+
+@login_required(login_url='/account/logIn/')
+def myPage_view(request):
+    content = dict()
+    
+    user : Customer = request.user
+
+    # 좋아요를 누른 리뷰 목록
+    reviewList = PenReview.objects.all()
+    likeReviewList = list()
+    for review in reviewList:
+        if user in review.likers.all():
+            likeReviewList.append(review)
+    content['likeReviewList'] = likeReviewList
+
+    # 좋아요를 누른 제품 목록
+    productList = Product.objects.all()
+    likeProductList = list()
+    for product in productList:
+        if user in product.likers.all():
+            likeProductList.append(product)
+    content['likeProductList'] = likeProductList
+
+    # 작성한 리뷰 목록
+    myReviews = PenReview.objects.filter(author=user)
+    content['myReviews'] = myReviews
+
+    # 웹 판매정보 목록
+    if user.is_WebSeller:
+        webSellInfoList = WebSellInfo.objects.filter(seller=user)
+    else:
+        webSellInfoList = []
+    content['webSellInfoList'] = webSellInfoList
+
+    # 문구점 판매정보 목록
+    if user.is_Stationer:
+        stationerSellInfoList = StationerSellInfo.objects.filter(seller=user)
+    else:
+        stationerSellInfoList = []
+    content['stationerSellInfoList'] = stationerSellInfoList
+
+    return render(request, 'myPage.html', content)
+
 
 def selectSellerType_view(request):
     return render(request, 'selectSellerType.html')
+
 
 def setLocation_view(request):
     if request.method == "POST":
@@ -152,8 +192,10 @@ def setLocation_view(request):
 
     return render(request, 'setLocation.html', {'ERROR':False})
 
+
 def stationerSellInfoList_view(request):
     return render(request, 'stationerSellInfoList.html')
+
 
 def webSellerInfoList_view(request):
     return render(request, 'webSellerInfoList.html')

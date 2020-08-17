@@ -81,10 +81,6 @@
 <div class="rateit svg" data-rateit-value="{{costEffetivenessScore.score}}" data-rateit-readonly="true"
     data-rateit-starwidth="15" data-rateit-starheight="15"></div>
 
-<div>{{versatilityScore.name}}</div>
-<div class="rateit svg" data-rateit-value="{{versatilityScore.score}}" data-rateit-readonly="true"
-    data-rateit-starwidth="15" data-rateit-starheight="15"></div>
-
 <hr>
 
 <div style="text-align: right;">
@@ -128,7 +124,7 @@
 
 <div>태그 목록</div>
 {% for tag in productTags %}
-<div style="font-weight: bold;">{{ tag }}</div>
+<div><a href="{% url 'tagProduct' tag.id %}">{{ tag }}</a></div>
 {% endfor %}
 
 <hr>

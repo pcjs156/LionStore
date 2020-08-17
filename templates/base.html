@@ -8,7 +8,7 @@
 
     <!-- 카카오맵 api 키 -->
     <script type="text/javascript"
-    src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e186e0bf42eb1f0115b15f778d6e50e1&libraries=services"> </script>
+        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=30e25c2ec22bea3e3b076ea3d30a2377&libraries=services"> </script>
 
     <!-- 부트스트랩 -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -23,6 +23,9 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
     </script>
 
+    <!-- fontAwesome Icons -->
+    <script src="https://use.fontawesome.com/36b6876fe9.js"></script>
+
     <!-- 별점 관련 -->
     <link rel="stylesheet" href="{% static 'widgets/rateit/rateit.css' %}">
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
@@ -31,6 +34,9 @@
 
 
     <link rel="stylesheet" href="{% static 'css/common.css' %}">
+
+    <!-- 웹 페이지 아이콘 -->
+    <link rel="icon shortcut" type="image/x-icon" href="{% static '/img/common/lionIcon.png' %}">
 
     <!-- head block : title / static을 추가-->
     {% block head %}
@@ -46,6 +52,7 @@
         </div>
         {% endif %}
         <div>{{user.nickname}}님, 어서오세요!</div>
+        <div><a href="{% url 'myPage' %}">마이페이지</a></div>
         <div><a href="{% url 'logOut' %}">로그아웃</a></div>
         <div><a href="{% url 'productRequestList' %}">상품 등록</a></div>
         {% else %}
@@ -59,12 +66,10 @@
     </header>
 
     <hr>
-
     {% block content %}
     {% endblock %}
     <hr>
-    <a href="{% url 'randomLike' %}">랜덤 좋아요</a>
-    <br>
+    {% include 'footer.html' %}
 </body>
 
 <!-- jQuery (부트스트랩의 자바스크립트 플러그인을 위해 필요합니다) -->

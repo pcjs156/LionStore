@@ -117,7 +117,6 @@ class PenReview(Review):
     design = models.ForeignKey(Score, on_delete=models.CASCADE, blank=False, null=True, related_name='design', verbose_name="디자인")
     texture = models.ForeignKey(Score, on_delete=models.CASCADE, blank=False, null=True, related_name='texture', verbose_name="사용감")
     costEffetiveness = models.ForeignKey(Score, on_delete=models.CASCADE, blank=False, null=True, related_name='costEffetiveness', verbose_name="가성비")
-    versatility = models.ForeignKey(Score, on_delete=models.CASCADE, blank=False, null=True, related_name='versatility', verbose_name="범용성")
 
     def __str__(self):
         return f"{self.id}. {self.product.name} 리뷰 (by {self.author.nickname}, on {self.pub_date})"
@@ -140,7 +139,7 @@ class Comment(models.Model):
     body = models.TextField(verbose_name="댓글 내용")
 
     def __str__(self):
-        return f"{body[:10]}.. (by {author.nickname}, on {pub_date}" 
+        return f"{self.body[:10]}.. (by {self.author.nickname}, on {self.pub_date}" 
 
 
 # 상품 등록 요청

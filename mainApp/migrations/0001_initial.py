@@ -180,7 +180,6 @@ class Migration(migrations.Migration):
                 ('grip', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='grip', to='mainApp.Score', verbose_name='그립감')),
                 ('life', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='life', to='mainApp.Score', verbose_name='제품 수명')),
                 ('texture', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='texture', to='mainApp.Score', verbose_name='사용감')),
-                ('versatility', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='versatility', to='mainApp.Score', verbose_name='범용성')),
             ],
             options={
                 'verbose_name': '펜 리뷰',

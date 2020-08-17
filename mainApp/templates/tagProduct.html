@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<title>태그 검색 결과</title>
+<!-- 특정 태그가 붙어 있는 제품의 목록을 보여주는 기능 -->
+{% endblock %}
+
+{% block content %}
+
+{% for product in productList %}
+<div><a href="{% url 'productDetail' product.id %}">{{ product }}</a></div>
+{% endfor %}
+
+{% endblock %}

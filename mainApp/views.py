@@ -91,6 +91,20 @@ def productDetail_view(request, product_id):
         content['popularitySort'] = True
         reviews = PenReview.objects.filter(product=product).order_by('-likeCount')
 
+    # 리뷰를 작성한 적이 있는가?
+    try:
+        myReview = list(filter(lambda r: r.author == request.user, reviews))
+        reviewCreated = (len(myReview) > 0)
+        content['reviewCreated'] = reviewCreated
+        
+        myReview = list(filter(lambda r: r.author == request.user, reviews))[0]
+        content['myReview'] = myReview
+        print(myReview)
+
+    except:
+        content['reviewCreated'] = False
+
+
     paginator = Paginator(reviews, 10)
     page = request.GET.get('page')
     reviews = paginator.get_page(page)
@@ -107,10 +121,20 @@ def productDetail_view(request, product_id):
     # 웹 판매정보 목록
     webSellInfoList = WebSellInfo.objects.filter(product=product)
     content['webSellInfoList'] = webSellInfoList
+    if len(webSellInfoList) > 0:
+        cheapestWebPrice = min(webSellInfoList, key=lambda info: info.price).price
+        content['cheapestWebPrice'] = cheapestWebPrice
+
+    # 웹 판매정보가 있는지 표시
+    hasWebSellInfo = len(webSellInfoList) > 0
+    content['hasWebSellInfo'] = hasWebSellInfo
 
     # 문구점 판매정보 목록
     stationerSellInfoList = StationerSellInfo.objects.filter(product=product)
     content['stationerSellInfoList'] = stationerSellInfoList
+    if len(stationerSellInfoList) > 0:
+        cheapestStationerPrice = min(stationerSellInfoList, key=lambda info: info.price).price
+        content['cheapestStationerPrice'] = cheapestStationerPrice
 
     # 등록된 문구점 판매정보가 없다면 지도를 표시할 수 없으므로 표시해놓음
     hasStationerSellInfo = len(stationerSellInfoList) > 0
@@ -118,34 +142,42 @@ def productDetail_view(request, product_id):
 
     # 지도 관련
     # 판매정보가 있다면?
-    # -> 판매정보가 없는 경우 지도가 표시되지 않으므로(hasStationerSellInfo가 False이므로) 중심좌표가 입력될 필요 없다.
+    # -> 판매정보가 없는 경우 지도가 표시되지 않으므로(hasStationerSellInfo가 False이므로) 중심좌표를 입력될 필요 없다.
     if hasStationerSellInfo:
         # 위치정보가 정의되지 않는 WebSeller라면
-        if request.user.is_WebSeller:
-            # 등록된 판매정보 중 임의로 골라 중앙으로 설정
+        try:
+            if request.user.is_WebSeller:
+                # 등록된 판매정보 중 임의로 골라 중앙으로 설정
+                randInfo = choice(stationerSellInfoList)
+                centerLatLon = centerLatitude, centerLongitude = randInfo.seller.latitude, randInfo.seller.longitude
+                zoomLevel = getZoomLevel(centerLatLon, stationerSellInfoList)
+                content['zoomLevel'] = zoomLevel
+                content['nullLocation'] = False
+                content['centerLatitude'], content['centerLongitude'] = centerLatLon
+
+            # 위치정보가 정의되는 Stationer/Customer라면
+            else:
+                # 만약 위치정보를 설정하지 않았다면
+                if (request.user.latitude == 0 and request.user.longitude == 0):
+                    # 지도를 표시하지 않을 것이므로 중심좌표 설정 X
+                    content['nullLocation'] = True
+                # 만약 위치정보를 설정했다면
+                else:
+                    # 중심좌표를 등록된 위치로 설정
+                    centerLatLon = centerLatitude, centerLongitude = request.user.latitude, request.user.longitude
+                    zoomLevel = getZoomLevel(centerLatLon, stationerSellInfoList)
+                    content['zoomLevel'] = zoomLevel
+                    content['nullLocation'] = False
+
+
+                    content['centerLatitude'], content['centerLongitude'] = centerLatLon
+        except:
             randInfo = choice(stationerSellInfoList)
             centerLatLon = centerLatitude, centerLongitude = randInfo.seller.latitude, randInfo.seller.longitude
             zoomLevel = getZoomLevel(centerLatLon, stationerSellInfoList)
             content['zoomLevel'] = zoomLevel
             content['nullLocation'] = False
             content['centerLatitude'], content['centerLongitude'] = centerLatLon
-
-        # 위치정보가 정의되는 Stationer/Customer라면
-        else:
-            # 만약 위치정보를 설정하지 않았다면
-            if (request.user.latitude == 0 and request.user.longitude == 0):
-                # 지도를 표시하지 않을 것이므로 중심좌표 설정 X
-                content['nullLocation'] = True
-            # 만약 위치정보를 설정했다면
-            else:
-                # 중심좌표를 등록된 위치로 설정
-                centerLatLon = centerLatitude, centerLongitude = request.user.latitude, request.user.longitude
-                zoomLevel = getZoomLevel(centerLatLon, stationerSellInfoList)
-                content['zoomLevel'] = zoomLevel
-                content['nullLocation'] = False
-
-
-                content['centerLatitude'], content['centerLongitude'] = centerLatLon
     
 
     return render(request, 'productDetail.html', content)
@@ -286,10 +318,8 @@ def reviewCreate_view(request, product_id):
             review=new_review, name="사용감", score=int(request.POST['texture']))
         new_review.costEffetiveness = Score.objects.create(
             review=new_review, name="가성비", score=int(request.POST['costEffetiveness']))
-        new_review.versatility = Score.objects.create(
-            review=new_review, name="범용성", score=int(request.POST['versatility']))
 
-        scores = [new_review.grip, new_review.life, new_review.durability, new_review.design, new_review.texture, new_review.costEffetiveness, new_review.versatility]
+        scores = [new_review.grip, new_review.life, new_review.durability, new_review.design, new_review.texture, new_review.costEffetiveness]
         new_review.totalScore = sum(map(lambda x: x.score, scores)) / len(scores)
 
         new_review.save()
@@ -340,8 +370,6 @@ def reviewDetail_view(request, review_id):
     content['textureScore'] = review.texture
     # 가성비
     content['costEffetivenessScore'] = review.costEffetiveness
-    # 범용성
-    content['versatilityScore'] = review.versatility
 
     # 좋아요 관련
     likers = [str(customer.nickname) for customer in review.likers.all()]
@@ -426,10 +454,7 @@ def reviewUpdate(request, review_id):
     review.costEffetiveness.score = int(request.POST['costEffetiveness'])
     review.costEffetiveness.save()
 
-    review.versatility.score = int(request.POST['versatility'])
-    review.versatility.save()
-    
-    scores = [review.grip, review.life, review.durability, review.design, review.texture, review.costEffetiveness, review.versatility]
+    scores = [review.grip, review.life, review.durability, review.design, review.texture, review.costEffetiveness]
     review.totalScore = sum(map(lambda x: x.score, scores)) / len(scores)
 
     review.modified = True
@@ -851,6 +876,22 @@ def webSellInfoModify_view(request, product_id, webSellInfo_id):
         return render(request, 'webSellInfoModify.html', {'form':form})
 
 
+def tagProduct_view(request, productTag_id):
+    content = dict()
+
+    tag = ReviewTag.objects.get(pk=productTag_id)
+
+    productList = set()
+    for product in Product.objects.all():
+        for review in PenReview.objects.filter(product=product):
+            if tag in review.tags.all():
+                productList.add(product)
+
+    content['productList'] = productList
+
+    return render(request, 'tagProduct.html', content)
+
+
 @login_required(login_url='/account/logIn/')
 def webSellInfoDelete(request, product_id, webSellInfo_id):
     targetInfo = get_object_or_404(WebSellInfo, pk=webSellInfo_id)
@@ -881,8 +922,6 @@ def mainPage_view(request):
     # 테스트/개발용이므로 서비스 할 때는 빠져아 함
     # 카테고리가 존재하지 않는 경우에만 하단의 모든 카테고리를 새로 생성하는 역할
     initializeCategory()
-    # 랜덤으로 countLimit개까지 Product를 생성하고 임의로 카테고리를 지정
-    automativeFilling_Product(countLimit=300)
 
     볼펜 = ProductCategory.objects.get(categoryName="볼펜")
     만년필 = ProductCategory.objects.get(categoryName="만년필")

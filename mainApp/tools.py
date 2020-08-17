@@ -14,8 +14,6 @@ from mainApp.models import Product, ProductCategory, Review
 def initializeCategory():
     # 카테고리 리스트가 비었을 때만 사용하기
     if len(ProductCategory.objects.all()) != 0:
-        print("@@@@@ 카테고리 초기화를 진행하지 않습니다.")
-        print("@@@@@ 카테고리가 없을 때만 사용할 수 있습니다.")
         return
     
     for name in CATEGORY_NAMES:
@@ -39,7 +37,7 @@ def automativeFilling_Product(countLimit=10):
 
 # 유튜브 링크로부터 해쉬값을 뽑아옴
 def getHash(rawLink):
-    return rawLink.split('=')[1]
+    return rawLink.split('/')[-1]
 
 
 # 리뷰에 이미지를 하나도 등록하지 않았는지 확인

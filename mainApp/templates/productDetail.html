@@ -36,7 +36,14 @@
 <div><span><a href="{% url 'productDetail' product.id %}?sort=popularity">인기순 정렬</a></span> / <span>최신순정렬</span></div>
 {% endif %}
 
+{% if not reviewCreated %}
+<!-- 리뷰를 작성하지 않은 경우 -->
 <div><a href="{% url 'reviewCreate' product.id %}">새 리뷰 작성</a></div>
+{% else %}
+<!-- 리뷰를 이미 작성한 경우 -->
+<div><a href="{% url 'reviewDetail' myReview.id %}">작성한 리뷰 보기</a></div>
+{% endif %}
+
 {% for review in reviews %}
 <div><a href="{% url 'reviewDetail' review.id %}">리뷰 {{ review.id }} ({{ review.pub_date | date:"Y/m/d a h:i" }})</a></div>
 {% endfor %}
@@ -59,7 +66,7 @@
      <hr>
      <div style="font-weight: bold;">태그목록</div>
      {% for tag in tags %}
-     <div>{{ tag }}</div>
+     <div><a href="{% url 'tagProduct' tag.id %}">{{ tag }}</a></div>
      {% endfor %}
 
 <!-- 최신순 정렬인 경우 -->
@@ -92,20 +99,33 @@
 <a href="{% url 'webSellInfoCreate' product_id=product.id %}">웹 판매정보 추가</a>
 {% endif %}
 
-{% for info in webSellInfoList %}
-<div>
-     <div>판매자 : {{ info.seller.nickname }}</div>
-     <div>가격 : {{ info.price }}원</div>
-     <div><a href="{% url 'redirectExternalLink' link=info.link %}">구입하러 가기</a></div>
-     {% if info.seller == user %}
+{% if hasWebSellInfo %}
+     {% for info in webSellInfoList %}
      <div>
-          <div><a href="{% url 'webSellInfoDelete' product_id=product.id webSellInfo_id=info.id %}">판매정보 삭제하기</a></div>
-          <div><a href="{% url 'webSellInfoModify' product_id=product.id webSellInfo_id=info.id %}">판매정보 수정하기</a></div>
+          {% if info.price == cheapestWebPrice %}
+          <!-- 최저가인 경우 붉은 색으로 보이도록 표시 -->
+          <div style="color: red;">판매자 : {{ info.seller.nickname }}</div>
+          <div style="color: red;">가격 : {{ info.price }}원</div>
+          {% else %}
+          <div>판매자 : {{ info.seller.nickname }}</div>
+          <div>가격 : {{ info.price }}원</div>
+          {% endif %}
+          <div><a href="{% url 'redirectExternalLink' link=info.link %}">구입하러 가기</a></div>
+
+          {% if info.seller == user %}
+          <!-- 판매자인 경우 수정/삭제 기능에 접근 가능 -->
+          <div>
+               <div><a href="{% url 'webSellInfoDelete' product_id=product.id webSellInfo_id=info.id %}">판매정보 삭제하기</a></div>
+               <div><a href="{% url 'webSellInfoModify' product_id=product.id webSellInfo_id=info.id %}">판매정보 수정하기</a></div>
+          </div>
+          {% endif %}
      </div>
-     {% endif %}
-</div>
-<br>
-{% endfor %}
+     <br>
+     {% endfor %}
+
+{% else%}
+<div>등록된 웹 판매 정보가 없습니다!</div>
+{% endif %}
 
 <hr>
 
@@ -127,9 +147,17 @@
 
 {% for info in stationerSellInfoList %}
 <div>
+     {% if info.price == cheapestStationerPrice %}
+     <!-- 최저가인 경우 붉은 색으로 보이도록 표시 -->
+     <div style="color: red;">판매자 : {{ info.seller.nickname }}</div>
+     <div style="color: red;">가격 : {{ info.price }}원</div>
+     {% else %}
      <div>판매자 : {{ info.seller.nickname }}</div>
      <div>가격 : {{ info.price }}원</div>
+     {% endif %}
+
      {% if info.seller == user %}
+     <!-- 판매자인 경우 수정/삭제 기능에 접근 가능 -->
      <div>
           <div><a href="{% url 'stationerSellInfoDelete' product_id=product.id stationerSellInfo_id=info.id %}">판매정보 삭제하기</a></div>
           <div><a href="{% url 'stationerSellInfoModify' product_id=product.id stationerSellInfo_id=info.id %}">판매정보 수정하기</a></div>

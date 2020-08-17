@@ -1,15 +1,20 @@
-{% extends 'base.html' %}
 {% load static %}
 
-{% block head %}
-<title>인트로 페이지</title>
-<!-- 웹 페이지 최초 접속시 노출되는 페이지 -->
-{% endblock %}
+<!DOCTYPE html>
+<html lang="ko">
 
-{% block content %}
-<div>인트로 페이지입니다.</div>
-{% if not user.is_authenticated %}
-<a href="{% url 'selectCustomerType' %}"><button>회원가입</button></a>
-{% endif %}
-<a href="{% url 'mainPage' %}"><button>HOME</button></a>
-{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>인트로 페이지</title>
+</head>
+
+<body>
+    <div>인트로 페이지입니다.</div>
+    {% if not user.is_authenticated %}
+    <a href="{% url 'selectCustomerType' %}"><button>회원가입</button></a>
+    {% endif %}
+    <a href="{% url 'mainPage' %}"><button>HOME</button></a>
+</body>
+
+</html>
