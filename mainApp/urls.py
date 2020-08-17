@@ -63,5 +63,8 @@ urlpatterns = [
     path('keywordSearchResult', views.keywordSearchResult_view, name="keywordSearchResult"),
     path('tagSearchResult', views.tagSearchResult_view, name="tagSearchResult"),
 
+    # 특정 태그가 달려있는 제품의 목록
+    path('tagProduct/<int:productTag_id>', views.tagProduct_view, name="tagProduct"),
+
     path('redirectExternalLink/<path:link>', tools.redirectExternalLink, name='redirectExternalLink'),
 ]

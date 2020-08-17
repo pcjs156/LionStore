@@ -124,7 +124,7 @@
 
 <div>태그 목록</div>
 {% for tag in productTags %}
-<div style="font-weight: bold;">{{ tag }}</div>
+<div><a href="{% url 'tagProduct' tag.id %}">{{ tag }}</a></div>
 {% endfor %}
 
 <hr>

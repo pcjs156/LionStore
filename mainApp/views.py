@@ -870,6 +870,22 @@ def webSellInfoModify_view(request, product_id, webSellInfo_id):
         return render(request, 'webSellInfoModify.html', {'form':form})
 
 
+def tagProduct_view(request, productTag_id):
+    content = dict()
+
+    tag = ReviewTag.objects.get(pk=productTag_id)
+
+    productList = set()
+    for product in Product.objects.all():
+        for review in PenReview.objects.filter(product=product):
+            if tag in review.tags.all():
+                productList.add(product)
+
+    content['productList'] = productList
+
+    return render(request, 'tagProduct.html', content)
+
+
 @login_required(login_url='/account/logIn/')
 def webSellInfoDelete(request, product_id, webSellInfo_id):
     targetInfo = get_object_or_404(WebSellInfo, pk=webSellInfo_id)
