@@ -21,7 +21,14 @@ class Product(models.Model):
     productImage = models.ImageField(upload_to="product_image/", null=False, verbose_name="상품 이미지")
 
     def __str__(self):
-        return f"{self.id}. [{self.manufacturer}] : {self.name}"
+        return f"{self.manufacturer}) {self.name}"
+
+    def averageScore(self):
+        reviews = PenReview.objects.filter(product=self)
+        if len(reviews) == 0:
+            return 0
+        else:
+            return sum(list(map(lambda r: r.totalScore, reviews))) / len(reviews)
 
 # 제품 관련 영상 링크
 class ProductVideoLink(models.Model):
