@@ -339,6 +339,7 @@ ol {
 	display: inline-block;
 	margin-right: 40px;
 	position: relative;
+	text-align: center;
 }
 
 .header__menu ul li.active a:after {
@@ -893,10 +894,6 @@ ol {
 	font-size: 14px;
 	color: #666666;
 	line-height: 30px;
-}
-
-.footer__newslatter {
-	margin-bottom: 30px;
 }
 
 .footer__newslatter h6 {

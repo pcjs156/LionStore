@@ -7,15 +7,15 @@ header>div {
 
 /* 프로필 이미지를 원 모양으로 만들기 */
 .profileBox {
-    width: 100px;
-    height: 100px;
+    width: 20px;
+    height: 20px;
     border-radius: 70%;
     overflow: hidden;
 }
 
 .profileImage {
-    width: 100%;
-    height: 100%;
+    width: 10%;
+    height: 10%;
     object-fit: cover;
 }
 

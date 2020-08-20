@@ -8,37 +8,17 @@
 {% endblock %}
 
 {% block content %}
-<form action="{% url 'keywordSearchResult' %}" method="GET">
-     <div>키워드 검색</div>
-     <div>입력받은 키워드가 제품명에 포함된 제품을 검색합니다.</div>
-     <input type="search" name="keywordQuery">
-     <input type="text" name="sort" value="popularity" style="display: none; visibility: hidden;">
-     <input type="submit" value="검색">
-</form>
 
 <br>
+
+<!-- <br>
 
 <form action="{% url 'tagSearchResult' %}" method="GET">
      <div>태그 검색</div>
      <div>공백으로 나뉘어 입력된 태그들과 적어도 하나 겹치는 제품을 검색합니다.</div>
      <input type="search" name="tagQuery">
      <input type="submit" value="검색">
-</form>
-
-<br>
-
-<!-- 기본값 : 인기순 정렬 -->
-<div><a href="{% url 'productList' 볼펜.id %}?sort=popularity">볼펜</a></div>
-<div><a href="{% url 'productList' 만년필.id %}?sort=popularity">만년필</a></div>
-<div><a href="{% url 'productList' 캘리그라피펜.id %}?sort=popularity">캘리그라피펜</a></div>
-<div><a href="{% url 'productList' 연필.id %}?sort=popularity">연필</a></div>
-<div><a href="{% url 'productList' 색연필.id %}?sort=popularity">색연필</a></div>
-<div><a href="{% url 'productList' 형광펜.id %}?sort=popularity">형광펜</a></div>
-<div><a href="{% url 'productList' 샤프펜슬.id %}?sort=popularity">샤프펜슬</a></div>
-<div><a href="{% url 'productList' 유성펜.id %}?sort=popularity">유성펜</a></div>
-<div><a href="{% url 'productList' 사인펜.id %}?sort=popularity">사인펜</a></div>
-<div><a href="{% url 'productList' 젤펜.id %}?sort=popularity">젤펜</a></div>
-<div><a href="{% url 'productList' 기타.id %}?sort=popularity">기타</a></div>
+</form> -->
 
 <hr>
 

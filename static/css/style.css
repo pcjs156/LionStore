@@ -317,7 +317,7 @@ ol {
 -----------------------*/
 
 .header {
-	background: #ff9100;
+	background: #ffffff;
 	-webkit-box-shadow: 0px 5px 10px rgba(91, 91, 91, 0.1);
 	box-shadow: 0px 5px 10px rgba(91, 91, 91, 0.1);
 }
@@ -331,14 +331,15 @@ ol {
 }
 
 .header__menu {
-	padding: 30px 30px 20px;
+	padding: 30px 0 27px;
 }
 
 .header__menu ul li {
 	list-style: none;
 	display: inline-block;
-	margin-right: 30px;
+	margin-right: 40px;
 	position: relative;
+	text-align: center;
 }
 
 .header__menu ul li.active a:after {
@@ -360,7 +361,7 @@ ol {
 }
 
 .header__menu ul li:last-child {
-	margin-right: 30;
+	margin-right: 0;
 }
 
 .header__menu ul li .dropdown {
@@ -424,7 +425,7 @@ ol {
 
 .header__right {
 	text-align: right;
-	padding: 20px 0 27px;
+	padding: 30px 0 27px;
 }
 
 .header__right__auth {
@@ -893,10 +894,6 @@ ol {
 	font-size: 14px;
 	color: #666666;
 	line-height: 30px;
-}
-
-.footer__newslatter {
-	margin-bottom: 30px;
 }
 
 .footer__newslatter h6 {

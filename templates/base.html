@@ -68,75 +68,10 @@
 </head>
 
 <body>
-    <header>
-        {% if user.is_authenticated %}
-        {% if user.image.url != "" %}
-        <div class="profileBox">
-            <img class="profileImage" src="{{ user.image.url }}" alt="프로필 이미지">
-        </div>
-        {% endif %}
-        <div>{{user.nickname}}님, 어서오세요!</div>
-        <div><a href="{% url 'myPage' %}">마이페이지</a></div>
-        <div><a href="{% url 'logOut' %}">로그아웃</a></div>
-        {% else %}
-        <div><a href="{% url 'selectCustomerType' %}">회원가입</a></div>
-        <div><a href="{% url 'logIn' %}">로그인</a></div>
-        {% endif %}
-
-        <div><a href="{% url 'mainPage' %}">홈으로 가기</a></div>
-
-    </header>
     <header class="header">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-xl-3 col-lg-2">
-                    <div class="header__logo">
-                        <a href="./index.html"><img src="img/logo.png" alt="">사자네 문방구</a>
-                    </div>
-                </div>
-                <div class="col-xl-6 col-lg-7">
-                    <nav class="header__menu">
-                        <ul>
-                            <li><a href="{% url 'redirectByCategoryName' '볼펜' %}">볼펜</a></li>
-                            <li><a href="{% url 'redirectByCategoryName' '만년필' %}">만년필</a></li>
-                            <li><a href="{% url 'redirectByCategoryName' '캘리그라피펜' %}">캘리그라피펜</a></li>
-                            <li><a href="{% url 'redirectByCategoryName' '연필' %}">연필</a></li>
-                            <li><a href="{% url 'redirectByCategoryName' '색연필' %}">색연필</a>
-                            <li><a href="{% url 'redirectByCategoryName' '형광펜' %}">형광펜</a>
-                            <li><a href="{% url 'redirectByCategoryName' '샤프펜슬' %}">샤프펜슬</a>
-                            <li><a href="{% url 'redirectByCategoryName' '유성펜' %}">유성펜</a>
-                            <li><a href="{% url 'redirectByCategoryName' '사인펜' %}">사인펜</a>
-                            <li><a href="{% url 'redirectByCategoryName' '젤펜' %}">젤펜</a>
-                            <li><a href="{% url 'redirectByCategoryName' '기타' %}">기타</a>
-                                <ul class="dropdown">
-                                    <li><a href="./product-details.html">형광펜</a></li>
-                                    <li><a href="./shop-cart.html">샤프펜슬</a></li>
-                                    <li><a href="./checkout.html">유성펜</a></li>
-                                    <li><a href="./blog-details.html">사인펜</a></li>
-                                    <li><a href="./blog-details.html">젤펜</a></li>
-                                    <li><a href="./blog-details.html">기타</a></li>
-                                </ul>
-                        </ul>
-                    </nav>
-                </div>
-                <div class="col-lg-3">
-                    <div class="header__right">                        
-                        <ul class="header__right__widget">
-                            <li><span class="icon_search search-switch"></span></li>
-                            <li><a href="#"><span class="icon_heart_alt"></span>
-                                <div class="tip">2</div>
-                            </a></li>
-                            <li><a href="#"><span class="icon_bag_alt"></span>
-                            </a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="canvas__open">
-                <i class="fa fa-bars"></i>
-            </div>
-        </div>
+        {% include 'navBar.html' %}
     </header>
+
     <hr>
     {% block content %}
     {% endblock %}

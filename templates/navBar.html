@@ -1,0 +1,63 @@
+{% load static %}
+
+<div class="gridContainer"
+    style="display: grid; grid-template-rows: 1fr; grid-template-columns: 1fr 4fr 0.5fr; padding: 1rem;">
+    <div style="text-align: left; margin: auto 2rem;">
+        <a href="{% url 'mainPage' %}"><img src="{% static '/img/common/lionStore_logo.png' %}" alt="사자네 문방구 로고"
+                style="width: 400px;"></a>
+    </div>
+
+
+    <div class="footer__newslatter" style="margin: auto 2rem;">
+        <form action="{% url 'keywordSearchResult' %}" method="GET" style="margin-bottom: 0px;">
+            <input type="text" name="keywordQuery">
+            <input type="text" name="sort" value="popularity" style="display: none; visibility: hidden;">
+            <button type="submit" class="site-btn">키워드 검색</button>
+        </form>
+    </div>
+
+
+    {% if user.is_authenticated %}
+    <div style="display: grid; grid-template-columns: 1fr 1fr;">
+
+        <div style="display: grid; grid-template-rows: 1fr 1fr; text-align: center;">
+            <img class="profileImage" src="{{ user.image.url }}" alt="프로필 이미지"
+                style="max-width: 30px; max-height: 30px; width: auto; height: auto; display: block; margin:0px auto;">
+            <a href="{% url 'myPage' %}">MyPage</a>
+        </div>
+        <div style="text-align: center;">
+            <a href="{% url 'logOut' %}"><i class="fa fa-sign-out fa-2x" aria-hidden="true"></i></a>
+        </div>
+    </div>
+    {% else %}
+    <div style="display: grid; grid-template-columns: 1fr 1fr;">
+        <div style="display: grid; grid-template-rows: 1fr 1fr; text-align: center;">
+            <div>
+                <i class="fa fa-sign-in fa-2x" aria-hidden="true"></i>
+            </div>
+            <div><a href="{% url 'selectCustomerType' %}">회원가입</a></div>
+        </div>
+        <div style="display: grid; grid-template-rows: 1fr 1fr; text-align: center;">
+            <div>
+                <i class="fa fa-user-plus fa-2x" aria-hidden="true"></i>
+            </div>
+            <div><a href="{% url 'logIn' %}">로그인</a></div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+<nav class="header__menu" style="text-align: center;">
+    <ul>
+        <li><a href="{% url 'redirectByCategoryName' '볼펜' %}">볼펜</a></li>
+        <li><a href="{% url 'redirectByCategoryName' '만년필' %}">만년필</a></li>
+        <li><a href="{% url 'redirectByCategoryName' '캘리그라피펜' %}">캘리그라피펜</a></li>
+        <li><a href="{% url 'redirectByCategoryName' '연필' %}">연필</a></li>
+        <li><a href="{% url 'redirectByCategoryName' '색연필' %}">색연필</a>
+        <li><a href="{% url 'redirectByCategoryName' '형광펜' %}">형광펜</a>
+        <li><a href="{% url 'redirectByCategoryName' '샤프펜슬' %}">샤프펜슬</a>
+        <li><a href="{% url 'redirectByCategoryName' '유성펜' %}">유성펜</a>
+        <li><a href="{% url 'redirectByCategoryName' '사인펜' %}">사인펜</a>
+        <li><a href="{% url 'redirectByCategoryName' '젤펜' %}">젤펜</a>
+        <li><a href="{% url 'redirectByCategoryName' '기타' %}">기타</a>
+    </ul>
+</nav>
