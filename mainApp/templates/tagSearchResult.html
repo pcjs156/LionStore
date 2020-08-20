@@ -13,8 +13,26 @@
 
 <div><a href="{% url 'searchMain' %}">다시 검색하기</a></div>
 
-{% for pair in searchResult %}
-<div><a href="{% url 'productDetail' pair.product.id %}"> 유사도 {{ pair.cnt }} : {{ pair.product }}</a></div>
-{% endfor %}
+<div class="row property__gallery">
+     {% for pair in searchResult %}
+     <div class="col-lg-3 col-md-4 col-sm-6 mix women">
+          <div class="product__item">
+               <div class="product__item__pic set-bg" data-setbg="{{ pair.product.productImage.url }}">
+                    <ul class="product__hover">
+                         <li><a href="{{ pair.product.productImage.url }}" class="image-popup"><span
+                                        class="arrow_expand"></span></a></li>
+                    </ul>
+               </div>
+               <div class="product__item__text">
+                    <div><a href="{% url 'productDetail' pair.product.id %}"> 유사도 {{ pair.cnt }} : {{ pair.product }}</a></div>                    <div class="rating">
+                         <div class="rateit svg" data-rateit-value="{{ pair.product.averageScore }}"
+                              data-rateit-readonly="true" data-rateit-starwidth="15" data-rateit-starheight="15">
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </div>
+     {% endfor %}
+</div>
 
 {% endblock %}
