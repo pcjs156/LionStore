@@ -1,4 +1,23 @@
+footer {
+    padding-bottom: 2rem;
+}
+
 i {
-    margin: 2rem;
-    background-color: red;
+    margin: 7px;
+}
+
+.iconContainer {
+    text-align: center;
+    margin: 1.5rem;
+}
+
+.linkContainer {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+#lionStoreTitle {
+    text-align: center;
+    font-size: large;
+    font-weight: bold;
 }
