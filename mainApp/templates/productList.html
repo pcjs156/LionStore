@@ -21,10 +21,28 @@
 
 
 <!-- 제품 목록 -->
-{% for product in products %}
-<div><a href="{% url 'productDetail' product.id %}?sort=popularity">{{ product }}</a></div>
-{% endfor %}
-
+<div class="row property__gallery">
+    {% for product in products %}
+        <div class="col-lg-3 col-md-4 col-sm-6 mix women">
+         <div class="product__item">
+              <div class="product__item__pic set-bg" data-setbg="{{ product.productImage.url }}">
+                   <ul class="product__hover">
+                        <li><a href="{{ product.productImage.url }}" class="image-popup"><span
+                                       class="arrow_expand"></span></a></li>
+                   </ul>
+              </div>
+              <div class="product__item__text">
+                   <h6><a href="{% url 'productDetail' product_id=product.id %}">{{ product }}</a></h6>
+                   <div class="rating">
+                        <div class="rateit svg" data-rateit-value="{{ product.averageScore }}"
+                             data-rateit-readonly="true" data-rateit-starwidth="15" data-rateit-starheight="15">
+                        </div>
+                   </div>
+              </div>
+         </div>
+    </div>
+    {% endfor %}
+</div>
 
 <!-- 인기순 정렬인 경우의 페이지네이션 -->
 {% if popularitySort %}
