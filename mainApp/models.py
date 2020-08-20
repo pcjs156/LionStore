@@ -119,7 +119,8 @@ class PenReview(Review):
     costEffetiveness = models.ForeignKey(Score, on_delete=models.CASCADE, blank=False, null=True, related_name='costEffetiveness', verbose_name="가성비")
 
     def __str__(self):
-        return f"{self.id}. {self.product.name} 리뷰 (by {self.author.nickname}, on {self.pub_date})"
+            description = self.comment if len(self.comment) <= 10 else (self.comment[:10] + "...")
+            return f"{self.product.name}) {description}"
 
 # 상품의 특성
 class ReviewTag(models.Model):

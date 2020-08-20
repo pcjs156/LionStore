@@ -42,64 +42,95 @@
 
 <hr>
 
-{% if user.is_authenticated %}
-     {% if not error %}
-     <div>추천 리뷰 : 리뷰 성향이 비슷한 상위 {{ topSimilarity_users_len }}명의 유저가 작성한 리뷰</div>
-          {% for reviewer in topSimilarity_users %}
-          <div>
-               <div>{{ reviewer.nickname }}님의 리뷰</div>
-               {% for reviewList in topSimilarityReviews %}
-                    {% for review in reviewList %}
-                    <div><a href="{% url 'reviewDetail' review.id %}">{{ review }}</a></div>
+<div class="reviewContainer">
+     {% if user.is_authenticated %}
+          {% if not error %}
+               {% for reviewer in topSimilarity_users %}
+                    <div>{{ reviewer.nickname }}님의 리뷰</div>
+                    <div class="row property__gallery">
+                    {% for reviewList in topSimilarityReviews %}
+                         {% for review in reviewList %}
+                         <div class="col-lg-3 col-md-4 col-sm-6 mix women">
+                              <div class="product__item">
+                                   <div class="product__item__pic set-bg" data-setbg="{{ review.reviewImage1.url }}">
+                                        <ul class="product__hover">
+                                             <li><a href="{{ review.reviewImage1.url }}" class="image-popup"><span
+                                                            class="arrow_expand"></span></a></li>
+                                        </ul>
+                                   </div>
+                                   <div class="product__item__text">
+                                        <h6><a href="{% url 'reviewDetail' review.id %}">{{ review }}</a></h6>
+                                        <div class="rating">
+                                             <div class="rateit svg" data-rateit-value="{{ review.totalScore }}"
+                                                  data-rateit-readonly="true" data-rateit-starwidth="15" data-rateit-starheight="15">
+                                             </div>
+                                        </div>
+                                   </div>
+                              </div>
+                         </div>
+                         {% endfor %}
                     {% endfor %}
+                    </div>
+                    <br>
                {% endfor %}
-          </div>
-          <br>
-          {% endfor %}
+          {% endif %}
      {% else %}
-     <div>데이터가 부족해 리뷰 추천이 불가능합니다 ㅠㅠ 리뷰를 작성해보시는건 어떨까요?</div>
-     {% endif %}
-{% else %}
-     <div>추천 리뷰 기능을 이용하시려면 <a href="{% url 'logIn' %}">로그인</a>하시거나 <a href="{% url 'selectCustomerType' %}">회원가입</a>해주세요!</div>
+     <!-- for Authenticated -->
+     <div>추천 리뷰 기능을 이용하시려면 <a href="{% url 'logIn' %}">로그인</a>하시거나 <a
+               href="{% url 'selectCustomerType' %}">회원가입</a>해주세요!</div>
      <br>
-{% endif %}
+     {% endif %}
 
-<div>최신 리뷰</div>
-<div class="row property__gallery">
-{% for newReview in newReviews %}
-<div>{{ newReview.reviewImage1.url }}</div>
-<div class="col-lg-3 col-md-4 col-sm-6 mix women">
-     <div class="product__item">
-         <div class="product__item__pic set-bg" data-setbg="{{ newReview.reviewImage1.url }}">
-             <ul class="product__hover">
-                 <li><a href="{{ newReview.reviewImage1.url }}" class="image-popup"><span class="arrow_expand"></span></a></li>
-                 <li><a href="#"><span class="icon_heart_alt"></span></a></li>
-                 <li><a href="#"><span class="icon_bag_alt"></span></a></li>
-             </ul>
-         </div>
-         <div class="product__item__text">
-             <h6><a href="#">Buttons tweed blazer</a></h6>
-             <div class="rating">
-                 <i class="fa fa-star"></i>
-                 <i class="fa fa-star"></i>
-                 <i class="fa fa-star"></i>
-                 <i class="fa fa-star"></i>
-                 <i class="fa fa-star"></i>
-             </div>
-             <div class="product__price">$ 59.0</div>
-         </div>
+     <div>최신 리뷰</div>
+     <div class="row property__gallery">
+          {% for newReview in newReviews %}
+          <div class="col-lg-3 col-md-4 col-sm-6 mix women">
+               <div class="product__item">
+                    <div class="product__item__pic set-bg" data-setbg="{{ newReview.reviewImage1.url }}">
+                         <ul class="product__hover">
+                              <li><a href="{{ newReview.reviewImage1.url }}" class="image-popup"><span
+                                             class="arrow_expand"></span></a></li>
+                         </ul>
+                    </div>
+                    <div class="product__item__text">
+                         <h6><a href="{% url 'reviewDetail' newReview.id %}">{{ newReview }}</a></h6>
+                         <div class="rating">
+                              <div class="rateit svg" data-rateit-value="{{ newReview.totalScore }}"
+                                   data-rateit-readonly="true" data-rateit-starwidth="15" data-rateit-starheight="15">
+                              </div>
+                         </div>
+                    </div>
+               </div>
+          </div>
+          {% endfor %}
      </div>
- </div>
 
-<div><a href="{% url 'reviewDetail' newReview.id %}">{{ newReview }}</a></div>
-{% endfor %}
+     <br>
+
+     <div>인기 리뷰</div>
+     <div class="row property__gallery">
+          {% for popularReview in popularReviews %}
+          <div class="col-lg-3 col-md-4 col-sm-6 mix women">
+               <div class="product__item">
+                    <div class="product__item__pic set-bg" data-setbg="{{ popularReview.reviewImage1.url }}">
+                         <ul class="product__hover">
+                              <li><a href="{{ popularReview.reviewImage1.url }}" class="image-popup"><span
+                                             class="arrow_expand"></span></a></li>
+                         </ul>
+                    </div>
+                    <div class="product__item__text">
+                         <h6><a href="{% url 'reviewDetail' popularReview.id %}">{{ popularReview }}</a></h6>
+                         <div class="rating">
+                              <div class="rateit svg" data-rateit-value="{{ popularReview.totalScore }}"
+                                   data-rateit-readonly="true" data-rateit-starwidth="15" data-rateit-starheight="15">
+                              </div>
+                         </div>
+                    </div>
+               </div>
+          </div>
+          {% endfor %}
+     </div>
 </div>
 
-<br>
-
-<div>인기 리뷰</div>
-{% for popularReview in popularReviews %}
-<div><a href="{% url 'reviewDetail' popularReview.id %}">{{ popularReview }}</a></div>
-{% endfor %}
 
 {% endblock %}
