@@ -888,6 +888,8 @@ def tagProduct_view(request, productTag_id):
                 productList.add(product)
 
     content['productList'] = productList
+    content['length'] = len(productList)
+    content['tag'] = tag.tag
 
     return render(request, 'tagProduct.html', content)
 
