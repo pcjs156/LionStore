@@ -3,50 +3,133 @@
 
 {% block head %}
 <title>일반 리뷰어 회원가입 페이지</title>
+<style>
+    #id_username,
+    #id_password1,
+    #id_email,
+    #id_password2,
+    #id_nickname {
+        width: 10%;
+    }
+
+    #password_guide p {
+        margin-bottom: 0;
+        color: gray;
+    }
+
+    textarea {
+        height: 130px;
+        width: 30%;
+        padding-left: 20px;
+        padding-top: 12px;
+        font-size: 14px;
+        color: #444444;
+        border: 1px solid #e1e1e1;
+        border-radius: 10px;
+        margin-bottom: 14px;
+        resize: none;
+    }
+
+    #id_age, #id_job, #id_usage,
+    #id_penInterest_1, #id_penInterest_2, #id_penInterest_3 {
+        width: 75%;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
 <div>일반 리뷰어 회원가입 페이지</div>
-<form method="POST" enctype="multipart/form-data">
+<form method="POST" enctype="multipart/form-data" class="checkout__form">
     {% csrf_token %}
-    아이디 : {{ form.username }} <span>150자 이하 문자, 숫자 그리고 @/./+/-/_만 가능합니다.</span>
-    <br>
-    <br>
-    <div>
-        <div>다른 개인 정보와 유사한 비밀번호는 사용할 수 없습니다.</div>
-        <div>비밀번호는 최소 8자 이상이어야 합니다.</div>
-        <div>통상적으로 자주 사용되는 비밀번호는 사용할 수 없습니다.</div>
-        <div>숫자로만 이루어진 비밀번호는 사용할 수 없습니다.</div>
+    <div class="checkout__form__input">
+        <p>ID <span>*</span>
+            <span style="color: gray;">150자 이하 문자, 숫자 그리고 @/./+/-/_만 가능합니다.</span> </p>
+        {{ form.username }}
     </div>
-    비밀번호 : {{ form.password1 }}
     <br>
-    비밀번호 확인 : {{ form.password2 }}
+
+    <div id="password_guide">
+        <p>다른 개인 정보와 유사한 비밀번호는 사용할 수 없습니다.</p>
+        <p>비밀번호는 최소 8자 이상이어야 합니다.</p>
+        <p>통상적으로 자주 사용되는 비밀번호는 사용할 수 없습니다.</p>
+        <p>숫자로만 이루어진 비밀번호는 사용할 수 없습니다.</p>
+    </div>
+    <div class="checkout__form__input">
+        <p>Password <span>*</span></p>
+        {{ form.password1 }}
+    </div>
+    <div class="checkout__form__input">
+        <p>Again <span>*</span></p>
+        {{ form.password2 }}
+    </div>
     <br>
-    이메일 : {{ form.email }}
+
+    <div class="checkout__form__input">
+        <p>E-MAIL <span>*</span></p>
+        {{ form.email }}
+    </div>
     <br>
-    닉네임 : {{ form.nickname }}
+
+    <div class="checkout__form__input">
+        <p>NICKNAME <span>*</span></p>
+        {{ form.nickname }}
+    </div>
     <br>
-    소개글 <br>
+
+    INTRODUCE <br>
     {{ form.introduce }}
     <br>
-    프로필 이미지 : {{ form.image }}
+
+    <div>
+        <span>PROFILE_IMAGE</span><br>
+        <input type="file" name="image" accept="image/*" id="id_image">
+    </div>
+    
     <br>
-    연령대 : {{ form.age }}
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; width: 50%;">
+        <div>
+            <div>AGE</div>
+            {{ form.age }}
+        </div>
+    
+        <div>
+            <div>JOB</div>
+            {{ form.job }}
+        </div>
+    
+        <div>
+            <div>USAGE</div>
+            {{ form.usage }}
+        </div>
+    </div>
+
     <br>
-    직업 : {{ form.job }}
-    <br>
-    주 사용 용도 : {{ form.usage }}
-    <br>
-    관심있는 펜 종류 1 : {{form.penInterest_1}}
-    <br>
-    관심있는 펜 종류 2 : {{form.penInterest_2}}
-    <br>
-    관심있는 펜 종류 3 : {{form.penInterest_3}}
-    <br>
-    태그(하단 입력창에 유저의 특징을 나타내는 태그를 '띄어쓰기'로 구분해 입력한다.)
-    <br>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; width: 50%;">
+        <div>
+            <div>PEN 1</div>
+            {{form.penInterest_1}}
+        </div>
+        <div>
+            <div>PEN 2</div>
+            {{form.penInterest_2}}
+        </div>
+        <div>
+            <div>PEN 3</div>
+            {{form.penInterest_3}}
+        </div>
+    </div>
+    <br><br>
+
+    <div class="checkout__form__input">
+        <p>TAG <span style="color: gray;">공백문자로 구분해 입력</span></p>
+    </div>
     {{ form.rawTagString }}
     <br>
+    
     <input type="submit" value="다음 단계로">
 </form>
+
+
 {% endblock %}

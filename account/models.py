@@ -18,7 +18,7 @@ class Customer(AbstractUser):
     image = models.ImageField(upload_to="account/profile_image", default="account/profile_image/user_default_image.png", blank=True, null=True, verbose_name="대표 이미지")
 
     # 소개글
-    introduce = models.TextField(verbose_name="소개글")
+    introduce = models.TextField(verbose_name="소개글", default="", blank=True, null=False)
 
     # 연락처
     telephone = models.CharField(max_length=20, blank=False, null=True, default="", verbose_name="판매자 연락처")

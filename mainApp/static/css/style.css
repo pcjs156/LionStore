@@ -2339,7 +2339,7 @@ ol {
 
 .checkout__form .checkout__form__input input {
 	height: 50px;
-	width: 100%;
+	width: 50%;
 	border: 1px solid #e1e1e1;
 	border-radius: 2px;
 	margin-bottom: 25px;
