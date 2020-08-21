@@ -96,6 +96,38 @@ def productDetail_view(request, product_id):
         reviews = PenReview.objects.filter(product=product).order_by('-likeCount')
         content['sortBy'] = 'popularity'
 
+    # 평점 관련
+    try:
+        avr_totalScore = sum(list(map(lambda x: x.totalScore, reviews))) / len(reviews)
+        content['avr_totalScore'] = avr_totalScore
+
+        avr_gripScore = sum(list(map(lambda x: x.grip.score, reviews))) / len(reviews)
+        content['avr_gripScore'] = avr_gripScore
+
+        avr_lifeScore = sum(list(map(lambda x: x.life.score, reviews))) / len(reviews)
+        content['avr_lifeScore'] = avr_lifeScore
+
+        avr_durabilityScore = sum(list(map(lambda x: x.durability.score, reviews))) / len(reviews)
+        content['avr_durabilityScore'] = avr_durabilityScore
+
+        avr_designScore = sum(list(map(lambda x: x.design.score, reviews))) / len(reviews)
+        content['avr_designScore'] = avr_designScore
+
+        avr_textureScore = sum(list(map(lambda x: x.texture.score, reviews))) / len(reviews)
+        content['avr_textureScore'] = avr_textureScore
+
+        avr_costEffetivenessScore = sum(list(map(lambda x: x.costEffetiveness.score, reviews))) / len(reviews)
+        content['avr_costEffetivenessScore'] = avr_costEffetivenessScore
+    except:
+        content['avr_totalScore'] = 0
+        content['avr_gripScore'] = 0
+        content['avr_lifeScore'] = 0
+        content['avr_durabilityScore'] = 0
+        content['avr_designScore'] = 0
+        content['avr_textureScore'] = 0
+        content['avr_costEffetivenessScore'] = 0
+
+
 
     # 리뷰를 작성한 적이 있는가?
     try:

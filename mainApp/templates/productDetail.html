@@ -13,6 +13,35 @@
 <div>제품명 : {{ product.name }}</div>
 <div>제조사 : {{ product.manufacturer }}</div>
 <div>제품 설명 : {{ product.description }}</div>
+
+<div>총점</div>
+<div class="rateit svg" data-rateit-value="{{avr_totalScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
+    step="0.1" data-rateit-starheight="15"></div>
+
+<div>그립감</div>
+<div class="rateit svg" data-rateit-value="{{avr_gripScore}}" data-rateit-readonly="true"
+    aria-valuenow="{{avr_gripScore}}" data-rateit-starwidth="15" data-rateit-starheight="15"></div>
+
+<div>수명</div>
+<div class="rateit svg" data-rateit-value="{{avr_lifeScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
+    data-rateit-starheight="15"></div>
+
+<div>내구도</div>
+<div class="rateit svg" data-rateit-value="{{avr_durabilityScore}}" data-rateit-readonly="true"
+    data-rateit-starwidth="15" data-rateit-starheight="15"></div>
+
+<div>디자인</div>
+<div class="rateit svg" data-rateit-value="{{avr_designScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
+    data-rateit-starheight="15"></div>
+
+<div>사용감</div>
+<div class="rateit svg" data-rateit-value="{{avr_textureScore}}" data-rateit-readonly="true"
+    data-rateit-starwidth="15" data-rateit-starheight="15"></div>
+
+<div>가성비</div>
+<div class="rateit svg" data-rateit-value="{{avr_costEffetivenessScore}}" data-rateit-readonly="true"
+    data-rateit-starwidth="15" data-rateit-starheight="15"></div>
+
 <br>
 
 {{ likeMessage }}
