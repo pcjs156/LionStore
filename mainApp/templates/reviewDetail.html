@@ -29,15 +29,15 @@
 
 {% for image in images %}
 
-    {% if image %}
-        {% if review.author == user %}
-            <a href="{% url 'reviewImageModify' review_id=review.id imageIdx=forloop.counter0 %}">
-                <img src="{{ image.url }}" style="width:5rem; height:5rem;">
-            </a>
-        {% else %}
-            <img src="{{ image.url }}" style="width:5rem; height:5rem;">
-        {% endif %}
-    {% endif %}
+{% if image %}
+{% if review.author == user %}
+<a href="{% url 'reviewImageModify' review_id=review.id imageIdx=forloop.counter0 %}">
+    <img src="{{ image.url }}" style="width:5rem; height:5rem;">
+</a>
+{% else %}
+<img src="{{ image.url }}" style="width:5rem; height:5rem;">
+{% endif %}
+{% endif %}
 
 {% endfor %}
 
@@ -54,8 +54,8 @@
 <br>
 
 <div>총점 {{ totalScore }}</div>
-<div class="rateit svg" data-rateit-value="{{totalScore}}" data-rateit-readonly="true" data-rateit-starwidth="15" step="0.1"
-    data-rateit-starheight="15"></div>
+<div class="rateit svg" data-rateit-value="{{totalScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
+    step="0.1" data-rateit-starheight="15"></div>
 
 <div>{{gripScore.name}}</div>
 <div class="rateit svg" data-rateit-value="{{gripScore.score}}" data-rateit-readonly="true"
@@ -104,21 +104,26 @@
     <button type="submit">작성</button>
 </form>
 
-{% for comment in comments %}
-<div class="card">
-    <div class="card-header">
-        {{ comment.author.nickname }}
+<div class="blog__details__comment">
+    {% for comment in comments %}
+    <div class="blog__comment__item">
+        <div class="blog__comment__item__pic">
+            <img class="profile_image" src="{{ comment.author.image.url }}" alt="{{ comment.author.nickname }}님의 프로필 이미지" style="max-width: 40px; max-height: 40x; width: auto; height: auto; display: block; margin:0px auto;">
+        </div>
+        <div class="blog__comment__item__text">
+            <h6>{{ comment.author.nickname }}</h6>
+            <p>{{ comment.body }}</p>
+            <ul>
+                <li><i class="fa fa-clock-o"></i> {{ comment.pub_date | date:"Y/m/d a h:i"}} </li>
+                {% if comment.author == request.user %}
+                <li><a href="{% url 'commentDelete' comment.id %}"><i class="fa fa-trash-o" aria-hidden="true"></i></a></li>
+                {% endif %}
+            </ul>
+        </div>
     </div>
-    <div class="card-body">
-        {{ comment.body }}
-    </div>
-    <div class="card-footer">
-        on {{ comment.pub_date | date:"Y/m/d a h:i"}}
-        <a href="{% url 'commentDelete' comment.id %}">댓글 삭제</a>
-    </div>
+    <br>
+    {% endfor %}
 </div>
-<br>
-{% endfor %}
 
 <hr>
 
@@ -174,9 +179,9 @@
                     {% csrf_token %}
                     {{ newImageForm.reviewImage1 }}
                     <br>
-                </div>
-                <div class="modal-footer">
-                    <input type="submit" value="업로드" class="btn btn-success" style="text-align: right;">
+            </div>
+            <div class="modal-footer">
+                <input type="submit" value="업로드" class="btn btn-success" style="text-align: right;">
                 </form>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
             </div>
