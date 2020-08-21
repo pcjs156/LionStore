@@ -3,38 +3,7 @@
 
 {% block head %}
 <title>일반 리뷰어 회원가입 페이지</title>
-<style>
-    #id_username,
-    #id_password1,
-    #id_email,
-    #id_password2,
-    #id_nickname {
-        width: 10%;
-    }
-
-    #password_guide p {
-        margin-bottom: 0;
-        color: gray;
-    }
-
-    textarea {
-        height: 130px;
-        width: 30%;
-        padding-left: 20px;
-        padding-top: 12px;
-        font-size: 14px;
-        color: #444444;
-        border: 1px solid #e1e1e1;
-        border-radius: 10px;
-        margin-bottom: 14px;
-        resize: none;
-    }
-
-    #id_age, #id_job, #id_usage,
-    #id_penInterest_1, #id_penInterest_2, #id_penInterest_3 {
-        width: 75%;
-    }
-</style>
+<link rel="stylesheet" href="{% static 'css/signUp.css' %}">
 {% endblock %}
 
 {% block content %}
