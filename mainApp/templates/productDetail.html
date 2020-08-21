@@ -13,6 +13,7 @@
 <div>제품명 : {{ product.name }}</div>
 <div>제조사 : {{ product.manufacturer }}</div>
 <div>제품 설명 : {{ product.description }}</div>
+<img src="{{ product.productImage.url }}" alt="{{ product.name }} 이미지">
 
 <div>총점</div>
 <div class="rateit svg" data-rateit-value="{{avr_totalScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
