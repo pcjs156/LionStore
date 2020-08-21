@@ -32,10 +32,12 @@ def productList_view(request, category_id):
         # 기본값 : 인기순 정렬
         if sortBy == 'popularity':
             products = Product.objects.filter(category=category).order_by('-likeCount')
+            content['sortBy'] = 'popularity'
             popularitySort = True
         # 기타 : 최신순 정렬
         else:
             products = Product.objects.filter(category=category).order_by('-registerDate')
+            content['sortBy'] = 'new'
             popularitySort = False
     except:
         products = Product.objects.filter(category=category).order_by('-likeCount')
@@ -44,7 +46,7 @@ def productList_view(request, category_id):
 
     content['popularitySort'] = popularitySort
 
-    paginator = Paginator(products, 10)
+    paginator = Paginator(products, 8)
     page = request.GET.get('page')
     products = paginator.get_page(page)
     content['products'] = products
@@ -83,13 +85,17 @@ def productDetail_view(request, product_id):
         if popularitySort == 'popularity':
             content['popularitySort'] = True
             reviews = PenReview.objects.filter(product=product).order_by('-likeCount')
+            content['sortBy'] = 'popularity'
         else:
             content['popularitySort'] = False
             reviews = PenReview.objects.filter(product=product).order_by('-pub_date')
+            content['sortBy'] = 'new'
     # 혹시 몰라서,, 기본 정렬 방식을 인기순으로 예외처리
     except:
         content['popularitySort'] = True
         reviews = PenReview.objects.filter(product=product).order_by('-likeCount')
+        content['sortBy'] = 'popularity'
+
 
     # 리뷰를 작성한 적이 있는가?
     try:
@@ -105,7 +111,7 @@ def productDetail_view(request, product_id):
         content['reviewCreated'] = False
 
 
-    paginator = Paginator(reviews, 10)
+    paginator = Paginator(reviews, 8)
     page = request.GET.get('page')
     reviews = paginator.get_page(page)
     content['reviews'] = reviews

@@ -44,37 +44,29 @@
     {% endfor %}
 </div>
 
-<!-- 인기순 정렬인 경우의 페이지네이션 -->
-{% if popularitySort %}
+<!-- 페이지네이션 -->
+<div class="pagination__option" style="text-align: center;">
+     {% if products.has_previous %}
+     <!-- 이전 페이지가 있을 때만 보임 -->
+     <a href="?page=1&sort={{ sortBy }}"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
+     <a href="?page={{ products.previous_page_number }}&sort={{ sortBy }}"><i class="fa fa-angle-left"></i></a>
+     {% else %}
+     <a href="?page=1&sort={{ sortBy }}"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
+     <a href="#"><i class="fa fa-step-backward" aria-hidden="true"></i></a>
+     {% endif %}
+     <!-- 무조건 보임 (1/n) -->
+     <span>{{ products.number }}</span>
+     <span>/</span>
+     <span>{{ products.paginator.num_pages }}</span>
+     {% if products.has_next %}
+     <!-- 다음 페이지가 있을 때만 보임 -->
+     <a href="?page={{ products.next_page_number }}&sort={{ sortBy }}"><i class="fa fa-angle-right"></i></a>
+     <a href="?page={{ products.paginator.num_pages }}&sort={{ sortBy }}"><i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
+     {% else %}
+     <a href="#"><i class="fa fa-step-forward" aria-hidden="true"></i></a>
+     <a href="?page={{ products.paginator.num_pages }}&sort={{ sortBy }}"><i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
+     {% endif %}
+</div>
 
-{% if products.has_previous %}
-<a href="?page=1&sort=popularity">맨 앞으로</a>
-<a href="?page={{ products.previous_page_number }}&sort=popularity">이전으로</a>
-{% endif %}
-<span>{{ products.number }}</span>
-<span>/</span>
-<span>{{ products.paginator.num_pages }}</span>
-{% if products.has_next %}
-<a href="?page={{ products.next_page_number }}&sort=popularity">다음으로</a>
-<a href="?page={{ products.paginator.num_pages }}&sort=popularity">맨 뒤로</a>
-{% endif %}
-
-
-<!-- 최신순 정렬인 경우의 페이지네이션 -->
-{% else %}
-
-{% if products.has_previous %}
-<a href="?page=1&sort=new">맨 앞으로</a>
-<a href="?page={{ products.previous_page_number }}&sort=new">이전으로</a>
-{% endif %}
-<span>{{ products.number }}</span>
-<span>/</span>
-<span>{{ products.paginator.num_pages }}</span>
-{% if products.has_next %}
-<a href="?page={{ products.next_page_number }}&sort=new">다음으로</a>
-<a href="?page={{ products.paginator.num_pages }}&sort=new">맨 뒤로</a>
-{% endif %}
-
-{% endif %}
 
 {% endblock %}
