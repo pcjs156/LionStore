@@ -34,7 +34,7 @@
 html,
 body {
 	height: 100%;
-	font-family: "Montserrat", sans-serif;
+	font-family: 'Noto Sans KR', sans-serif;
 	-webkit-font-smoothing: antialiased;
 }
 
@@ -47,7 +47,7 @@ h6 {
 	margin: 0;
 	color: #111111;
 	font-weight: 400;
-	font-family: "Montserrat", sans-serif;
+	font-family: 'Noto Sans KR', sans-serif;
 }
 
 h1 {
@@ -76,7 +76,7 @@ h6 {
 
 p {
 	font-size: 14px;
-	font-family: "Montserrat", sans-serif;
+	font-family: 'Noto Sans KR', sans-serif;
 	color: #666666;
 	font-weight: 400;
 	line-height: 24px;
@@ -519,7 +519,7 @@ ol {
 .banner__text h1 {
 	font-size: 80px;
 	color: #111111;
-	font-family: "Cookie", cursive;
+	font-family:'Noto Sans KR', sans-serif;
 	margin-bottom: 15px;
 }
 
@@ -1061,7 +1061,7 @@ ol {
 }
 
 .categories__text h1 {
-	font-family: "Cookie", cursive;
+	font-family: 'Noto Sans KR', sans-serif;
 	color: #111111;
 	margin-bottom: 5px;
 }
