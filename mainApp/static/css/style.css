@@ -559,13 +559,13 @@ ol {
 .banner__slider.owl-carousel .owl-dots button {
 	height: 12px;
 	width: 12px;
-	background: #a1a1a1;
+	/* background: #a1a1a1; */
 	border-radius: 50%;
 	margin-right: 10px;
 }
 
 .banner__slider.owl-carousel .owl-dots button.active {
-	background: #ca1515;
+	/* background: #ca1515; */
 }
 
 .banner__slider.owl-carousel .owl-dots button:last-child {

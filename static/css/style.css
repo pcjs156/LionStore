@@ -34,11 +34,7 @@
 html,
 body {
 	height: 100%;
-<<<<<<< HEAD
-	font-family:font-family: 'yg-jalnan'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff'); font-weight: normal; font-style: normal;
-=======
 	font-family: "Montserrat", sans-serif;
->>>>>>> f650e39c70e19fe404a382592c60d92c8c7f02c3
 	-webkit-font-smoothing: antialiased;
 }
 
@@ -169,11 +165,11 @@ ol {
 	font-weight: 600;
 	padding: 12px 30px 10px;
 	color: #ffffff;
-	background: hsl(32, 81%, 44%);
+	background: #ca1515;
 }
 
 .site-btn {
-	font-size: 16px;
+	font-size: 14px;
 	color: #ffffff;
 	background: hsl(32, 81%, 44%);
 	font-weight: 600;
@@ -563,13 +559,13 @@ ol {
 .banner__slider.owl-carousel .owl-dots button {
 	height: 12px;
 	width: 12px;
-	background: #a1a1a1;
+	/* background: #a1a1a1; */
 	border-radius: 50%;
 	margin-right: 10px;
 }
 
 .banner__slider.owl-carousel .owl-dots button.active {
-	background:hsl(32, 81%, 44%);
+	/* background: #ca1515; */
 }
 
 .banner__slider.owl-carousel .owl-dots button:last-child {

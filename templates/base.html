@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    
+
     <!-- 외부 템플릿 -->
     <meta name="description" content="Ashion Template">
     <meta name="keywords" content="Ashion, unica, creative, html">
@@ -16,7 +16,7 @@
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
-    rel="stylesheet">
+        rel="stylesheet">
     <link href="http://fonts.googleapis.com/earlyaccess/nanumpenscript.css" rel="stylesheet">
     <link href="http://fonts.googleapis.com/earlyaccess/jejugothic.css" rel="stylesheet">
     <link href="http://fonts.googleapis.com/earlyaccess/jejumyeongjo.css" rel="stylesheet">
@@ -40,7 +40,7 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
 
 
-    
+
     <!-- 카카오맵 api 키 -->
     <script type="text/javascript"
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=30e25c2ec22bea3e3b076ea3d30a2377&libraries=services"> </script>
@@ -82,40 +82,18 @@
     <header class="header">
         {% include 'navBar.html' %}
     </header>
-
-    <hr>
     <!-- Banner Section Begin -->
-    <section class="banner set-bg" data-setbg="img/banner/banner-1.jpg">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-7 col-lg-8 m-auto">
-                    <div class="banner__slider owl-carousel">
-                        <div class="banner__item">
-                            <div class="banner__text">
-                                <span>LIONSTORE</span>
-                                <h1>The Project Jacket</h1>
-                                <a href="#">Shop now</a>
-                            </div>
-                        </div>
-                        <div class="banner__item">
-                            <div class="banner__text">
-                                <span>The Chloe Collection</span>
-                                <h1>The Project Jacket</h1>
-                                <a href="#">Shop now</a>
-                            </div>
-                        </div>
-                        <div class="banner__item">
-                            <div class="banner__text">
-                                <span>The Chloe Collection</span>
-                                <h1>The Project Jacket</h1>
-                                <a href="#">Shop now</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div class="banner__slider owl-carousel" style="padding: 0;">
+        <div class="banner set-bg" data-setbg="{% static '/img/common/banner-1.png' %}">
+
         </div>
-    </section>
+        <div class="banner set-bg" data-setbg="{% static '/img/common/banner-2.png' %}">
+
+        </div>
+        <div class="banner set-bg" data-setbg="{% static '/img/common/banner-3.png' %}">
+
+        </div>
+    </div>
     <!-- Banner Section End -->
     {% block content %}
     {% endblock %}
@@ -136,4 +114,5 @@
 <script src="{% static 'js/owl.carousel.min.js' %}"></script>
 <script src="{% static 'js/jquery.nicescroll.min.js' %}"></script>
 <script src="{% static 'js/main.js' %}"></script>
+
 </html>
