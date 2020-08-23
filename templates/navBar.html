@@ -28,8 +28,13 @@ rel="stylesheet">
 </style>
 
 <div class="gridContainer"
+<<<<<<< HEAD
     style="display: grid; grid-template-rows: 0.5fr; grid-template-columns: 1fr 4fr 1fr; padding: 1rem;">
     <div style="text-align: left; margin: auto 1rem;">
+=======
+    style="display: grid; grid-template-rows: 1fr; grid-template-columns: 1fr 4fr 0.7fr; padding: 1rem;">
+    <div style="text-align: left; margin: auto 2rem;">
+>>>>>>> f650e39c70e19fe404a382592c60d92c8c7f02c3
         <a href="{% url 'mainPage' %}"><img src="{% static '/img/common/lionStore_logo.png' %}" alt="사자네 문방구 로고"
                 style="width: 650px; height: 35px"></a>
     </div>
@@ -39,13 +44,17 @@ rel="stylesheet">
         <form action="{% url 'keywordSearchResult' %}" method="GET" style="margin-bottom: 0px;">
             <input type="text" name="keywordQuery">
             <input type="text" name="sort" value="popularity" style="display: none; visibility: hidden;">
+<<<<<<< HEAD
             <button type="submit" class="site-btn" style="font-family: 'yg-jalnan';">제품명 검색</button>
+=======
+            <button type="submit" class="site-btn" style="font-family:'Noto Sans KR', sans-serif;">제품 검색</button>
+>>>>>>> f650e39c70e19fe404a382592c60d92c8c7f02c3
         </form>
     </div>
 
 
     {% if user.is_authenticated %}
-    <div style="display: grid; grid-template-columns: 1fr 1fr;">
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
 
         <div style="display: grid; grid-template-rows: 0.5fr 0.5fr; text-align: center;">
             <img class="profileImage" src="{{ user.image.url }}" alt="프로필 이미지"
@@ -55,6 +64,10 @@ rel="stylesheet">
         <div style="display: grid; grid-template-rows: 1fr 1fr; text-align: center;">
             <i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>
             <a href="{% url 'logOut' %}">로그아웃</a>
+        </div>
+        <div style="display: grid; grid-template-rows: 1fr 1fr; text-align: center;">
+            <i class="fa fa-plus-square fa-2x" aria-hidden="true"></i>
+            <a href="{% url 'newProductRequest' %}">상품 등록</a>
         </div>
     </div>
     {% else %}

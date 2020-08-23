@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+from django.db.models.query import QuerySet
 
 from django.core.paginator import Paginator
 
@@ -710,12 +711,38 @@ def keywordSearchResult_view(request):
     popularitySort = request.GET['sort']
 
     if keywordQuery:
-        if popularitySort == 'popularity':
-            content['popularitySort'] = True
-            searchResult = Product.objects.filter(name__contains=keywordQuery).order_by('likeCount')
+        
+        popularitySort = (popularitySort == 'popularity')
+        content['popularitySort'] = popularitySort
+        # Product
+        # 제품명으로 검색
+        searchResult_productName = Product.objects.filter(name__contains=keywordQuery)
+        # 제조사로 검색
+        searchResult_manufacturer = Product.objects.filter(manufacturer__contains=keywordQuery)
+        # 제품 설명으로 검색
+        searchResult_description = Product.objects.filter(description__contains=keywordQuery)
+
+        searchResult = list(searchResult_productName | searchResult_manufacturer | searchResult_description)
+
+        # PenReview
+        # 리뷰 한줄평으로 검색
+        searchResult_reviewComment = PenReview.objects.filter(comment__contains=keywordQuery)
+        # 리뷰 장점으로 검색
+        searchResult_goodPoint = PenReview.objects.filter(goodPoint__contains=keywordQuery)
+        # 리뷰 단점으로 검색
+        searchResult_weakPoint = PenReview.objects.filter(weakPoint__contains=keywordQuery)
+
+        # 검색된 리뷰들이 가리키는 제품을 searchResult에 가져옴
+        searchedReviews = searchResult_reviewComment | searchResult_goodPoint | searchResult_weakPoint
+        for review in searchedReviews:
+            if review.product not in searchedReviews:
+                searchResult.append(review.product)
+
+        # 정렬 | 기본값 : 시간
+        if popularitySort:
+            searchResult.sort(key=lambda x: x.likeCount)
         else:
-            content['popularitySort'] = False
-            searchResult = Product.objects.filter(name__contains=keywordQuery).order_by('-registerDate')
+            searchResult.sort(key=lambda x: x.registerDate, reverse=True)
 
         statusMessage = f"키워드 검색 결과 {len(searchResult)}개의 제품이 검색되었습니다."
         content['searchResult'] = searchResult
