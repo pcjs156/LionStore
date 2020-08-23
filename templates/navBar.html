@@ -1,6 +1,7 @@
 {% load static %}
 
 <link rel="stylesheet" href="{% static 'css/navBar.css' %}">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
 
 <!-- Google Font -->
 <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
@@ -18,24 +19,19 @@ rel="stylesheet">
 <link href="http://fonts.googleapis.com/earlyaccess/jejuhallasan.css" rel="stylesheet">
 <link href="http://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css" rel="stylesheet">
 <style>
-.np{font-family: 'Nanum Pen Script', cursive;}
-.jg{font-family: 'Jeju Gothic', sans-serif;}
-.jm{font-family: 'Jeju Myeongjo', serif;}
-.kb{font-family: 'KoPub Batang', serif;}
-.nb{font-family: 'Nanum Brush Script', cursive;}
-.ns{font-family: 'Noto Sans KR', sans-serif;}
-.hn{font-family: 'Hanna', sans-serif;}
-.ng{font-family: 'Nanum Gothic', sans-serif;}
-.nm{font-family: 'Nanum Myeongjo', serif;}
-.jh{font-family: 'Jeju Hallasan', cursive;}
-.ngc{font-family: 'Nanum Gothic Coding', monospace;}
+ @font-face {
+    font-family: 'yg-jalnan';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
 </style>
 
 <div class="gridContainer"
-    style="display: grid; grid-template-rows: 1fr; grid-template-columns: 1fr 4fr 0.5fr; padding: 1rem;">
-    <div style="text-align: left; margin: auto 2rem;">
+    style="display: grid; grid-template-rows: 0.5fr; grid-template-columns: 1fr 4fr 1fr; padding: 1rem;">
+    <div style="text-align: left; margin: auto 1rem;">
         <a href="{% url 'mainPage' %}"><img src="{% static '/img/common/lionStore_logo.png' %}" alt="사자네 문방구 로고"
-                style="width: 400px;"></a>
+                style="width: 650px; height: 35px"></a>
     </div>
 
 
@@ -43,7 +39,7 @@ rel="stylesheet">
         <form action="{% url 'keywordSearchResult' %}" method="GET" style="margin-bottom: 0px;">
             <input type="text" name="keywordQuery">
             <input type="text" name="sort" value="popularity" style="display: none; visibility: hidden;">
-            <button type="submit" class="site-btn" style="font-family:'Noto Sans KR', sans-serif;">제품명으로 검색</button>
+            <button type="submit" class="site-btn" style="font-family: 'yg-jalnan';">제품명 검색</button>
         </form>
     </div>
 
@@ -51,14 +47,14 @@ rel="stylesheet">
     {% if user.is_authenticated %}
     <div style="display: grid; grid-template-columns: 1fr 1fr;">
 
-        <div style="display: grid; grid-template-rows: 1fr 1fr; text-align: center;">
+        <div style="display: grid; grid-template-rows: 0.5fr 0.5fr; text-align: center;">
             <img class="profileImage" src="{{ user.image.url }}" alt="프로필 이미지"
-            style="max-width: 40px; max-height: 40x; width: auto; height: auto; display: block; margin:0px auto;">
-            <a href="{% url 'myPage' %}">MyPage</a>
+            style="max-width: 30px; max-height: 30x; width: auto; height: auto; display: block; margin:0px auto;">
+            <a href="{% url 'myPage' %}">마이페이지</a>
         </div>
         <div style="display: grid; grid-template-rows: 1fr 1fr; text-align: center;">
             <i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>
-            <a href="{% url 'logOut' %}">Sign Out</a>
+            <a href="{% url 'logOut' %}">로그아웃</a>
         </div>
     </div>
     {% else %}
@@ -68,12 +64,12 @@ rel="stylesheet">
     </div>
     {% endif %}
 </div>
-<nav class="header__menu" style="text-align: center; font-family: 'Noto Sans KR', sans-serif;">
+<nav class="header__menu" style="text-align: center; font-family: 'yg-jalnan';">
     <ul>
-        <li><a href="{% url 'redirectByCategoryName' '볼펜' %}">볼펜</a></li>
-        <li><a href="{% url 'redirectByCategoryName' '만년필' %}">만년필</a></li>
-        <li><a href="{% url 'redirectByCategoryName' '캘리그라피펜' %}">캘리그라피펜</a></li>
-        <li><a href="{% url 'redirectByCategoryName' '연필' %}">연필</a></li>
+        <li><a href="{% url 'redirectByCategoryName' '볼펜' %}">볼펜</a></li>&nbsp;&nbsp;
+        <li><a href="{% url 'redirectByCategoryName' '만년필' %}">만년필</a></li>&nbsp;&nbsp;
+        <li><a href="{% url 'redirectByCategoryName' '캘리그라피펜' %}">캘리그라피펜</a></li>&nbsp;&nbsp;
+        <li><a href="{% url 'redirectByCategoryName' '연필' %}">연필</a></li>&nbsp;
         <li><a href="{% url 'redirectByCategoryName' '색연필' %}">색연필</a>
         <li><a href="{% url 'redirectByCategoryName' '형광펜' %}">형광펜</a>
         <li><a href="{% url 'redirectByCategoryName' '샤프펜슬' %}">샤프펜슬</a>

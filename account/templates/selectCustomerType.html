@@ -1,13 +1,13 @@
-{% extends 'base.html' %}
+
 {% load static %}
 
 {% block head %}
-<title>회원 유형 결정 페이지</title>
+<title>WELCOME</title>
 <!-- 일반 리뷰어 / 판매자 -->
 {% endblock %}
 
 {% block content %}
-<div>회원 유형 결정 페이지입니다.</div>
-<a href="{% url 'userSignUp' %}"><button>일반 유저(리뷰어)</button></a> <br>
-<a href="{% url 'selectSellerType' %}"><button>판매자</button></a> <br>
+<div>환영합니다! 회원님은 리뷰어이신가요, 판매자이신가요?</div>
+<a href="{% url 'userSignUp' %}"><button>펜 리뷰를 보고 싶어요</button></a> <br>
+<a href="{% url 'selectSellerType' %}"><button>펜을 판매하고 싶어요</button></a> <br>
 {% endblock %}

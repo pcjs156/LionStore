@@ -34,7 +34,7 @@
 html,
 body {
 	height: 100%;
-	font-family: 'Noto Sans KR', sans-serif;
+	font-family:font-family: 'yg-jalnan'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff'); font-weight: normal; font-style: normal;
 	-webkit-font-smoothing: antialiased;
 }
 
@@ -165,13 +165,13 @@ ol {
 	font-weight: 600;
 	padding: 12px 30px 10px;
 	color: #ffffff;
-	background: #ca1515;
+	background: hsl(32, 81%, 44%);
 }
 
 .site-btn {
-	font-size: 14px;
+	font-size: 16px;
 	color: #ffffff;
-	background: #ca1515;
+	background: hsl(32, 81%, 44%);
 	font-weight: 600;
 	border: none;
 	text-transform: uppercase;
@@ -565,7 +565,7 @@ ol {
 }
 
 .banner__slider.owl-carousel .owl-dots button.active {
-	background: #ca1515;
+	background:hsl(32, 81%, 44%);
 }
 
 .banner__slider.owl-carousel .owl-dots button:last-child {
