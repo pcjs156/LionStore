@@ -7,16 +7,14 @@
 {% endblock %}
 
 {% block content %}
-<a href="{% url 'mainPage' %}">메인 페이지로 가기</a>
-
-<h3>{{ category.categoryName }} 카테고리의 제품 목록입니다.</h3>
+<div class="h4" style="text-align: left; font-family: 'yg-jalnan';">{{ category.categoryName }} 카테고리의 제품 목록입니다.</h3>
 
 <!-- 인기순 정렬로 전환 -->
 {% if popularitySort %}
-<div><span>인기순 정렬</span> / <span><a href="{% url 'productList' category.id %}?page={{ products.number }}&sort=new">최신순정렬</a></span></div>
+<div class="h6" style="text-align: left; font-family: 'yg-jalnan';"><span>인기순 정렬</span> / <span><a href="{% url 'productList' category.id %}?page={{ products.number }}&sort=new">최신순정렬</a></span></div>
 <!-- 최신순 정렬로 전환 -->
 {% else %}
-<div><span><a href="{% url 'productList' category.id %}?page={{ products.number }}&sort=popularity">인기순 정렬</a></span> / <span>최신순정렬</span></div>
+<div class="h6" style="text-align: left; font-family: 'yg-jalnan';"><span><a href="{% url 'productList' category.id %}?page={{ products.number }}&sort=popularity">인기순 정렬</a></span> / <span>최신순정렬</span></div>
 {% endif %}
 
 
