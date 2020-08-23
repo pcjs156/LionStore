@@ -743,7 +743,6 @@ def keywordSearchResult_view(request):
             searchResult.sort(key=lambda x: x.likeCount)
         else:
             searchResult.sort(key=lambda x: x.registerDate, reverse=True)
-        # searchResult = searchResult.order_by('likeCount' if popularitySort else '-registerDate')
 
         statusMessage = f"키워드 검색 결과 {len(searchResult)}개의 제품이 검색되었습니다."
         content['searchResult'] = searchResult

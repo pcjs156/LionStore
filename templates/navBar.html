@@ -32,7 +32,7 @@ rel="stylesheet">
 </style>
 
 <div class="gridContainer"
-    style="display: grid; grid-template-rows: 1fr; grid-template-columns: 1fr 4fr 0.5fr; padding: 1rem;">
+    style="display: grid; grid-template-rows: 1fr; grid-template-columns: 1fr 4fr 0.7fr; padding: 1rem;">
     <div style="text-align: left; margin: auto 2rem;">
         <a href="{% url 'mainPage' %}"><img src="{% static '/img/common/lionStore_logo.png' %}" alt="사자네 문방구 로고"
                 style="width: 400px;"></a>
@@ -49,7 +49,7 @@ rel="stylesheet">
 
 
     {% if user.is_authenticated %}
-    <div style="display: grid; grid-template-columns: 1fr 1fr;">
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
 
         <div style="display: grid; grid-template-rows: 1fr 1fr; text-align: center;">
             <img class="profileImage" src="{{ user.image.url }}" alt="프로필 이미지"
@@ -59,6 +59,10 @@ rel="stylesheet">
         <div style="display: grid; grid-template-rows: 1fr 1fr; text-align: center;">
             <i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>
             <a href="{% url 'logOut' %}">Sign Out</a>
+        </div>
+        <div style="display: grid; grid-template-rows: 1fr 1fr; text-align: center;">
+            <i class="fa fa-plus-square fa-2x" aria-hidden="true"></i>
+            <a href="{% url 'newProductRequest' %}">상품 등록</a>
         </div>
     </div>
     {% else %}
