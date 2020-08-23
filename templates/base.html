@@ -82,22 +82,16 @@
     <header class="header">
         {% include 'navBar.html' %}
     </header>
-    <!-- Banner Section Begin -->
-    <div class="banner__slider owl-carousel" style="padding: 0;">
-        <div class="banner set-bg" data-setbg="{% static '/img/common/banner-1.png' %}">
-
-        </div>
-        <div class="banner set-bg" data-setbg="{% static '/img/common/banner-2.png' %}">
-
-        </div>
-        <div class="banner set-bg" data-setbg="{% static '/img/common/banner-3.png' %}">
-
-        </div>
-    </div>
-    <!-- Banner Section End -->
     {% block content %}
     {% endblock %}
     <hr>
+    <div class="footer__newslatter" style="margin: auto 2rem;">
+        <form action="{% url 'tagSearchResult' %}" method="GET" style="margin-bottom: 0px;">
+            <input type="text" name="tagQuery">
+            <input type="text" name="sort" value="popularity" style="display: none; visibility: hidden;">
+            <button type="submit" class="site-btn" style="font-family:'Noto Sans KR', sans-serif;">제품 검색</button>
+        </form>
+    </div>
     {% include 'footer.html' %}
 </body>
 
