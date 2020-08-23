@@ -171,7 +171,7 @@ ol {
 .site-btn {
 	font-size: 14px;
 	color: #ffffff;
-	background: #ca1515;
+	background: hsl(32, 81%, 44%);
 	font-weight: 600;
 	border: none;
 	text-transform: uppercase;
