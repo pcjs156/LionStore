@@ -25,9 +25,6 @@ rel="stylesheet">
     font-weight: normal;
     font-style: normal;
 }
-.gridContainer {
-    font-family: 'yg-jalnan';
-}
 </style>
 
 <div class="gridContainer"
@@ -42,7 +39,7 @@ rel="stylesheet">
         <form action="{% url 'keywordSearchResult' %}" method="GET" style="margin-bottom: 0px;">
             <input type="text" name="keywordQuery">
             <input type="text" name="sort" value="popularity" style="display: none; visibility: hidden;">
-            <button type="submit" class="site-btn" style="font-family:'Noto Sans KR', sans-serif;">제품 검색</button>
+            <button type="submit" class="site-btn" style="font-family: 'yg-jalnan';">제품명 검색</button>
         </form>
     </div>
 
@@ -50,16 +47,16 @@ rel="stylesheet">
     {% if user.is_authenticated %}
     <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
 
-        <div style="display: grid; grid-template-rows: 0.5fr 0.5fr; text-align: center;">
+        <div style="display: grid; grid-template-rows: 0.5fr 0.5fr; text-align: center; font-family: 'yg-jalnan';">
             <img class="profileImage" src="{{ user.image.url }}" alt="프로필 이미지"
             style="max-width: 30px; max-height: 30x; width: auto; height: auto; display: block; margin:0px auto;">
             <a href="{% url 'myPage' %}">마이페이지</a>
         </div>
-        <div style="display: grid; grid-template-rows: 1fr 1fr; text-align: center;">
+        <div style="display: grid; grid-template-rows: 1fr 1fr; text-align: center; font-family: 'yg-jalnan';">
             <i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>
             <a href="{% url 'logOut' %}">로그아웃</a>
         </div>
-        <div style="display: grid; grid-template-rows: 1fr 1fr; text-align: center;">
+        <div style="display: grid; grid-template-rows: 1fr 1fr; text-align: center; font-family: 'yg-jalnan';">
             <i class="fa fa-plus-square fa-2x" aria-hidden="true"></i>
             <a href="{% url 'newProductRequest' %}">상품 등록</a>
         </div>
