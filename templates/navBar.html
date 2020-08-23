@@ -3,21 +3,6 @@
 <link rel="stylesheet" href="{% static 'css/navBar.css' %}">
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
-<!-- Google Font -->
-<link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
-rel="stylesheet">
-<link href="http://fonts.googleapis.com/earlyaccess/nanumpenscript.css" rel="stylesheet">
-<link href="http://fonts.googleapis.com/earlyaccess/jejugothic.css" rel="stylesheet">
-<link href="http://fonts.googleapis.com/earlyaccess/jejumyeongjo.css" rel="stylesheet">
-<link href="http://fonts.googleapis.com/earlyaccess/kopubbatang.css" rel="stylesheet">
-<link href="http://fonts.googleapis.com/earlyaccess/nanumbrushscript.css" rel="stylesheet">
-<link href="http://fonts.googleapis.com/earlyaccess/notosanskr.css" rel="stylesheet">
-<link href="http://fonts.googleapis.com/earlyaccess/hanna.css" rel="stylesheet">
-<link href="http://fonts.googleapis.com/earlyaccess/nanumgothic.css" rel="stylesheet">
-<link href="http://fonts.googleapis.com/earlyaccess/nanummyeongjo.css" rel="stylesheet">
-<link href="http://fonts.googleapis.com/earlyaccess/jejuhallasan.css" rel="stylesheet">
-<link href="http://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css" rel="stylesheet">
 <style>
  @font-face {
     font-family: 'yg-jalnan';
@@ -39,7 +24,7 @@ rel="stylesheet">
         <form action="{% url 'keywordSearchResult' %}" method="GET" style="margin-bottom: 4px ;">
             <input type="text" name="keywordQuery">
             <input type="text" name="sort" value="popularity" style="display: none; visibility: hidden;">
-            <button type="submit" class="site-btn" style="font-family: 'notosanskr';">제품명 검색</button>
+            <button type="submit" class="site-btn" style="font-family:'yg-jalnan';">제품명 검색</button>
         </form>
     </div>
 

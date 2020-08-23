@@ -35,7 +35,6 @@
  </div>
  <!-- Banner Section End -->
 
-<hr>
 
 <div class="reviewContainer">
      {% if user.is_authenticated %}
@@ -76,8 +75,8 @@
      <br>
      {% endif %}
 
-     <div class="h2" style="text-align: center; font-family: 'yg-jalnan';">최신 리뷰</div>
-     <div class="row property__gallery">
+     <div class="h4" style="text-align: left; padding-left: 5em; padding-top: 1em;font-family: 'yg-jalnan'; color:#663e27;">최신 리뷰</div><hr>
+     <div class="row property__gallery" style="padding-left: 6em;">
           {% for newReview in newReviews %}
           <div class="col-lg-3 col-md-4 col-sm-6 mix women">
                <div class="product__item">
@@ -102,8 +101,8 @@
 
      <br>
 
-     <div class="h2" style="text-align: center; font-family: 'yg-jalnan';">인기 리뷰</div>
-     <div class="row property__gallery">
+     <div class="h4" style="text-align: left; padding-left: 5em; font-family: 'yg-jalnan';color:#663e27;">인기 리뷰</div><hr>
+     <div class="row property__gallery;" style="padding-left: 6em;">
           {% for popularReview in popularReviews %}
           <div class="col-lg-3 col-md-4 col-sm-6 mix women">
                <div class="product__item">
