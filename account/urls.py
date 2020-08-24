@@ -7,6 +7,7 @@ from . import views
 urlpatterns = [
     # 마이 페이지
     path('myPage/', views.myPage_view, name='myPage'),
+    path('myPageRedirector/<target>', views.myPageRedirector, name="myPageRedirector"),
 
     # 로그인 / 로그아웃 / 회원가입 관련
     path('logIn/', views.login_view, name='logIn'),

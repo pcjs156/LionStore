@@ -173,6 +173,11 @@ def myPage_view(request):
     return render(request, 'myPage.html', content)
 
 
+@login_required(login_url='/account/logIn/')
+def myPageRedirector(request, target):
+    return redirect(f"/account/myPage#{target}")
+
+
 def selectSellerType_view(request):
     return render(request, 'selectSellerType.html')
 

@@ -39,14 +39,14 @@
                 <li>
                     <a href="{% url 'myPage' %}" style="color: black; font-size: 13px; padding: 0rem;">마이페이지</a>
                     <ul class="dropdown">
-                        <li><a href="./product-details.html">좋아요한 리뷰</a></li>
-                        <li><a href="./shop-cart.html">좋아요한 제품</a></li>
-                        <li><a href="./checkout.html">작성한 리뷰 목록</a></li>
+                        <li><a href="{% url 'myPageRedirector' 'likeReviews' %}">좋아요한 리뷰</a></li>
+                        <li><a href="{% url 'myPageRedirector' 'likeProducts' %}">좋아요한 제품</a></li>
+                        <li><a href="{% url 'myPageRedirector' 'myReviews' %}">작성한 리뷰 목록</a></li>
                         {% if user.is_Stationer %}
-                        <li><a href="./blog-details.html">등록한 판매정보</a></li>
+                        <li><a href="{% url 'myPageRedirector' 'myWebSellInfos' %}">등록한 판매정보</a></li>
                         {% endif %}
                         {% if user.is_WebSeller %}
-                        <li><a href="./blog-details.html">등록한 판매정보</a></li>
+                        <li><a href="{% url 'myPageRedirector' 'myStationerSellInfos' %}">등록한 판매정보</a></li>
                         {% endif %}
                     </ul>
                 </li>                
