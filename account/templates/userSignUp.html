@@ -7,22 +7,17 @@
 {% endblock %}
 
 {% block content %}
-<div>일반 리뷰어 회원가입 페이지</div>
-<form method="POST" enctype="multipart/form-data" class="checkout__form">
+<h3 style="text-align: center; padding: 1em 3rem 0 3rem; font-family: 'yg-jalnan'; color:#663e27;">
+    A. 일반 리뷰어 회원가입 페이지입니다.</h3><br><br>
+
+<form method="POST" enctype="multipart/form-data" class="checkout__form" style="text-align: center;">
     {% csrf_token %}
     <div class="checkout__form__input">
-        <p>ID <span>*</span>
-            <span style="color: gray;">150자 이하 문자, 숫자 그리고 @/./+/-/_만 가능합니다.</span> </p>
+        <p>ID <span>*</span> </p>
         {{ form.username }}
     </div>
-    <br>
-
-    <div id="password_guide">
-        <p>다른 개인 정보와 유사한 비밀번호는 사용할 수 없습니다.</p>
-        <p>비밀번호는 최소 8자 이상이어야 합니다.</p>
-        <p>통상적으로 자주 사용되는 비밀번호는 사용할 수 없습니다.</p>
-        <p>숫자로만 이루어진 비밀번호는 사용할 수 없습니다.</p>
-    </div>
+    <span style="color: gray; font-size: 13px;">*ID는 150자 이하 문자, 숫자 그리고 @/./+/-/_만 가능합니다.</span>
+<br><br><br>
     <div class="checkout__form__input">
         <p>Password <span>*</span></p>
         {{ form.password1 }}
@@ -31,7 +26,11 @@
         <p>Again <span>*</span></p>
         {{ form.password2 }}
     </div>
-    <br>
+    <div id="password_guide">
+        <p style="font-size: 8x;">*비밀번호는 최소 8자 이상이어야 합니다.</p>
+        <p style="font-size: 8x;">숫자로만 이루어진 비밀번호는 사용할 수 없습니다.</p>
+    </div>
+    <br><br>
 
     <div class="checkout__form__input">
         <p>E-MAIL <span>*</span></p>
@@ -45,18 +44,18 @@
     </div>
     <br>
 
-    INTRODUCE <br>
+    <p style=" color: gray; font-size: 8x;">간단한 자기소개를 남겨주세요 !</p>
     {{ form.introduce }}
     <br>
 
     <div>
-        <span>PROFILE_IMAGE</span><br>
-        <input type="file" name="image" accept="image/*" id="id_image">
+        <p>PROFILE IMAGE <span style="color: red;">*</span></p>
+   <input type="file" name="image" accept="image/*" id="id_image">
     </div>
     
     <br>
 
-    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; width: 50%;">
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; width: 50%; margin-left: 450px;">
         <div>
             <div>AGE</div>
             {{ form.age }}
@@ -75,7 +74,7 @@
 
     <br>
 
-    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; width: 50%;">
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; width: 50%; margin-left: 450px;">
         <div>
             <div>PEN 1</div>
             {{form.penInterest_1}}
@@ -89,16 +88,17 @@
             {{form.penInterest_3}}
         </div>
     </div>
-    <br><br>
+    <br><br> <br> <br>
 
     <div class="checkout__form__input">
-        <p>TAG <span style="color: gray;">공백문자로 구분해 입력</span></p>
+        <p>TAG <span style="color: gray;"><span style="color: red;">*</span> 관심있는 키워드 해쉬태그를 지정하세요 (공백문자로 구분해 입력)</span></p>
     </div>
     {{ form.rawTagString }}
     <br>
     
-    <input type="submit" value="다음 단계로">
+    <input type="submit" class="site-btn" value="다음 단계로">
 </form>
+<br><br> <br> <br>
 
 
 {% endblock %}

@@ -30,23 +30,29 @@
             </tr>
         </thead>
         <tbody>
-            {% for productRequest in productRequests %}
-            <tr>
-                <td id="isChecked">
-                    {% if productRequest.isChecked %}
-                    O
-                    {% else %}
-                    X
-                    {% endif %}
-                </td>
-                <td id="productName"><a
-                        href="{% url 'productRequestDetail' productRequest.id %}">{{ productRequest.productName }}</a>
-                </td>
-                <td id="productBrand">{{ productRequest.productBrand }}</td>
-                <td id="productDescription">{{ productRequest.productDescription }}</td>
-            </tr>
-            </a>
-            {% endfor %}
+            {% if hasRequests %}
+                {% for productRequest in productRequests %}
+                <tr>
+                    <td id="isChecked">
+                        {% if productRequest.isChecked %}
+                        O
+                        {% else %}
+                        X
+                        {% endif %}
+                    </td>
+                    <td id="productName"><a
+                            href="{% url 'productRequestDetail' productRequest.id %}">{{ productRequest.productName }}</a>
+                    </td>
+                    <td id="productBrand">{{ productRequest.productBrand }}</td>
+                    <td id="productDescription">{{ productRequest.productDescription }}</td>
+                </tr>
+                </a>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="4">아직 등록된 제품 요청이 없습니다.</td>
+                </tr>
+            {% endif %}
         </tbody>
     </table>
 </article>

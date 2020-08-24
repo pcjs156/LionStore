@@ -1,13 +1,40 @@
-
+{% extends 'base.html' %}
 {% load static %}
 
 {% block head %}
-<title>WELCOME</title>
+<title>사자네 회원가입</title>
 <!-- 일반 리뷰어 / 판매자 -->
 {% endblock %}
+<head>
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<style>
+    article {
+        text-align: center;
+        margin: 10rem auto;
+    }
+    .button {
+        text-align: center;
+    }
+
+</style>
 
 {% block content %}
-<div>환영합니다! 회원님은 리뷰어이신가요, 판매자이신가요?</div>
-<a href="{% url 'userSignUp' %}"><button>펜 리뷰를 보고 싶어요</button></a> <br>
-<a href="{% url 'selectSellerType' %}"><button>펜을 판매하고 싶어요</button></a> <br>
+<br>
+
+<!-- Banner Section Begin -->
+<div class="banner__slider owl-carousel" style="padding: 0;">
+     <div class="banner set-bg" data-setbg="{% static '/img/common/banner-1.png' %}"></div>
+     <div class="banner set-bg" data-setbg="{% static '/img/common/banner-2.png' %}"></div>
+     <div class="banner set-bg" data-setbg="{% static '/img/common/banner-4.png' %}"></div>
+</div>
+<!-- Banner Section End -->
+
+<h3 style="text-align: center; padding: 1em 3rem 0 3rem; font-family: 'yg-jalnan'; color:#663e27;">
+     Q. 환영합니다! 회원님은 리뷰어이신가요, 판매자이신가요?</h3><br><br>
+     <div style="text-align: center;">
+    <a href="{% url 'userSignUp' %}"><button type="submit" class="site-btn" style="font-family:'yg-jalnan';">펜 리뷰를 보고 싶어요 ! </button></a> &nbsp; &nbsp;
+    <a href="{% url 'selectSellerType' %}"><button type="submit" class="site-btn" style="font-family:'yg-jalnan';">펜을 판매하고 싶어요 ! </button></a>
+    <br><br><br><br>
+     </div>  
 {% endblock %}

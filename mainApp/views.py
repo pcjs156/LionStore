@@ -77,7 +77,9 @@ def productDetail_view(request, product_id):
     # 비디오 링크 관련
     videoLinks = ProductVideoLink.objects.filter(product=product)
     videoLinkHashs = [getHash(linkObj.videoLink)for linkObj in videoLinks]
-    content['videoLinkHashs'] = videoLinkHashs
+    content['firstVideoHash'] = videoLinkHashs[0]
+    content['videoLinkHashs'] = videoLinkHashs[1:]
+    content['hasNoVideos'] = (len(videoLinkHashs) == 0)
 
     # 리뷰 관련
     # 인기순 정렬인 경우
@@ -96,6 +98,8 @@ def productDetail_view(request, product_id):
         content['popularitySort'] = True
         reviews = PenReview.objects.filter(product=product).order_by('-likeCount')
         content['sortBy'] = 'popularity'
+
+    content['hasReviews'] = (len(reviews) > 0)
 
     # 평점 관련
     try:
@@ -284,8 +288,15 @@ def productDislike(request, product_id, category_id):
 
 @login_required(login_url='/account/logIn/')
 def productRequest_view(request):
+    content = dict()
+    
     productRequests = ProductRequest.objects.filter(author=request.user)
-    return render(request, 'productRequest.html', {'productRequests':productRequests})
+    content['productRequests'] = productRequests
+
+    hasRequests = (len(productRequests) > 0)
+    content['hasRequests'] = hasRequests
+
+    return render(request, 'productRequest.html', content)
 
 
 @login_required(login_url='/account/logIn/')
@@ -339,6 +350,7 @@ def connectTagToReview(review:Review):
     existTags = ReviewTag.objects.all()
 
     for newTagName in rawTags:
+        # 15자가 넘으면 버린다
         if len(newTagName) > 15 : continue
 
         alreadyExists = False
@@ -347,15 +359,24 @@ def connectTagToReview(review:Review):
                 alreadyExists = True
                 break
         
+        # 존재하는 태그가 아니라면
         if not alreadyExists:
             print(newTagName + " 태그가 존재하지 않아 새로 생성합니다.")
             newTag = ReviewTag.objects.create(tag=newTagName)
             review.tags.add(newTag)
             newTag.targetReview.add(review)
+            newTag.save()
         else:
             existTag = ReviewTag.objects.get(tag=newTagName)
             review.tags.add(existTag)
             existTag.targetReview.add(review)
+            existTag.save()
+        
+        review.save()
+        # 태그 목록 갱신
+        existTags = ReviewTag.objects.all()
+    
+    review.save()
 
 
 @login_required(login_url='/account/logIn/')
@@ -501,8 +522,8 @@ def reviewUpdate(request, review_id):
     review.pub_date = timezone.datetime.now()
     review.goodPoint = request.POST['goodPoint']
     review.weakPoint = request.POST['weakPoint']
+    rawTagString_before = review.rawTagString
     review.rawTagString = request.POST['rawTagString']
-
 
     review.grip.score = int(request.POST['grip'])
     review.grip.save()
@@ -529,7 +550,7 @@ def reviewUpdate(request, review_id):
 
     review.save()
 
-    modifyReviewTags(review)
+    modifyReviewTags(review, rawTagString_before)
 
     review.save()
 
@@ -600,33 +621,55 @@ def reviewImageDelete(request, review_id, imageIdx):
     return redirect('reviewDetail', review_id=review_id)
 
 
-def modifyReviewTags(review:PenReview):
+def modifyReviewTags(review:PenReview, before:str):
     currentRawTagString = review.rawTagString
-    currentTagNames = currentRawTagString.split(' ')
+    currentTagNames = set(currentRawTagString.split(' '))
+
+    beforeRawTagString = before
+    tagNames_toRemove = set(beforeRawTagString.split(' ')) - currentTagNames
+
     existTags = set(list(obj.tag for obj in review.tags.all()))
 
     for name in currentTagNames:
-        # 15자를 넘기는 태그이면 그냥 넘어감
         if len(name) > 15 : continue
 
-        # 이미 존재하는 태그인 경우 삭제될 태그가 아니므로 existTags에서 삭제하고 넘어감
-        if name in existTags :
-            existTags.remove(name)
-            continue
+        if name in existTags:
+            currentTagNames.remove(name)
 
-        # 새로운 태그가 추가된 경우
-        if name not in existTags:
-            newTag = ReviewTag.objects.create(tag=name)
-            newTag.targetReview.add(review)
-            review.tags.add(newTag)
-    
-    # 선택받지 못한? 태그들을 리뷰와 떼어놓음
-    for tag in existTags:
-        tag = ReviewTag.objects.get(tag=tag)
+    # 새로운 태그 추가
+    for name in currentTagNames:
+        newTag = ReviewTag.objects.create(tag=name)
+        newTag.targetReview.add(review)
+        review.tags.add(newTag)
+        review.save()
+        newTag.save()
+
+    # 태그 삭제 검사 / 삭제
+    for name in tagNames_toRemove:
+        targetTag = ReviewTag.objects.get(tag=name)
+        targetTag.targetReview.remove(review)
+        review.tags.remove(targetTag)
+
+        # 삭제해도 태그가 가리키는 리뷰가 남아있으면 삭제하면 안됨
+        # but 방금 삭제로 인해 어떤 리뷰도 가리키지 않으면 삭제해야됨
+        if len(targetTag.targetReview.all()) == 0:
+            targetTag.delete()
+
+        targetTag.save()
+
+    review.save()
+
+
+def unconnectTags(review_id):
+    review : PenReview = get_object_or_404(PenReview, pk=review_id)
+    tags = review.tags.all()
+
+    for tag in tags:
         tag.targetReview.remove(review)
-        review.tags.remove(tag)
+        if len(tag.targetReview.all()) == 0:
+            tag.delete()
         tag.save()
-
+    
     review.save()
 
 
@@ -634,6 +677,8 @@ def modifyReviewTags(review:PenReview):
 def reviewDelete(request, review_id):
     review : PenReview = get_object_or_404(PenReview, pk=review_id)
     product_id = review.product.id
+
+    unconnectTags(review_id)
 
     review.delete()
 

@@ -179,6 +179,8 @@ ol {
 	text-transform: uppercase;
 	display: inline-block;
 	padding: 12px 25px;
+	text-align: center;
+	/* padding: 12px 30px; */
 	border-radius: 50px;
 }
 

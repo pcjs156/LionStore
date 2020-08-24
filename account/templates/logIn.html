@@ -3,14 +3,46 @@
 
 {% block head %}
 <title>로그인 페이지</title>
+<style>
+    article {
+        text-align: center;
+        margin: 10rem auto;
+    }
+    #id_username, #id_password {
+        width: 10%;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
 
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="로그인">
-</form>
+<article>
+    <form method="POST" class="checkout__form">
+        {% csrf_token %}
+        <div class="checkout__form__input">
+            <p>ID</p>
+            {{ form.username }}
+        </div>
+        <div class="checkout__form__input">
+            <p>PW</p>
+            {{ form.password }}
+        </div>
+        <input onclick="play()" class="btn btn-warning" type="submit" value="어흥!" style="color: white; padding: 0.5px 2.5px;">
+    </form>
+    <audio id='audio_play' src="{% static 'sounds/catSound.wav' %}"></audio> 
+</article>
+
+<script type="text/javascript"> 
+function play() { 
+    var audio = document.getElementById('audio_play'); 
+    if (audio.paused) { 
+        audio.play(); 
+    }else{ 
+        audio.pause(); 
+        audio.currentTime = 0 
+    } 
+} 
+</script>
+
 
 {% endblock %}

@@ -87,9 +87,3 @@ div.svg div.rateit-preset {
     *background: url(star-preset.svg);
     /* For IE 6 and 7 */
 }
-
-/* 링크 네비게이션 */
-#link_nav {
-    width: 70%;
-    margin: 0 auto;
-}

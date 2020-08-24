@@ -115,7 +115,7 @@
         <tbody>
         {% if hasNoLikeProductList %}
             <tr>
-                <td colspan="5">좋아요를 누른 제품이 없습니다.</td>
+                <td colspan="6">좋아요를 누른 제품이 없습니다.</td>
             </tr>
         {% else %}
                 {% for product in likeProductList %}
@@ -162,7 +162,7 @@
         <tbody>
         {% if hasMyReviews %}
             <tr>
-                <td colspan="4">아직 리뷰를 작성하지 않습니다.</td>
+                <td colspan="7">아직 리뷰를 작성하지 않습니다.</td>
             </tr>
         {% else %}
             {% for review in myReviews %}
@@ -215,7 +215,7 @@
         <tbody>
         {% if hasNoWebSellInfoList %}
             <tr>
-                <td colspan="5">아직 판매정보를 등록하지 않습니다.</td>
+                <td colspan="6">아직 판매정보를 등록하지 않습니다.</td>
             </tr>
         {% else %}
             {% for info in webSellInfoList %}
@@ -265,7 +265,7 @@
         <tbody>
         {% if hasNoStationerSellInfoList %}
             <tr>
-                <td colspan="4">아직 판매정보를 등록하지 않습니다.</td>
+                <td colspan="5">아직 판매정보를 등록하지 않습니다.</td>
             </tr>
         {% else %}
             {% for info in stationerSellInfoList %}
@@ -301,6 +301,14 @@
            <button class="btn btn-warning" style="background-color: #f9d691;">작성한 상품 등록 요청<i class="fa fa-external-link" aria-hidden="true"></i></button>
         </a>
     </div>
+
+    {% if user.is_Customer or user.is_Stationer %}
+    <div style="text-align: right; width: 85%; margin-top: 1rem;">
+        <a href="{% url 'setLocation' %}">
+            <button class="btn btn-warning" style="background-color: #f9d691;">위치변경</button>
+        </a>
+    </div>
+    {% endif %}
 </article>
 
 {% endblock %}

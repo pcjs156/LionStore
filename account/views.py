@@ -187,6 +187,7 @@ def selectSellerType_view(request):
     return render(request, 'selectSellerType.html')
 
 
+@login_required(login_url='/account/logIn/')
 def setLocation_view(request):
     if request.method == "POST":
         try :

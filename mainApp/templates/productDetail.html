@@ -9,51 +9,122 @@
      hr {
           width: 80%;
      }
+     #mainContainer {
+          width: 80%;
+          text-align: center;
+          margin: 2rem auto;
+     }
+     #product_image {
+          display: block;
+          max-width: 700px;
+          max-height: 550px;
+          width: auto;
+          height: auto;
+     }
      #webSellInfo_report {
           width: 4rem;
+     }
+     #no_review_message {
+          text-align: center;
+     }
+     #no_review_message div {
+          font-family: 'yg-jalnan';
+          color:#663e27;
+     }
+     iframe {
+          display:block; 
+          width:70vw; 
+          height: 80vh
      }
 </style>
 {% endblock %}
 
 {% block content %}
-<a href="{% url 'productList' product.category.id %}">제품 목록 보기</a>
 
-<div>제품명 : {{ product.name }}</div>
-<div>제조사 : {{ product.manufacturer }}</div>
-<div>제품 설명 : {{ product.description }}</div>
-<img src="{{ product.productImage.url }}" alt="{{ product.name }} 이미지">
+<div class="container" id="mainContainer">
+     <p id="link_nav" style="text-align: left; margin-left: 0.4rem; margin-bottom: 0.5rem;">
+          <a href="{% url 'productList' product.category.id %}"><i class="fa fa-pencil" aria-hidden="true"></i>{{ product.category.categoryName }}</a> >
+          <span id="current_location">{{ product }}</span>
+      </p>
+  
+     <div class="container" id="imageContainer">
+          <div class="row">
+               <img class="col" id="product_image" src="{{ product.productImage.url }}" alt="{{ product.name }} 이미지">
+               
+               <div class="col" style="padding: 1rem 2rem;">
+                    <div class="row" style="display: grid; grid-template-rows: 1fr 1fr 2fr 0.01fr 3fr;">
+                         <div style="margin-bottom: 1rem;">
+                              <div style="font-family: 'yg-jalnan';">제품명</div>
+                              <div>{{ product.name }}</div>
+                         </div>
 
-<div>총점</div>
-<div class="rateit svg" data-rateit-value="{{avr_totalScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
-     step="0.1" data-rateit-starheight="15"></div>
+                         <div style="margin-bottom: 1rem;">
+                              <div style="font-family: 'yg-jalnan';"> 제조사</div>
+                              <div>{{ product.manufacturer }}</div>
+                         </div>
 
-<div>그립감</div>
-<div class="rateit svg" data-rateit-value="{{avr_gripScore}}" data-rateit-readonly="true"
-     aria-valuenow="{{avr_gripScore}}" data-rateit-starwidth="15" data-rateit-starheight="15"></div>
+                         <div style="margin-bottom: 1rem;">
+                              <div style="font-family: 'yg-jalnan';">제품 설명</div>
+                              <div>{{ product.description }}</div>
+                         </div>
 
-<div>수명</div>
-<div class="rateit svg" data-rateit-value="{{avr_lifeScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
-     data-rateit-starheight="15"></div>
+                         <hr>
 
-<div>내구도</div>
-<div class="rateit svg" data-rateit-value="{{avr_durabilityScore}}" data-rateit-readonly="true"
-     data-rateit-starwidth="15" data-rateit-starheight="15"></div>
-
-<div>디자인</div>
-<div class="rateit svg" data-rateit-value="{{avr_designScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
-     data-rateit-starheight="15"></div>
-
-<div>사용감</div>
-<div class="rateit svg" data-rateit-value="{{avr_textureScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
-     data-rateit-starheight="15"></div>
-
-<div>가성비</div>
-<div class="rateit svg" data-rateit-value="{{avr_costEffetivenessScore}}" data-rateit-readonly="true"
-     data-rateit-starwidth="15" data-rateit-starheight="15"></div>
+                         <div>
+                              <div style="text-align: center;">
+                                   <div>총점</div>
+                                   <div class="rateit svg" data-rateit-value="{{avr_totalScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
+                                        step="0.1" data-rateit-starheight="15"></div>
+                              </div>
+                              <div class="scoreContainer">
+                                   <div class="row">
+                                        <div class="col">
+                                             <div>그립감</div>
+                                             <div class="rateit svg" data-rateit-value="{{avr_gripScore}}" data-rateit-readonly="true"
+                                                  aria-valuenow="{{avr_gripScore}}" data-rateit-starwidth="15" data-rateit-starheight="15"></div>
+                                        </div>
+               
+                                        <div class="col">
+                                             <div>수명</div>
+                                             <div class="rateit svg" data-rateit-value="{{avr_lifeScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
+                                                  data-rateit-starheight="15"></div>
+                                        </div>
+                                   </div>
+                                   <div class="row">
+                                        <div class="col">
+                                             <div>내구도</div>
+                                             <div class="rateit svg" data-rateit-value="{{avr_durabilityScore}}" data-rateit-readonly="true"
+                                                  data-rateit-starwidth="15" data-rateit-starheight="15"></div>
+                                        </div>
+                                        <div class="col">
+                                             <div>디자인</div>
+                                             <div class="rateit svg" data-rateit-value="{{avr_designScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
+                                                  data-rateit-starheight="15"></div>
+                                        </div>
+                                   </div>
+                              </div>
+                              <div class="row">
+                                   <div class="col">
+                                        <div>사용감</div>
+                                        <div class="rateit svg" data-rateit-value="{{avr_textureScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
+                                        data-rateit-starheight="15"></div>
+                                   </div>
+          
+                                   <div class="col">
+                                        <div>가성비</div>
+                                        <div class="rateit svg" data-rateit-value="{{avr_costEffetivenessScore}}" data-rateit-readonly="true"
+                                        data-rateit-starwidth="15" data-rateit-starheight="15"></div>
+                                   </div>
+                              </div>                    
+                              </div>
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </div>
+</div>
 
 <br>
-
-
 
 <div id="tagContainer" style="width: 80%; margin: 0 auto 1rem auto; text-align: right;">
      <div style="font-family: 'yg-jalnan'; color: black;"><i class="fa fa-tags" aria-hidden="true"></i>태그목록</div>
@@ -90,6 +161,7 @@
      <div class="h6" style="text-align: left; font-family: 'yg-jalnan'; padding-left: 0.3rem;"><i class="fa fa-sort" aria-hidden="true"></i><span><a href="{% url 'productDetail' product.id %}?sort=popularity">인기순 정렬</a></span> / <span>최신순정렬</span></div>
      {% endif %}
 
+     {% if hasReviews %}
      <div class="row property__gallery">
           {% for review in reviews %}
           <div class="col-lg-3 col-md-4 col-sm-6 mix women">
@@ -112,6 +184,12 @@
           </div>
           {% endfor %}
      </div>
+     {% else %}
+     <div id="no_review_message">
+          <div>아직 리뷰가 없네요!</div>
+          <div>가장 먼저 작성해보시는건 어떨까요?</div>
+     </div>
+     {% endif %}
 
      {% if not reviewCreated %}
      <!-- 리뷰를 작성하지 않은 경우 -->
@@ -227,11 +305,29 @@
      </div>
 {% endif %}
 
-관련 영상 <br>
-{% for linkHash in videoLinkHashs %}
-<iframe width="200" height="180" src="https://www.youtube.com/embed/{{ linkHash }}" frameborder="0"
-     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-{% endfor %}
+<hr>
+
+<div id="videoContainer" style="margin: 2rem aut o;">
+     <div style="font-family: 'yg-jalnan'; text-align: center; font-size: large;"><i class="fa fa-youtube-play" aria-hidden="true"></i>관련 영상</div>
+     {% if hasNoVideos %}
+     <div style="font-family: 'yg-jalnan'; text-align: center; font-size: smaller; color: gray;">아직 관련 영상이 없네요 ㅠㅠ</div>
+     {% else %}
+     <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel" style="text-align: center;">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+               <iframe style="margin: 0 auto;" src="https://www.youtube.com/embed/{{ firstVideoHash }}" frameborder="0"
+               allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+
+          {% for linkHash in videoLinkHashs %}
+          <div class="carousel-item">
+               <iframe style="margin: 0 auto;" src="https://www.youtube.com/embed/{{ linkHash }}" frameborder="0"
+               allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          {% endfor %}
+     </div>
+     {% endif %}
+</div>
 
 <script>
      {% if hasStationerSellInfo %}
@@ -257,10 +353,10 @@
      marker.setMap(map);
      
      {% if info.price == cheapestStationerPrice %}
-     var iwContent = '<div style="color:red;>{{ info.seller.nickname }} : {{ info.price }}</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+     var iwContent = "<div style='color: red; text-align: center;'>{{ info.seller.nickname }} : {{ info.price }}</div>", // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
          iwPosition = new kakao.maps.LatLng({{ info.seller.latitude }}, {{ info.seller.longitude }}); //인포윈도우 표시 위치입니다
      {% else %}
-     var iwContent = '<div">{{ info.seller.nickname }} : {{ info.price }}</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+     var iwContent = "<div>{{ info.seller.nickname }} : {{ info.price }}</div>", // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
          iwPosition = new kakao.maps.LatLng({{ info.seller.latitude }}, {{ info.seller.longitude }}); //인포윈도우 표시 위치입니다
      {% endif %}
 
@@ -285,4 +381,114 @@
      var map = new kakao.maps.Map(mapContainer, mapOption); 
      {% endif %}
      </script>
-     {% endblock %}
+
+     <!-- 유튜브 이미지 슬라이드 -->
+     <script>
+          $(document).ready(function () {
+    var itemsMainDiv = ('.MultiCarousel');
+    var itemsDiv = ('.MultiCarousel-inner');
+    var itemWidth = "";
+
+    $('.leftLst, .rightLst').click(function () {
+        var condition = $(this).hasClass("leftLst");
+        if (condition)
+            click(0, this);
+        else
+            click(1, this)
+    });
+
+    ResCarouselSize();
+
+
+
+
+    $(window).resize(function () {
+        ResCarouselSize();
+    });
+
+    //this function define the size of the items
+    function ResCarouselSize() {
+        var incno = 0;
+        var dataItems = ("data-items");
+        var itemClass = ('.item');
+        var id = 0;
+        var btnParentSb = '';
+        var itemsSplit = '';
+        var sampwidth = $(itemsMainDiv).width();
+        var bodyWidth = $('body').width();
+        $(itemsDiv).each(function () {
+            id = id + 1;
+            var itemNumbers = $(this).find(itemClass).length;
+            btnParentSb = $(this).parent().attr(dataItems);
+            itemsSplit = btnParentSb.split(',');
+            $(this).parent().attr("id", "MultiCarousel" + id);
+
+
+            if (bodyWidth >= 1200) {
+                incno = itemsSplit[3];
+                itemWidth = sampwidth / incno;
+            }
+            else if (bodyWidth >= 992) {
+                incno = itemsSplit[2];
+                itemWidth = sampwidth / incno;
+            }
+            else if (bodyWidth >= 768) {
+                incno = itemsSplit[1];
+                itemWidth = sampwidth / incno;
+            }
+            else {
+                incno = itemsSplit[0];
+                itemWidth = sampwidth / incno;
+            }
+            $(this).css({ 'transform': 'translateX(0px)', 'width': itemWidth * itemNumbers });
+            $(this).find(itemClass).each(function () {
+                $(this).outerWidth(itemWidth);
+            });
+
+            $(".leftLst").addClass("over");
+            $(".rightLst").removeClass("over");
+
+        });
+    }
+
+
+    //this function used to move the items
+    function ResCarousel(e, el, s) {
+        var leftBtn = ('.leftLst');
+        var rightBtn = ('.rightLst');
+        var translateXval = '';
+        var divStyle = $(el + ' ' + itemsDiv).css('transform');
+        var values = divStyle.match(/-?[\d\.]+/g);
+        var xds = Math.abs(values[4]);
+        if (e == 0) {
+            translateXval = parseInt(xds) - parseInt(itemWidth * s);
+            $(el + ' ' + rightBtn).removeClass("over");
+
+            if (translateXval <= itemWidth / 2) {
+                translateXval = 0;
+                $(el + ' ' + leftBtn).addClass("over");
+            }
+        }
+        else if (e == 1) {
+            var itemsCondition = $(el).find(itemsDiv).width() - $(el).width();
+            translateXval = parseInt(xds) + parseInt(itemWidth * s);
+            $(el + ' ' + leftBtn).removeClass("over");
+
+            if (translateXval >= itemsCondition - itemWidth / 2) {
+                translateXval = itemsCondition;
+                $(el + ' ' + rightBtn).addClass("over");
+            }
+        }
+        $(el + ' ' + itemsDiv).css('transform', 'translateX(' + -translateXval + 'px)');
+    }
+
+    //It is used to get some elements from btn
+    function click(ell, ee) {
+        var Parent = "#" + $(ee).parent().attr("id");
+        var slide = $(Parent).attr("data-slide");
+        ResCarousel(ell, Parent, slide);
+    }
+
+});
+     </script>
+{% endblock %}
