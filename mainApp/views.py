@@ -163,6 +163,20 @@ def productDetail_view(request, product_id):
     if len(webSellInfoList) > 0:
         cheapestWebPrice = min(webSellInfoList, key=lambda info: info.price).price
         content['cheapestWebPrice'] = cheapestWebPrice
+    try:
+        webSellInfoRegistered = False
+        targetInfo = None
+        for info in webSellInfoList:
+            if info.seller == request.user:
+                webSellInfoRegistered = True
+                targetInfo = info
+                break
+        content['webSellInfoRegistered'] = webSellInfoRegistered
+        content['targetInfo'] = targetInfo
+
+    except:
+        content['webSellInfoRegistered'] = False
+        content['targetInfo'] = None
 
     # 웹 판매정보가 있는지 표시
     hasWebSellInfo = len(webSellInfoList) > 0
@@ -174,6 +188,21 @@ def productDetail_view(request, product_id):
     if len(stationerSellInfoList) > 0:
         cheapestStationerPrice = min(stationerSellInfoList, key=lambda info: info.price).price
         content['cheapestStationerPrice'] = cheapestStationerPrice
+
+    try:
+        stationerSellInfoRegistered = False
+        targetInfo = None
+        for info in stationerSellInfoList:
+            if info.seller == request.user:
+                stationerSellInfoRegistered = True
+                targetInfo = info
+                break
+        content['stationerSellInfoRegistered'] = stationerSellInfoRegistered
+        content['targetInfo'] = targetInfo
+
+    except:
+        content['webSellInfoRegistered'] = False
+        content['targetInfo'] = None
 
     # 등록된 문구점 판매정보가 없다면 지도를 표시할 수 없으므로 표시해놓음
     hasStationerSellInfo = len(stationerSellInfoList) > 0
