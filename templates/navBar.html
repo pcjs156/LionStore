@@ -10,6 +10,13 @@
         font-weight: normal;
         font-style: normal;
     }
+
+    @font-face {
+        font-family: 'NanumSquareRound';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+    }
 a:link {
   color:black;
 }  
@@ -17,12 +24,11 @@ a:hover {
   color: rgb(177, 106, 13);
 }
 </style> 
-
 <div class="gridContainer"
     style="display: grid; grid-template-rows: 1fr; grid-template-columns: 1fr 3fr 0.6fr; padding: 1rem;">
     <div style="text-align: left; margin: auto 2rem;">
         <a href="{% url 'mainPage' %}"><img src="{% static '/img/common/lionStore_logo.png' %}" alt="사자네 문방구 로고"
-                style="width: 750px; height: 55px"></a>
+                style="width: 750px; height: 45px"></a>
     </div>
 
 
@@ -30,7 +36,7 @@ a:hover {
         <form action="{% url 'keywordSearchResult' %}" method="GET" style="margin-bottom: 4px ;">
             <input type="text" name="keywordQuery">
             <input type="text" name="sort" value="popularity" style="display: none; visibility: hidden;">
-            <button type="submit" class="site-btn" style="font-family:'yg-jalnan';">제품명 검색</button>
+            <button type="submit" class="site-btn" style="font-family:'NanumSquareRound';">제품명 검색</button>
         </form>
     </div>
 
