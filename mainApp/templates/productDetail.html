@@ -257,10 +257,10 @@
      marker.setMap(map);
      
      {% if info.price == cheapestStationerPrice %}
-     var iwContent = '<div style="color:red;>{{ info.seller.nickname }} : {{ info.price }}</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+     var iwContent = "<div style='color: red; text-align: center;'>{{ info.seller.nickname }} : {{ info.price }}</div>", // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
          iwPosition = new kakao.maps.LatLng({{ info.seller.latitude }}, {{ info.seller.longitude }}); //인포윈도우 표시 위치입니다
      {% else %}
-     var iwContent = '<div">{{ info.seller.nickname }} : {{ info.price }}</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+     var iwContent = "<div>{{ info.seller.nickname }} : {{ info.price }}</div>", // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
          iwPosition = new kakao.maps.LatLng({{ info.seller.latitude }}, {{ info.seller.longitude }}); //인포윈도우 표시 위치입니다
      {% endif %}
 
