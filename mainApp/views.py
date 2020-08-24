@@ -77,7 +77,9 @@ def productDetail_view(request, product_id):
     # 비디오 링크 관련
     videoLinks = ProductVideoLink.objects.filter(product=product)
     videoLinkHashs = [getHash(linkObj.videoLink)for linkObj in videoLinks]
-    content['videoLinkHashs'] = videoLinkHashs
+    content['firstVideoHash'] = videoLinkHashs[0]
+    content['videoLinkHashs'] = videoLinkHashs[1:]
+    content['hasNoVideos'] = (len(videoLinkHashs) == 0)
 
     # 리뷰 관련
     # 인기순 정렬인 경우
@@ -96,6 +98,8 @@ def productDetail_view(request, product_id):
         content['popularitySort'] = True
         reviews = PenReview.objects.filter(product=product).order_by('-likeCount')
         content['sortBy'] = 'popularity'
+
+    content['hasReviews'] = (len(reviews) > 0)
 
     # 평점 관련
     try:
