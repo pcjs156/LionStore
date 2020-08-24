@@ -30,13 +30,13 @@
 {% for image in images %}
 
 {% if image %}
-{% if review.author == user %}
-<a href="{% url 'reviewImageModify' review_id=review.id imageIdx=forloop.counter0 %}">
+    {% if review.author == user %}
+    <a href="{% url 'reviewImageModify' review_id=review.id imageIdx=forloop.counter0 %}">
+        <img src="{{ image.url }}" style="width:5rem; height:5rem;">
+    </a>
+    {% else %}
     <img src="{{ image.url }}" style="width:5rem; height:5rem;">
-</a>
-{% else %}
-<img src="{{ image.url }}" style="width:5rem; height:5rem;">
-{% endif %}
+    {% endif %}
 {% endif %}
 
 {% endfor %}

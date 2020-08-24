@@ -5,6 +5,14 @@
 <title>상품별 디테일 페이지</title>
 <!-- 상품별 디테일 페이지
      상품 정보, 리뷰 목록, 웹 판매 정보 목록, 문구점 정보 목록이 노출됨 -->
+<style>
+     hr {
+          width: 80%;
+     }
+     #webSellInfo_report {
+          width: 4rem;
+     }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -17,237 +25,264 @@
 
 <div>총점</div>
 <div class="rateit svg" data-rateit-value="{{avr_totalScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
-    step="0.1" data-rateit-starheight="15"></div>
+     step="0.1" data-rateit-starheight="15"></div>
 
 <div>그립감</div>
 <div class="rateit svg" data-rateit-value="{{avr_gripScore}}" data-rateit-readonly="true"
-    aria-valuenow="{{avr_gripScore}}" data-rateit-starwidth="15" data-rateit-starheight="15"></div>
+     aria-valuenow="{{avr_gripScore}}" data-rateit-starwidth="15" data-rateit-starheight="15"></div>
 
 <div>수명</div>
 <div class="rateit svg" data-rateit-value="{{avr_lifeScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
-    data-rateit-starheight="15"></div>
+     data-rateit-starheight="15"></div>
 
 <div>내구도</div>
 <div class="rateit svg" data-rateit-value="{{avr_durabilityScore}}" data-rateit-readonly="true"
-    data-rateit-starwidth="15" data-rateit-starheight="15"></div>
+     data-rateit-starwidth="15" data-rateit-starheight="15"></div>
 
 <div>디자인</div>
 <div class="rateit svg" data-rateit-value="{{avr_designScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
-    data-rateit-starheight="15"></div>
+     data-rateit-starheight="15"></div>
 
 <div>사용감</div>
-<div class="rateit svg" data-rateit-value="{{avr_textureScore}}" data-rateit-readonly="true"
-    data-rateit-starwidth="15" data-rateit-starheight="15"></div>
+<div class="rateit svg" data-rateit-value="{{avr_textureScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
+     data-rateit-starheight="15"></div>
 
 <div>가성비</div>
 <div class="rateit svg" data-rateit-value="{{avr_costEffetivenessScore}}" data-rateit-readonly="true"
-    data-rateit-starwidth="15" data-rateit-starheight="15"></div>
+     data-rateit-starwidth="15" data-rateit-starheight="15"></div>
 
 <br>
 
-{{ likeMessage }}
-<a href="{% url 'productLikeProcess' product_id=product.id %}">
-     {% if userLike %}
-     <!-- 유저가 좋아요를 누른 경우 -->
-     ❤️
+
+
+<div id="tagContainer" style="width: 80%; margin: 0 auto 1rem auto; text-align: right;">
+     <div style="font-family: 'yg-jalnan'; color: black;"><i class="fa fa-tags" aria-hidden="true"></i>태그목록</div>
+     {% if tags %}
+          {% for tag in tags %}
+          <a class="badge badge-pill badge-warning" href="{% url 'tagProduct' tag.id %}">{{ tag }}</a>
+          {% endfor %}
      {% else %}
-     <!-- 유저가 좋아요를 누르지 않은 경우 -->
-     🖤
+          <span class="badge badge-pill badge-danger">No TAG</span>
      {% endif %}
-</a>
+</div>
+
+<div style="width: 80%; margin: 0 auto 2rem auto; text-align: right;">
+     {{ likeMessage }}
+     <a href="{% url 'productLikeProcess' product_id=product.id %}">
+          {% if userLike %}
+          <!-- 유저가 좋아요를 누른 경우 -->
+          ❤️
+          {% else %}
+          <!-- 유저가 좋아요를 누르지 않은 경우 -->
+          🖤
+          {% endif %}
+     </a>
+</div>
 
 <hr>
 
-<!-- 인기순 정렬로 전환 -->
-{% if popularitySort %}
-<div><span>인기순 정렬</span> / <span><a href="{% url 'productDetail' product.id %}?sort=new">최신순정렬</a></span></div>
-<!-- 최신순 정렬로 전환 -->
-{% else %}
-<div><span><a href="{% url 'productDetail' product.id %}?sort=popularity">인기순 정렬</a></span> / <span>최신순정렬</span></div>
-{% endif %}
+<div id="reviewContainer" style="padding: 0 15%">
+     <!-- 인기순 정렬로 전환 -->
+     {% if popularitySort %}
+     <div class="h6" style="text-align: left; font-family: 'yg-jalnan'; padding-left: 0.3rem;"><i class="fa fa-sort" aria-hidden="true"></i><span>인기순 정렬</span> / <span><a href="{% url 'productDetail' product.id %}?sort=new">최신순정렬</a></span></div>
+     <!-- 최신순 정렬로 전환 -->
+     {% else %}
+     <div class="h6" style="text-align: left; font-family: 'yg-jalnan'; padding-left: 0.3rem;"><i class="fa fa-sort" aria-hidden="true"></i><span><a href="{% url 'productDetail' product.id %}?sort=popularity">인기순 정렬</a></span> / <span>최신순정렬</span></div>
+     {% endif %}
 
-{% if not reviewCreated %}
-<!-- 리뷰를 작성하지 않은 경우 -->
-<div><a href="{% url 'reviewCreate' product.id %}">새 리뷰 작성</a></div>
-{% else %}
-<!-- 리뷰를 이미 작성한 경우 -->
-<div><a href="{% url 'reviewDetail' myReview.id %}">작성한 리뷰 보기</a></div>
-{% endif %}
-
-<div class="row property__gallery">
-     {% for review in reviews %}
-     <div class="col-lg-3 col-md-4 col-sm-6 mix women">
-          <div class="product__item">
-               <div class="product__item__pic set-bg" data-setbg="{{ review.reviewImage1.url }}">
-                    <ul class="product__hover">
-                         <li><a href="{{ review.reviewImage1.url }}" class="image-popup"><span
-                                        class="arrow_expand"></span></a></li>
-                    </ul>
-               </div>
-               <div class="product__item__text">
-                    <h6><a href="{% url 'reviewDetail' review.id %}">{{ review }}</a></h6>
-                    <div class="rating">
-                         <div class="rateit svg" data-rateit-value="{{ review.totalScore }}"
-                              data-rateit-readonly="true" data-rateit-starwidth="15" data-rateit-starheight="15">
+     <div class="row property__gallery">
+          {% for review in reviews %}
+          <div class="col-lg-3 col-md-4 col-sm-6 mix women">
+               <div class="product__item">
+                    <div class="product__item__pic set-bg" data-setbg="{{ review.reviewImage1.url }}">
+                         <ul class="product__hover">
+                              <li><a href="{{ review.reviewImage1.url }}" class="image-popup"><span
+                                             class="arrow_expand"></span></a></li>
+                         </ul>
+                    </div>
+                    <div class="product__item__text">
+                         <h6><a href="{% url 'reviewDetail' review.id %}">{{ review }}</a></h6>
+                         <div class="rating">
+                              <div class="rateit svg" data-rateit-value="{{ review.totalScore }}" data-rateit-readonly="true"
+                                   data-rateit-starwidth="15" data-rateit-starheight="15">
+                              </div>
                          </div>
                     </div>
                </div>
           </div>
+          {% endfor %}
      </div>
-     {% endfor %}
-</div>
 
-
-<!-- 페이지네이션 -->
-<div class="pagination__option" style="text-align: center;">
-     {% if reviews.has_previous %}
-     <a href="?page=1&sort={{ sortBy }}"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
-     <a href="?page={{ reviews.previous_page_number }}&sort={{ sortBy }}"><i class="fa fa-angle-left"></i></a>
+     {% if not reviewCreated %}
+     <!-- 리뷰를 작성하지 않은 경우 -->
+     <a href="{% url 'reviewCreate' product.id %}"><div style="padding-left: 0.3rem; text-align: right;">새 리뷰 작성</div></a>
      {% else %}
-     <a href="?page=1&sort={{ sortBy }}"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
-     <a href="#"><i class="fa fa-step-backward" aria-hidden="true"></i></a>
+     <!-- 리뷰를 이미 작성한 경우 -->
+     <a href="{% url 'reviewDetail' myReview.id %}"><div style="padding-left: 0.3rem; text-align: right;">작성한 리뷰 보기</div></a>
      {% endif %}
-     <span>{{ reviews.number }}</span>
-     <span>/</span>
-     <span>{{ reviews.paginator.num_pages }}</span>
-     {% if reviews.has_next %}
-     <a href="?page={{ reviews.next_page_number }}&sort={{ sortBy }}"><i class="fa fa-angle-right"></i></a>
-     <a href="?page={{ reviews.paginator.num_pages }}&sort={{ sortBy }}"><i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
-     {% else %}
-     <a href="#"><i class="fa fa-step-forward" aria-hidden="true"></i></a>
-     <a href="?page={{ reviews.paginator.num_pages }}&sort={{ sortBy }}"><i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
-     {% endif %}
-</div>
 
-<hr>
-     
-     <div style="font-weight: bold;">태그목록</div>
-     {% for tag in tags %}
-     <div><a href="{% url 'tagProduct' tag.id %}">{{ tag }}</a></div>
-     {% endfor %}
-
-<hr>
-
-<!-- 웹 판매자인 경우에만 판매정보 입력 가능 -->
-{% if user.is_WebSeller %}
-<a href="{% url 'webSellInfoCreate' product_id=product.id %}">웹 판매정보 추가</a>
-{% endif %}
-
-{% if hasWebSellInfo %}
-     {% for info in webSellInfoList %}
-     <div>
-          {% if info.price == cheapestWebPrice %}
-          <!-- 최저가인 경우 붉은 색으로 보이도록 표시 -->
-          <div style="color: red;">판매자 : {{ info.seller.nickname }}</div>
-          <div style="color: red;">가격 : {{ info.price }}원</div>
+     <!-- 페이지네이션 -->
+     <div class="pagination__option" style="text-align: center;">
+          {% if reviews.has_previous %}
+          <a href="?page=1&sort={{ sortBy }}"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
+          <a href="?page={{ reviews.previous_page_number }}&sort={{ sortBy }}"><i class="fa fa-angle-left"></i></a>
           {% else %}
-          <div>판매자 : {{ info.seller.nickname }}</div>
-          <div>가격 : {{ info.price }}원</div>
+          <a href="?page=1&sort={{ sortBy }}"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
+          <a href="#"><i class="fa fa-step-backward" aria-hidden="true"></i></a>
           {% endif %}
-          <div><a href="{% url 'redirectExternalLink' link=info.link %}">구입하러 가기</a></div>
-
-          {% if info.seller == user %}
-          <!-- 판매자인 경우 수정/삭제 기능에 접근 가능 -->
-          <div>
-               <div><a href="{% url 'webSellInfoDelete' product_id=product.id webSellInfo_id=info.id %}">판매정보 삭제하기</a></div>
-               <div><a href="{% url 'webSellInfoModify' product_id=product.id webSellInfo_id=info.id %}">판매정보 수정하기</a></div>
-          </div>
+          <span>{{ reviews.number }}</span>
+          <span>/</span>
+          <span>{{ reviews.paginator.num_pages }}</span>
+          {% if reviews.has_next %}
+          <a href="?page={{ reviews.next_page_number }}&sort={{ sortBy }}"><i class="fa fa-angle-right"></i></a>
+          <a href="?page={{ reviews.paginator.num_pages }}&sort={{ sortBy }}"><i class="fa fa-angle-double-right"
+                    aria-hidden="true"></i></a>
+          {% else %}
+          <a href="#"><i class="fa fa-step-forward" aria-hidden="true"></i></a>
+          <a href="?page={{ reviews.paginator.num_pages }}&sort={{ sortBy }}"><i class="fa fa-angle-double-right"
+                    aria-hidden="true"></i></a>
           {% endif %}
      </div>
-     <br>
-     {% endfor %}
 
-{% else%}
-<div>등록된 웹 판매 정보가 없습니다!</div>
-{% endif %}
+</div>
 
 <hr>
 
-{% if user.is_Stationer %}
-<!-- 문구점 사장님인 경우에만 판매정보 입력 가능 -->
-<div><a href="{% url 'stationerSellInfoCreate' product_id=product.id %}">문구점 판매정보 추가</a></div>
-{% endif %}
+<table id="webSellInfos" class="table table-bordered table-hover"
+     style="text-align: center; width: 70%; margin: auto auto;">
+     <caption style="caption-side: top; font-family: 'yg-jalnan'; color: black;"><i class="fa fa-krw" aria-hidden="true"
+               style="font-weight: bold;"></i>등록된 판매정보</caption>
+     {% if user.is_WebSeller %}
+     <caption style="caption-side: bottom; text-align: right;">
+          {% if webSellInfoRegistered %}
+          <a href="{% url 'webSellInfoDelete' product_id=product.id webSellInfo_id=targetInfo.id %}">판매정보 삭제하기</a> /
+          <a href="{% url 'webSellInfoModify' product_id=product.id webSellInfo_id=targetInfo.id %}">판매정보 수정하기</a>
+          {% else %}
+          <a href="{% url 'webSellInfoCreate' product_id=product.id %}">웹 판매정보 추가</a>
+          {% endif %}
+     </caption>
+     {% endif %}
+     <thead>
+          <tr>
+               <th>판매자</th>
+               <th>가격</th>
+               <th>링크</th>
+               <th>신고</th>
+          </tr>
+     </thead>
+     <tbody>
+          {% if hasWebSellInfo %}
+          {% for info in webSellInfoList %}
+          <tr>
+               <td id="webSellInfo_seller">
+                    {{ info.seller.nickname }}
+               </td>
+               <td id="webSellInfo_price">
+                    {{ info.price }}
+               </td>
+               <td id="webSellInfo_link">
+                    <a href="{% url 'redirectExternalLink' info.link %}"><i class="fa fa-external-link"
+                              aria-hidden="true">{{ info.link }}</i></a>
+               </td>
+               <td id="webSellInfo_report">
+                    <a href="">신고</a>
+               </td>
+          </tr>
+          {% endfor %}
+          {% else %}
+          <tr>
+               <td colspan="4">아직 판매정보가 등록되지 않았습니다.</td>
+          </tr>
+          {% endif %}
+     </tbody>
+</table>
+<br>
 
 {% if hasStationerSellInfo %}
-<!-- 문구점 판매정보가 등록된 경우 -->
-{% if nullLocation %}
-<!-- 위치 정보가 입력되어 있지 않은 경우 -->
-<div>위치 정보가 입력되지 않았습니다.</div>
-<div>지도 기능을 이용하시려면 <a href="{% url 'setLocation' %}">위치를 설정</a>해주세요.</div>
-{% else %}
-<!-- 위치 정보가 입력되어 있는 경우 -->
-<div id="map" style="width:100%;height:350px;"></div>
-{% endif %}
-
-{% for info in stationerSellInfoList %}
-<div>
-     {% if info.price == cheapestStationerPrice %}
-     <!-- 최저가인 경우 붉은 색으로 보이도록 표시 -->
-     <div style="color: red;">판매자 : {{ info.seller.nickname }}</div>
-     <div style="color: red;">가격 : {{ info.price }}원</div>
+     <!-- 문구점 판매정보가 등록된 경우 -->
+     {% if nullLocation %}
+          <!-- 위치 정보가 입력되어 있지 않은 경우 -->
+          <div>위치 정보가 입력되지 않았습니다.</div>
+          <div>지도 기능을 이용하시려면 <a href="{% url 'setLocation' %}">위치를 설정</a>해주세요.</div>
      {% else %}
-     <div>판매자 : {{ info.seller.nickname }}</div>
-     <div>가격 : {{ info.price }}원</div>
+          <!-- 위치 정보가 입력되어 있는 경우 -->
+          <div style="font-family: 'yg-jalnan'; color: black; width: 70%; margin: 0 auto; padding: 12px 0;"><i class="fa fa-map-marker" aria-hidden="true"></i> 문구점 판매 정보</div>
+          <div id="map" style="width:70%; height:30em; margin: 0 auto;"></div>
      {% endif %}
-
-     {% if info.seller == user %}
-     <!-- 판매자인 경우 수정/삭제 기능에 접근 가능 -->
-     <div>
-          <div><a href="{% url 'stationerSellInfoDelete' product_id=product.id stationerSellInfo_id=info.id %}">판매정보 삭제하기</a></div>
-          <div><a href="{% url 'stationerSellInfoModify' product_id=product.id stationerSellInfo_id=info.id %}">판매정보 수정하기</a></div>
-     </div>
-     {% endif %}
-</div>
-<br>
-{% endfor %}
-
 {% else %}
-<!-- 문구점 판매정보가 등록되지 않은 경우 -->
-<div>문구점 판매정보가 등록되지 않았습니다!</div>
+     <!-- 문구점 판매정보가 등록되지 않은 경우 -->
+     <div style="font-family: 'yg-jalnan'; color: red; width: 70%; margin: 0 auto; padding: 12px 0;"><i class="fa fa-times" aria-hidden="true"></i>문구점 판매정보가 등록되지 않았습니다!</div>
+     <div id="map" style="width:70%; height:30em; margin: 0 auto;"></div>
 {% endif %}
 
-
-<script>
-var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-    mapOption = { 
-        center: new kakao.maps.LatLng({{ centerLatitude }}, {{ centerLongitude }}), // 지도의 중심좌표
-        level: {{ zoomLevel }} // 지도의 확대 레벨
-    };
-
-var map = new kakao.maps.Map(mapContainer, mapOption);
-
-{% for info in stationerSellInfoList %}
-
-// 마커가 표시될 위치입니다 
-var markerPosition  = new kakao.maps.LatLng({{ info.seller.latitude }}, {{ info.seller.longitude }}); 
-
-// 마커를 생성합니다
-var marker = new kakao.maps.Marker({
-    position: markerPosition
-});
-
-// 마커가 지도 위에 표시되도록 설정합니다
-marker.setMap(map);
-
-var iwContent = '<div style="padding: 2px;">{{ info.seller.nickname }} : {{ info.price }}</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-    iwPosition = new kakao.maps.LatLng({{ info.seller.latitude }}, {{ info.seller.longitude }}); //인포윈도우 표시 위치입니다
-
-// 인포윈도우를 생성합니다
-var infowindow = new kakao.maps.InfoWindow({
-    position : iwPosition, 
-    content : iwContent 
-});
-  
-// 마커 위에 인포윈도우를 표시합니다. 두번째 파라미터인 marker를 넣어주지 않으면 지도 위에 표시됩니다
-infowindow.open(map, marker); 
-
-{% endfor %}
-</script>
-<hr>
+{% if user.is_Stationer %}
+     <div style="text-align: right; width: 70%; margin: 0 auto; padding-top: 12px;">
+     <!-- 문구점 사장님인 경우에만 판매정보 입력/삭제/수정 가능 -->
+     {% if stationerSellInfoRegistered %}
+          <a href="{% url 'stationerSellInfoModify' product_id=product.id stationerSellInfo_id=targetInfo.id %}">문구점 판매정보 수정</a> /
+          <a href="{% url 'stationerSellInfoDelete' product_id=product.id stationerSellInfo_id=targetInfo.id %}">문구점 판매정보 삭제</a>
+     {% else %}
+          <a href="{% url 'stationerSellInfoCreate' product_id=product.id %}">문구점 판매정보 추가</a>
+     {% endif %}
+     </div>
+{% endif %}
 
 관련 영상 <br>
 {% for linkHash in videoLinkHashs %}
 <iframe width="200" height="180" src="https://www.youtube.com/embed/{{ linkHash }}" frameborder="0"
      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 {% endfor %}
-{% endblock %}
+
+<script>
+     {% if hasStationerSellInfo %}
+     var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+         mapOption = { 
+             center: new kakao.maps.LatLng({{ centerLatitude }}, {{ centerLongitude }}), // 지도의 중심좌표
+             level: {{ zoomLevel }} // 지도의 확대 레벨
+         };
+     
+     var map = new kakao.maps.Map(mapContainer, mapOption);
+     
+     {% for info in stationerSellInfoList %}
+     
+     // 마커가 표시될 위치입니다 
+     var markerPosition  = new kakao.maps.LatLng({{ info.seller.latitude }}, {{ info.seller.longitude }}); 
+     
+     // 마커를 생성합니다
+     var marker = new kakao.maps.Marker({
+         position: markerPosition
+     });
+     
+     // 마커가 지도 위에 표시되도록 설정합니다
+     marker.setMap(map);
+     
+     {% if info.price == cheapestStationerPrice %}
+     var iwContent = '<div style="color:red;>{{ info.seller.nickname }} : {{ info.price }}</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+         iwPosition = new kakao.maps.LatLng({{ info.seller.latitude }}, {{ info.seller.longitude }}); //인포윈도우 표시 위치입니다
+     {% else %}
+     var iwContent = '<div">{{ info.seller.nickname }} : {{ info.price }}</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+         iwPosition = new kakao.maps.LatLng({{ info.seller.latitude }}, {{ info.seller.longitude }}); //인포윈도우 표시 위치입니다
+     {% endif %}
+
+     // 인포윈도우를 생성합니다
+     var infowindow = new kakao.maps.InfoWindow({
+         position : iwPosition, 
+         content : iwContent 
+     });
+       
+     // 마커 위에 인포윈도우를 표시합니다. 두번째 파라미터인 marker를 넣어주지 않으면 지도 위에 표시됩니다
+     infowindow.open(map, marker); 
+     
+     {% endfor %}
+     {% else %}
+     var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+     mapOption = { 
+          center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+          level: 3 // 지도의 확대 레벨
+     };
+
+     // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
+     var map = new kakao.maps.Map(mapContainer, mapOption); 
+     {% endif %}
+     </script>
+     {% endblock %}
