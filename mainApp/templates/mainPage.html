@@ -27,11 +27,11 @@
           {% if not error %}
           {% for reviewer in topSimilarity_users %}
           <div class="h4"
-               style="text-align: left; padding-left: 5em; padding-top: 1em;font-family: 'yg-jalnan'; color:#663e27;">추천
+               style="text-align: left; padding: 1em 3rem 0 3rem; font-family: 'yg-jalnan'; color:#663e27;">추천
                리뷰 : {{ reviewer.nickname }}님의 리뷰
                <hr>
           </div>
-          <div class="row property__gallery">
+          <div class="row property__gallery" style="padding-left: 3em; padding-right: 3em;">
                {% for reviewList in topSimilarityReviews %}
                {% for review in reviewList %}
                <div class="col-lg-3 col-md-4 col-sm-6 mix women">
@@ -67,11 +67,11 @@
           {% endif %}
 
           <div class="h4"
-               style="text-align: left; padding-left: 5em; padding-top: 1em;font-family: 'yg-jalnan'; color:#663e27;">최신
+               style="text-align: left; padding: 1em 3rem 0 3rem; font-family: 'yg-jalnan'; color:#663e27;">최신
                리뷰
                <hr>
           </div>
-          <div class="row property__gallery" style="padding-left: 6em;">
+          <div class="row property__gallery" style="padding-left: 3em; padding-right: 3em;">
                {% for newReview in newReviews %}
                <div class="col-lg-3 col-md-4 col-sm-6 mix women">
                     <div class="product__item">
@@ -97,10 +97,10 @@
 
           <br>
 
-          <div class="h4" style="text-align: left; padding-left: 5em; font-family: 'yg-jalnan';color:#663e27;">인기 리뷰
+          <div class="h4" style="padding: 1em 3rem 0 3rem;  font-family: 'yg-jalnan';color:#663e27;">인기 리뷰
                <hr>
           </div>
-          <div class="row property__gallery;" style="padding-left: 6em;">
+          <div class="row property__gallery;" style="padding-left: 3em; padding-right: 3em;">
                {% for popularReview in popularReviews %}
                <div class="col-lg-3 col-md-4 col-sm-6 mix women">
                     <div class="product__item">
