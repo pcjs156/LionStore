@@ -98,6 +98,7 @@ a:hover,
 a:focus {
 	text-decoration: none;
 	outline: none;
+	color: rgb(177, 106, 13);
 	
 }
 
@@ -371,7 +372,7 @@ ol {
 	top: 56px;
 	width: 150px;
 	background: #111111;
-	text-align: left;
+	text-align: center;
 	padding: 2px 0;
 	z-index: 9;
 	opacity: 0;
