@@ -10,11 +10,18 @@
         font-weight: normal;
         font-style: normal;
     }
+
     @font-face {
-    font-family: 'NanumSquareRound';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
+        font-family: 'NanumSquareRound';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+    }
+a:link {
+  color:black;
+}  
+a:hover {
+  color: rgb(177, 106, 13);
 }
 </style> 
 <div class="gridContainer"
@@ -42,8 +49,8 @@
                 style="max-width: 30px; max-height: 30x; width: auto; height: auto; display: block; margin:0px auto;padding-top: 0.2em;">
             <ul>
                 <li>
-                    <a href="{% url 'myPage' %}" style="color: black; font-size: 13px; padding: 0rem;">마이페이지</a>
-                    <ul class="dropdown">
+                    <a href="{% url 'myPage' %}" style="color: black; font-size: 13px; padding: 0rem; text-align: center;">마이페이지</a>
+                    <ul class="dropdown text-align: center;">
                         <li><a href="{% url 'myPageRedirector' 'likeReviews' %}">좋아요한 리뷰</a></li>
                         <li><a href="{% url 'myPageRedirector' 'likeProducts' %}">좋아요한 제품</a></li>
                         <li><a href="{% url 'myPageRedirector' 'myReviews' %}">작성한 리뷰 목록</a></li>
@@ -68,9 +75,9 @@
         </div>
     </div>
     {% else %}
-    <div>
-        <span><a href="{% url 'selectCustomerType' %}">SignUp</a></span>/
-        <span><a href="{% url 'logIn' %}">SignIn</a></span>
+    <div style="margin-top: 19px; color:black;">
+        <span><a href="{% url 'selectCustomerType' %}" style="font-family: yg-jalnan;">회원가입 </a></span> /
+        <span><a href="{% url 'logIn' %} "style="font-family: yg-jalnan;"> 로그인</a></span>
     </div>
     {% endif %}
 </div>
