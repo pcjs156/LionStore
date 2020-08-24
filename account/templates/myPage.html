@@ -4,51 +4,299 @@
 {% block head %}
 <title>마이페이지</title>
 <!-- 좋아요를 누른 리뷰 목록, 좋아요를 누른 제품 목록, 작성한 리뷰 목록, 등록한 판매 정보 목록 -->
+<style>
+    table {
+        margin-bottom: 1.5rem;
+    }
+    thead {
+        background-color: #ffebbf;
+    }
+    .menu_head {
+        text-decoration: none;
+        color: black;
+        font-weight: bold;
+        font-size: large;
+    }
+    #review_author {
+        width: 15rem;
+    }
+    #review_product_name, #product_name, #myReview_product_name,
+    #webSellInfo_productName, #stationerSellInfo_productName {
+        width: 15rem;
+    }
+    #review_totalScore, #product_averageScore, #myReview_totalScore {
+        width: 5rem;
+    }
+    #product_manufacturer, #myReview_manufacturer, #review_product_manufacturer,
+    #webSellInfo_product_manufacturer, #stationerSellInfo_product_manufacturer {
+        width: 10rem;
+    }
+    #product_category, #webSellInfo_category, #stationerSellInfo_category,
+    #myReview_category, #review_product_category {
+        width: 10rem;
+    }
+    #myReview_likeCount, #product_like {
+        width: 3rem;
+    }
+    #webSellInfo_price, #stationerSellInfo_productName {
+        width: 5rem;
+    }
+    #myReview_reported, #webSellInfo_reported, #stationerSellInfo_reported {
+        width: 5rem;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
 
-<div><a href="{% url 'productRequestList' %}">상품 등록</a></div>
+<article style="padding: 5% 5%;">
+    <table id="likeReviews" class="table table-bordered table-hover" style="text-align: center; width: 70%; margin: auto auto;">
+        <caption style="caption-side: top; font-family: 'yg-jalnan'; color: black;"><i class="fa fa-thumbs-o-up" aria-hidden="true" style="font-weight: bold;"></i>좋아요를 누른 리뷰</caption>
+        <thead>
+            <tr>
+                <th>작성자</th>
+                <th>제품명</th>
+                <th>제조사</th>
+                <th>카테고리</th>
+                <th>한줄평</th>
+                <th>평점</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% if hasNoLikeReviewList %}
+            <tr>
+                <td colspan="6">좋아요를 누른 리뷰가 없습니다.</td>
+            </tr>
+        {% else %}
+            {% for review in likeReviewList %}
+            <tr>
+                <td id="review_author">
+                    {{ review.product.author.nickname }}
+                </td>
+                <td id="review_product_name">
+                    <a href="{% url 'productDetail' review.product.id %}">{{ review.product.name }}</a>
+                </td>
+                <td id="review_product_manufacturer">
+                    {{ review.product.manufacturer }}
+                </td>
+                <td id="review_product_category">
+                    {{ review.product.category.categoryName }}
+                </td>
+                <td id="review_comment">
+                    <a href="{% url 'reviewDetail' review.id %}">{{ review.getShortComment }}</a>
+                </td>
+                <td id="review_totalScore">
+                    <div class="rateit svg" data-rateit-value="{{review.totalScore}}" data-rateit-readonly="true"
+                        data-rateit-starwidth="15" step="0.1" data-rateit-starheight="15"></div>
+                </td>
+            </tr>
+            {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+    <br>
 
-<div id="likeReviews">좋아요를 누른 리뷰 리스트</div>
-{% for review in likeReviewList %}
-<div><a href="{% url 'reviewDetail' review.id %}">{{ review }}</a></div>
-{% endfor %}
-<br>
+    <table id="likeProducts" class="table table-bordered table-hover" style="text-align: center; width: 70%; margin: auto auto;">
+        <caption style="caption-side: top; font-family: 'yg-jalnan'; color: black;"><i class="fa fa-thumbs-o-up" aria-hidden="true" style="font-weight: bold;"></i>좋아요를 누른 제품</caption>
+        <thead>
+            <tr>
+                <th>제품명</th>
+                <th>제조사</th>
+                <th>카테고리</th>
+                <th>Like</th>
+                <th>상세설명</th>
+                <th>평점</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% if hasNoLikeProductList %}
+            <tr>
+                <td colspan="5">좋아요를 누른 제품이 없습니다.</td>
+            </tr>
+        {% else %}
+                {% for product in likeProductList %}
+                <tr>
+                    <td id="product_name">
+                        <a href="{% url 'productDetail' product.id %}">{{ product.name }}</a>
+                    </td>
+                    <td id="product_manufacturer">
+                        {{ product.manufacturer }}
+                    </td>
+                    <td id="product_category">
+                        <a href="{% url 'productList' product.category.id %}">{{ product.category.categoryName }}</a>
+                    </td>
+                    <td id="product_like">
+                        {{ product.likeCount }}
+                    </td>
+                    <td id="product_description">
+                        <a href="{% url 'productDetail' product.id %}">{{ product.getShortDescription }}</a>
+                    </td>
+                    <td id="product_averageScore">
+                        <div class="rateit svg" data-rateit-value="{{ product.averageScore }}" data-rateit-readonly="true"
+                            data-rateit-starwidth="15" step="0.1" data-rateit-starheight="15"></div>
+                    </td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
+    <br>
+    
+    <table id="myReviews" class="table table-bordered table-hover" style="text-align: center; width: 70%; margin: auto auto;">
+        <caption style="caption-side: top; font-family: 'yg-jalnan'; color: black;"><i class="fa fa-star-half-o" aria-hidden="true" style="font-weight: bold;"></i>내가 작성한 리뷰</caption>
+        <thead>
+            <tr>
+                <th>제품명</th>
+                <th>제조사</th>
+                <th>카테고리</th>
+                <th>Like</th>
+                <th>신고</th>
+                <th>한줄평</th>
+                <th>평점</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% if hasMyReviews %}
+            <tr>
+                <td colspan="4">아직 리뷰를 작성하지 않습니다.</td>
+            </tr>
+        {% else %}
+            {% for review in myReviews %}
+            <tr>
+                <td id="myReview_product_name">
+                    <a href="{% url 'productDetail' review.product.id %}">{{ review.product.name }}</a>
+                </td>
+                <td id="myReview_manufacturer">
+                    {{ review.product.manufacturer }}
+                </td>
+                <td id="myReview_category">
+                    <a href="{% url 'productList' review.product.category.id %}">{{ review.product.category.categoryName }}</a>
+                </td>
+                <td id="myReview_likeCount">
+                    {{ review.likeCount }}
+                </td>
+                <td id="myReview_reported">
+                    {% if review.reported %}
+                    🚨
+                    {% endif %}
+                </td>
+                <td id="myReview_comment">
+                    <a href="{% url 'reviewDetail' review.id %}">{{ review.getShortComment }}</a>
+                </td>
+                <td id="myReview_totalScore">
+                    <div class="rateit svg" data-rateit-value="{{review.totalScore}}" data-rateit-readonly="true"
+                        data-rateit-starwidth="15" step="0.1" data-rateit-starheight="15"></div>
+                </td>
+            </tr>
+            {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+    <br>
 
-<div id="likeProducts">좋아요를 누른 제품 리스트</div>
-{% for product in likeProductList %}
-<div><a href="{% url 'productDetail' product.id %}">{{ product }}</a></div>
-{% endfor %}
-<br>
 
-<div id="myReviews">작성한 리뷰 리스트</div>
-{% for review in myReviews %}
-<div><a href="{% url 'reviewDetail' review.id %}">{{ review }}</a></div>
-{% endfor %}
-<br>
+    {% if user.is_WebSeller %}
+    <table id="myWebSellInfos" class="table table-bordered table-hover" style="text-align: center; width: 70%; margin: auto auto;">
+        <caption style="caption-side: top; font-family: 'yg-jalnan'; color: black;"><i class="fa fa-krw" aria-hidden="true" style="font-weight: bold;"></i>등록한 판매정보</caption>
+        <thead>
+            <tr>
+                <th>제품명</th>
+                <th>제조사</th>
+                <th>카테고리</th>
+                <th>가격</th>
+                <th>신고</th>
+                <th>링크</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% if hasNoWebSellInfoList %}
+            <tr>
+                <td colspan="5">아직 판매정보를 등록하지 않습니다.</td>
+            </tr>
+        {% else %}
+            {% for info in webSellInfoList %}
+            <tr>
+                <td id="webSellInfo_productName">
+                    <a href="{% url 'productDetail' info.product.id %}">{{ info.product.name }}</a>
+                </td>
+                <td id="webSellInfo_product_manufacturer">
+                    {{ info.product.manufacturer }}
+                </td>
+                <td id="webSellInfo_category">
+                    <a href="{% url 'productList' info.product.category.id %}">{{ info.product.category.categoryName }}</a>
+                </td>
+                <td id="webSellInfo_price">
+                    <a href="{% url 'webSellInfoModify' product_id=info.product.id webSellInfo_id=info.id %}">{{ info.price }}</a>
+                </td>
+                <td id="webSellInfo_reported">
+                    {% if info.reported %}
+                    🚨
+                    {% endif %}
+                </td>
+                <td id="webSellInfo_link">
+                    <a href="{% url 'webSellInfoModify' product_id=info.product.id webSellInfo_id=info.id %}">{{ info.link }}</a><a href="{% url 'redirectExternalLink' info.link %}"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+            {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+    <br>
+    {% endif %}
 
+    {% if user.is_Stationer %}
+    <!-- 문구점 사장님인 경우 -->
+    <!-- 따로 디테일 페이지가 없어 바로 수정 페이지로 넘어가도록 함 -->
+    <table id="myWebSellInfos" class="table table-bordered table-hover" style="text-align: center; width: 70%; margin: auto auto;">
+        <caption style="caption-side: top; font-family: 'yg-jalnan'; color: black;"><i class="fa fa-krw" aria-hidden="true" style="font-weight: bold;"></i>등록한 판매정보</caption>
+        <thead>
+            <tr>
+                <th>제품명</th>
+                <th>제조사</th>
+                <th>카테고리</th>
+                <th>신고</th>
+                <th>가격</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% if hasNoStationerSellInfoList %}
+            <tr>
+                <td colspan="4">아직 판매정보를 등록하지 않습니다.</td>
+            </tr>
+        {% else %}
+            {% for info in stationerSellInfoList %}
+            <tr>
+                <td id="stationerSellInfo_productName">
+                    <a href="{% url 'productDetail' info.product.id %}">{{ info.product.name }}</a>
+                </td>
+                <td id="stationerSellInfo_product_manufacturer">
+                    {{ info.product.manufacturer }}
+                </td>
+                <td id="stationerSellInfo_category">
+                    <a href="{url 'productList' info.product.category.id }">{{ info.product.category.categoryName }}</a>
+                </td>
+                <td id="stationerSellInfo_reported">
+                    {% if info.reported %}
+                    🚨
+                    {% endif %}
+                </td>
+                <td id="stationerSellInfo_price">
+                    <a href="{% url 'stationerSellInfoModify' product_id=info.product.id stationerSellInfo_id=info.id %}">{{ info.price }}</a>
+                </td>
+            </tr>
+            {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+    <br>
 
-{% if user.is_WebSeller %}
-<!-- 웹 판매자인 경우 -->
-<!-- 따로 디테일 페이지가 없어 바로 수정 페이지로 넘어가도록 함 -->
-<div id="myWebSellInfos">등록한 웹 판매정보 목록</div>
+    {% endif %}
 
-{% for info in webSellInfoList %}
-<div><a href="{% url 'webSellInfoModify' product_id=info.product.id webSellInfo_id=info.id %}">{{ info.product.name }}에 등록한 판매정보</a></div>
-{% endfor %}
-
-{% endif %}
-
-{% if user.is_Stationer %}
-<!-- 문구점 사장님인 경우 -->
-<!-- 따로 디테일 페이지가 없어 바로 수정 페이지로 넘어가도록 함 -->
-<div id="myStationerSellInfos">등록한 문구점 판매정보 목록</div>
-
-{% for info in stationerSellInfoList %}
-<div><a href="{% url 'stationerSellInfoModify' product_id=info.product.id stationerSellInfo_id=info.id %}">{{ info.product.name }}에 등록한 판매정보</a></div>
-{% endfor %}
-
-{% endif %}
+    <div style="text-align: right; width: 85%;">
+        <a href="{% url 'productRequestList' %}">
+           <button class="btn btn-warning" style="background-color: #f9d691;">작성한 상품 등록 요청<i class="fa fa-external-link" aria-hidden="true"></i></button>
+        </a>
+    </div>
+</article>
 
 {% endblock %}
