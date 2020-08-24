@@ -163,3 +163,6 @@ class ProductRequest(models.Model):
 
     def __str__(self):
         return self.productName
+
+    def getShortDescription(self):
+        return self.productDescription if len(self.productDescription) < 50 else self.productDescription[:57] + "..."

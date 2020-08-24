@@ -4,22 +4,47 @@
 {% block head %}
 <title>제품 등록 요청 리스트</title>
 <!-- 등록이 요청된 제품들의 리스트가 노출됨 -->
+<style>
+    #isChecked {
+        max-width: 10rem;
+        width: 4rem;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
 
-<h3>등록이 요청된 상품들의 리스트가 노출됩니다.</h3>
-<br>
-<a href="{% url 'newProductRequest' %}">신규 상품 등록 요청하기</a>
-<br><br><br>
-
-<h3>등록 요청한 상품 리스트</h3>
-<div>
-    {% for productRequest in productRequests %}
-        <hr>
-        <a href="{% url 'productRequestDetail' productRequest.id%}">
-        <p>{{productRequest}}</p>
-    </a>
-    {% endfor %}
-</div>
+<article style="padding: 5% 5%;">
+    <table class="table table-bordered table-hover" style="text-align: center; width: 70%; margin: 0 auto 0 auto;">
+        <caption style="caption-side: top; font-family: 'yg-jalnan'; color: black;">등록 요청한 상품 리스트</caption>
+        <caption style="caption-side: bottom; font-family: 'yg-jalnan'; text-align: right;"><a href="{% url 'newProductRequest' %}">신규 상품 등록 요청하기</a></caption>
+        <thead>
+            <tr>
+                <th>확인</th>
+                <th>제품명</th>
+                <th>제조사</th>
+                <th>설명</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for productRequest in productRequests %}
+            <tr>
+                <td id="isChecked">
+                    {% if productRequest.isChecked %}
+                    O
+                    {% else %}
+                    X
+                    {% endif %}
+                </td>
+                <td id="productName"><a
+                        href="{% url 'productRequestDetail' productRequest.id %}">{{ productRequest.productName }}</a>
+                </td>
+                <td id="productBrand">{{ productRequest.productBrand }}</td>
+                <td id="productDescription">{{ productRequest.productDescription }}</td>
+            </tr>
+            </a>
+            {% endfor %}
+        </tbody>
+    </table>
+</article>
 {% endblock %}
