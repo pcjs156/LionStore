@@ -16,6 +16,7 @@
     padding-right: 1rem;
     margin: auto;
     text-align: center;
+    
 }
 
 .fullscreen-video-wrap {
@@ -49,6 +50,7 @@
 
 .header-content {
     z-index: 3;
+    
 }
 
 .header-content h1 {
