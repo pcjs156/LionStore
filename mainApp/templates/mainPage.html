@@ -13,15 +13,6 @@
 
 <br>
 
-<!-- <br>
-
-<form action="{% url 'tagSearchResult' %}" method="GET">
-     <div>태그 검색</div>
-     <div>공백으로 나뉘어 입력된 태그들과 적어도 하나 겹치는 제품을 검색합니다.</div>
-     <input type="search" name="tagQuery">
-     <input type="submit" value="검색">
-</form> -->
-
 <!-- Banner Section Begin -->
 <div class="banner__slider owl-carousel" style="padding: 0;">
      <div class="banner set-bg" data-setbg="{% static '/img/common/banner-1.png' %}"></div>
@@ -29,8 +20,6 @@
      <div class="banner set-bg" data-setbg="{% static '/img/common/banner-3.png' %}"></div>
 </div>
 <!-- Banner Section End -->
-
-
 <div class="reviewContainer">
      {% if user.is_authenticated %}
      {% if not error %}
@@ -70,7 +59,10 @@
      <br>
      {% endif %}
 
-     <div class="h4" style="text-align: left; padding-left: 5em; padding-top: 1em;font-family: 'yg-jalnan'; color:#663e27;">최신 리뷰</div><hr>
+     <div class="h4"
+          style="text-align: left; padding-left: 5em; padding-top: 1em;font-family: 'yg-jalnan'; color:#663e27;">최신 리뷰
+     </div>
+     <hr>
      <div class="row property__gallery" style="padding-left: 6em;">
           {% for newReview in newReviews %}
           <div class="col-lg-3 col-md-4 col-sm-6 mix women">
@@ -96,7 +88,8 @@
 
      <br>
 
-     <div class="h4" style="text-align: left; padding-left: 5em; font-family: 'yg-jalnan';color:#663e27;">인기 리뷰</div><hr>
+     <div class="h4" style="text-align: left; padding-left: 5em; font-family: 'yg-jalnan';color:#663e27;">인기 리뷰</div>
+     <hr>
      <div class="row property__gallery;" style="padding-left: 6em;">
           {% for popularReview in popularReviews %}
           <div class="col-lg-3 col-md-4 col-sm-6 mix women">
