@@ -3,18 +3,25 @@
 <link rel="stylesheet" href="{% static 'css/footer.css' %}">
 
 <footer>
-    <div class="iconContainer">
+    <div class="iconContainer" style="font-family: 'yg-jalnan'; font-size: 12px; color:#663e27;">
         <i class="fa fa-2x fa-instagram" aria-hidden="true"></i>
         <i class="fa fa-2x fa-facebook-official" aria-hidden="true"></i>
         <i class="fa fa-2x fa-youtube-play" aria-hidden="true"></i>
         <i class="fa fa-2x fa-twitter" aria-hidden="true"></i>
     </div>
 
-    <div class="linkContainer">
-        이용약관 | 개인정보 처리방침 | 자주 묻는 질문
-    </div>
+    <div class="linkContainer" style="font-family: 'yg-jalnan'; font-size: 15px; color:#663e27;">
+        박유빈 | 이현수 | 박시은 | 이예진 | 강영진 <br> 
+        </div>
 
-    <div id="lionStoreTitle">
-        사자네 문방구
+    
+    <div id="lionStoreTitle" style="font-family: 'yg-jalnan'; font-size: 11px; color:#663e27;">
+        ❤ 사자네 문방구는 건강한 문구류 이용 생활을 지향합니다 ❤<br><br>
+
+        <a href="{% url 'mainPage' %}"><img src="{% static '/img/common/lionStore_logo.png' %}" alt="사자네 문방구 로고"
+            style="width: 250px; height: 45px"></a>
+
+    <!-- <div id="lionStoreTitle" style="font-family: 'yg-jalnan'; font-size: 30px; color:#663e27;">
+        <br>사자네 문방구 -->
     </div>
 </footer>
