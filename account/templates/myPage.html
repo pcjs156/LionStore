@@ -50,6 +50,10 @@
 {% block content %}
 
 <article style="padding: 5% 5%;">
+    <p id="link_nav">
+        <a href="{% url 'mainPage' %}"><i class="fa fa-home" aria-hidden="true"></i></i>Home</a> >
+        <span id="current_location">My Page</span>
+    </p>
     <table id="likeReviews" class="table table-bordered table-hover" style="text-align: center; width: 70%; margin: auto auto;">
         <caption style="caption-side: top; font-family: 'yg-jalnan'; color: black;"><i class="fa fa-thumbs-o-up" aria-hidden="true" style="font-weight: bold;"></i>좋아요를 누른 리뷰</caption>
         <thead>
