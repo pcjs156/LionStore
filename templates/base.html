@@ -73,6 +73,21 @@
     <!-- 웹 페이지 아이콘 -->
     <link rel="icon shortcut" type="image/x-icon" href="{% static '/img/common/lionIcon.png' %}">
 
+    <style>
+        #link_nav {
+            width: 70%;
+            margin: 0 auto;
+            color: black;
+        }
+        #link_nav a {
+            text-decoration: none;
+            color: black;
+        }
+        #link_nav #current_location {
+            color: #666666;
+        }
+    </style>
+
     <!-- head block : title / static을 추가-->
     {% block head %}
     {% endblock %}
@@ -85,13 +100,15 @@
     {% block content %}
     {% endblock %}
     <div class="footer__newslatter" style="margin: auto 2rem; text-align: center;">
-        <form action="{% url 'tagSearchResult' %}" method="GET" style="display: inline-block; margin-bottom: 0px; width: 30%;">
+        <form action="{% url 'tagSearchResult' %}" method="GET"
+            style="display: inline-block; margin-bottom: 0px; width: 30%;">
             <input type="text" name="tagQuery">
             <input type="text" name="sort" value="popularity" style="display: none; visibility: hidden;">
             <button type="submit" class="site-btn" style="font-family:'yg-jalnan';">태그로 검색하기</button>
         </form>
     </div>
-    <br><hr>
+    <br>
+    <hr>
     {% include 'footer.html' %}
 </body>
 

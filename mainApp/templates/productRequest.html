@@ -15,6 +15,9 @@
 {% block content %}
 
 <article style="padding: 5% 5%;">
+    <p id="link_nav">
+        <a href="{% url 'myPage' %}"><i class="fa fa-user" aria-hidden="true"></i>myPage</a> > <span id="current_location">Product Request</span>
+    </p>
     <table class="table table-bordered table-hover" style="text-align: center; width: 70%; margin: 0 auto 0 auto;">
         <caption style="caption-side: top; font-family: 'yg-jalnan'; color: black;">등록 요청한 상품 리스트</caption>
         <caption style="caption-side: bottom; font-family: 'yg-jalnan'; text-align: right;"><a href="{% url 'newProductRequest' %}">신규 상품 등록 요청하기</a></caption>
