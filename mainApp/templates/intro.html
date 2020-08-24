@@ -16,7 +16,6 @@
 {% endblock %}
 
 {% block content %}
-{% if not user.is_authenticated %}
 <body>
     <article>
         <header class="v-header container">
@@ -31,7 +30,9 @@
                             <p>내 마음에 꼭 드는 펜을 찾고 싶을 때 <br>
                                 마음에 드는 펜을 발견하고 공유하고 싶을 때 <br>
                                 사자네 문방구를 이용하세요</p>
+                                {% if not user.is_authenticated %}
                                 <a href="{% url 'selectCustomerType' %}"><button>회원가입</button></a>
+                                {% endif %}
                                 <a href="{% url 'mainPage' %}"><button>HOME</button></a>
                         </div>
                     </div>
@@ -40,6 +41,5 @@
         </header>
     </article>
 </body>
-{% endif %}
 {% endblock %}
 </html>
