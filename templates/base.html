@@ -99,6 +99,8 @@
     </header>
     {% block content %}
     {% endblock %}
+<hr>
+    {% include 'footer.html' %}
     <div class="footer__newslatter" style="margin: auto 2rem; text-align: center;">
         <form action="{% url 'tagSearchResult' %}" method="GET"
             style="display: inline-block; margin-bottom: 0px; width: 30%;">
@@ -108,8 +110,7 @@
         </form>
     </div>
     <br>
-    <hr>
-    {% include 'footer.html' %}
+
 </body>
 
 <!-- jQuery (부트스트랩의 자바스크립트 플러그인을 위해 필요합니다) -->
