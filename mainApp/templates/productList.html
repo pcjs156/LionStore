@@ -7,64 +7,73 @@
 {% endblock %}
 
 {% block content %}
-<div class="h4" style="text-align: left; font-family: 'yg-jalnan';">{{ category.categoryName }} 카테고리의 제품 목록입니다.</h3>
+<article style="margin: 3rem 3rem;">
+     <p id="link_nav" style="width: 100%; margin-bottom: 1rem;">
+          <a href="{% url 'mainPage' %}"><i class="fa fa-home" aria-hidden="true"></i></i>Home</a> >
+          <span id="current_location">{{ category.categoryName }}</span>
+     </p>
 
-<!-- 인기순 정렬로 전환 -->
-{% if popularitySort %}
-<div class="h6" style="text-align: left; font-family: 'yg-jalnan';"><span>인기순 정렬</span> / <span><a href="{% url 'productList' category.id %}?page={{ products.number }}&sort=new">최신순정렬</a></span></div>
-<!-- 최신순 정렬로 전환 -->
-{% else %}
-<div class="h6" style="text-align: left; font-family: 'yg-jalnan';"><span><a href="{% url 'productList' category.id %}?page={{ products.number }}&sort=popularity">인기순 정렬</a></span> / <span>최신순정렬</span></div>
-{% endif %}
-
-
-<!-- 제품 목록 -->
-<div class="row property__gallery">
-    {% for product in products %}
-        <div class="col-lg-3 col-md-4 col-sm-6 mix women">
-         <div class="product__item">
-              <div class="product__item__pic set-bg" data-setbg="{{ product.productImage.url }}">
-                   <ul class="product__hover">
-                        <li><a href="{{ product.productImage.url }}" class="image-popup"><span
-                                       class="arrow_expand"></span></a></li>
-                   </ul>
-              </div>
-              <div class="product__item__text">
-                   <h6><a href="{% url 'productDetail' product_id=product.id %}">{{ product }}</a></h6>
-                   <div class="rating">
-                        <div class="rateit svg" data-rateit-value="{{ product.averageScore }}"
-                             data-rateit-readonly="true" data-rateit-starwidth="15" data-rateit-starheight="15">
-                        </div>
-                   </div>
-              </div>
-         </div>
-    </div>
-    {% endfor %}
-</div>
-
-<!-- 페이지네이션 -->
-<div class="pagination__option" style="text-align: center;">
-     {% if products.has_previous %}
-     <!-- 이전 페이지가 있을 때만 보임 -->
-     <a href="?page=1&sort={{ sortBy }}"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
-     <a href="?page={{ products.previous_page_number }}&sort={{ sortBy }}"><i class="fa fa-angle-left"></i></a>
+     <!-- 인기순 정렬로 전환 -->
+     {% if popularitySort %}
+     <div class="h6" style="text-align: left; font-family: 'yg-jalnan'; padding-left: 0.3rem;"><i class="fa fa-sort" aria-hidden="true"></i><span>인기순 정렬</span> / <span><a
+                    href="{% url 'productList' category.id %}?page={{ products.number }}&sort=new">최신순 정렬</a></span>
+     </div>
+     <!-- 최신순 정렬로 전환 -->
      {% else %}
-     <a href="?page=1&sort={{ sortBy }}"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
-     <a href="#"><i class="fa fa-step-backward" aria-hidden="true"></i></a>
+     <div class="h6" style="text-align: left; font-family: 'yg-jalnan'; padding-left: 0.3rem;"><i class="fa fa-sort" aria-hidden="true"></i><span><a
+                    href="{% url 'productList' category.id %}?page={{ products.number }}&sort=popularity">인기순
+                    정렬</a></span> / <span>최신순 정렬</span></div>
      {% endif %}
-     <!-- 무조건 보임 (1/n) -->
-     <span>{{ products.number }}</span>
-     <span>/</span>
-     <span>{{ products.paginator.num_pages }}</span>
-     {% if products.has_next %}
-     <!-- 다음 페이지가 있을 때만 보임 -->
-     <a href="?page={{ products.next_page_number }}&sort={{ sortBy }}"><i class="fa fa-angle-right"></i></a>
-     <a href="?page={{ products.paginator.num_pages }}&sort={{ sortBy }}"><i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
-     {% else %}
-     <a href="#"><i class="fa fa-step-forward" aria-hidden="true"></i></a>
-     <a href="?page={{ products.paginator.num_pages }}&sort={{ sortBy }}"><i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
-     {% endif %}
-</div>
 
 
+     <!-- 제품 목록 -->
+     <div class="row property__gallery">
+          {% for product in products %}
+          <div class="col-lg-3 col-md-4 col-sm-6 mix women">
+               <div class="product__item">
+                    <div class="product__item__pic set-bg" data-setbg="{{ product.productImage.url }}">
+                         <ul class="product__hover">
+                              <li><a href="{{ product.productImage.url }}" class="image-popup"><span
+                                             class="arrow_expand"></span></a></li>
+                         </ul>
+                    </div>
+                    <div class="product__item__text">
+                         <h6><a href="{% url 'productDetail' product_id=product.id %}">{{ product }}</a></h6>
+                         <div class="rating">
+                              <div class="rateit svg" data-rateit-value="{{ product.averageScore }}"
+                                   data-rateit-readonly="true" data-rateit-starwidth="15" data-rateit-starheight="15">
+                              </div>
+                         </div>
+                    </div>
+               </div>
+          </div>
+          {% endfor %}
+     </div>
+
+     <!-- 페이지네이션 -->
+     <div class="pagination__option" style="text-align: center;">
+          {% if products.has_previous %}
+          <!-- 이전 페이지가 있을 때만 보임 -->
+          <a href="?page=1&sort={{ sortBy }}"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
+          <a href="?page={{ products.previous_page_number }}&sort={{ sortBy }}"><i class="fa fa-angle-left"></i></a>
+          {% else %}
+          <a href="?page=1&sort={{ sortBy }}"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
+          <a href="#"><i class="fa fa-step-backward" aria-hidden="true"></i></a>
+          {% endif %}
+          <!-- 무조건 보임 (1/n) -->
+          <span>{{ products.number }}</span>
+          <span>/</span>
+          <span>{{ products.paginator.num_pages }}</span>
+          {% if products.has_next %}
+          <!-- 다음 페이지가 있을 때만 보임 -->
+          <a href="?page={{ products.next_page_number }}&sort={{ sortBy }}"><i class="fa fa-angle-right"></i></a>
+          <a href="?page={{ products.paginator.num_pages }}&sort={{ sortBy }}"><i class="fa fa-angle-double-right"
+                    aria-hidden="true"></i></a>
+          {% else %}
+          <a href="#"><i class="fa fa-step-forward" aria-hidden="true"></i></a>
+          <a href="?page={{ products.paginator.num_pages }}&sort={{ sortBy }}"><i class="fa fa-angle-double-right"
+                    aria-hidden="true"></i></a>
+          {% endif %}
+     </div>
+</article>
 {% endblock %}

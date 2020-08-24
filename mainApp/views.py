@@ -1015,7 +1015,7 @@ def mainPage_view(request):
     
     # 맞춤 리뷰
     try:
-        topSimilarity_pair = orderby_similarity(request.user, 5)
+        topSimilarity_pair = orderby_similarity(request.user, 1)
         topSimilarity_users = list(map(lambda pair: pair[0], topSimilarity_pair))
         content['error'] = (len(topSimilarity_users) == 0) # 리뷰를 작성한 적이 없거나, 자기와 겹치는 리뷰 성향이 없는 경우
         content['topSimilarity_users'] = topSimilarity_users
@@ -1023,7 +1023,7 @@ def mainPage_view(request):
 
         topSimilarityReviews = list()
         for user in topSimilarity_users:
-            topSimilarityReviews.append(PenReview.objects.filter(author=user).order_by('-likeCount')[:5])
+            topSimilarityReviews.append(PenReview.objects.filter(author=user).order_by('-likeCount')[:4])
         content['topSimilarityReviews'] = topSimilarityReviews
 
     except:

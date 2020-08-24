@@ -143,6 +143,7 @@ def myPage_view(request):
         if user in review.likers.all():
             likeReviewList.append(review)
     content['likeReviewList'] = likeReviewList
+    content['hasNoLikeReviewList'] = (len(likeReviewList) == 0)
 
     # 좋아요를 누른 제품 목록
     productList = Product.objects.all()
@@ -151,10 +152,12 @@ def myPage_view(request):
         if user in product.likers.all():
             likeProductList.append(product)
     content['likeProductList'] = likeProductList
+    content['hasNoLikeProductList'] = (len(likeProductList) == 0)
 
     # 작성한 리뷰 목록
     myReviews = PenReview.objects.filter(author=user)
     content['myReviews'] = myReviews
+    content['hasMyReviews'] = (len(myReviews) == 0)
 
     # 웹 판매정보 목록
     if user.is_WebSeller:
@@ -162,6 +165,7 @@ def myPage_view(request):
     else:
         webSellInfoList = []
     content['webSellInfoList'] = webSellInfoList
+    content['hasNoWebSellInfoList'] = (len(webSellInfoList) == 0)
 
     # 문구점 판매정보 목록
     if user.is_Stationer:
@@ -169,6 +173,7 @@ def myPage_view(request):
     else:
         stationerSellInfoList = []
     content['stationerSellInfoList'] = stationerSellInfoList
+    content['hasNoStationerSellInfoList'] = (len(stationerSellInfoList) == 0)
 
     return render(request, 'myPage.html', content)
 

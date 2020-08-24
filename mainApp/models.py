@@ -30,6 +30,10 @@ class Product(models.Model):
         else:
             return sum(list(map(lambda r: r.totalScore, reviews))) / len(reviews)
 
+    def getShortDescription(self):
+        return self.description if len(self.description) < 20 else self.description[:17] + "..."
+
+
 # 제품 관련 영상 링크
 class ProductVideoLink(models.Model):
     class Meta:
@@ -100,6 +104,14 @@ class Review(models.Model):
 
     tags = models.ManyToManyField('ReviewTag', blank=True)
     rawTagString = models.TextField(null=False, blank=True, default="", verbose_name="제품 태그 목록 원본 데이터")
+
+    def getRoundTotalScore(self):
+        strScore = str(self.totalScore)
+        tokens = strScore.split('.')
+        return f"{tokens[0]}.{tokens[1][:1]}"
+
+    def getShortComment(self):
+        return self.comment if len(self.comment) < 20 else self.comment[:17] + "..."
 
 # 점수
 class Score(models.Model):
