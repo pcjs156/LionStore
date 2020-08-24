@@ -284,8 +284,15 @@ def productDislike(request, product_id, category_id):
 
 @login_required(login_url='/account/logIn/')
 def productRequest_view(request):
+    content = dict()
+    
     productRequests = ProductRequest.objects.filter(author=request.user)
-    return render(request, 'productRequest.html', {'productRequests':productRequests})
+    content['productRequests'] = productRequests
+
+    hasRequests = (len(productRequests) > 0)
+    content['hasRequests'] = hasRequests
+
+    return render(request, 'productRequest.html', content)
 
 
 @login_required(login_url='/account/logIn/')
