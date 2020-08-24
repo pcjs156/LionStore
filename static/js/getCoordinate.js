@@ -20,10 +20,10 @@ kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
     searchDetailAddrFromCoords(mouseEvent.latLng, function (result, status) {
         if (status === kakao.maps.services.Status.OK) {
             var detailAddr = !!result[0].road_address ?
-                '<div>도로명주소 : ' + result[0].road_address.address_name + '</div>' +
-                '<input name="rawLocation" type="text" maxlength="30" required id="id_rawLocation" style="visibility:hidden; display:none;" value="' + mouseEvent.latLng + '"> </input>' : '';
-
-
+                '<div>도로명주소 : ' + result[0].road_address.address_name + '</div>' : '';
+            detailAddr += '<div>지번 주소 : ' + result[0].address.address_name + '</div>';
+            detailAddr += '<input name="rawLocation" type="text" maxlength="30" required id="id_rawLocation" style="visibility:hidden; display:none;" value="' + mouseEvent.latLng + '"> </input>';
+            
             var content = '<div class="bAddr">' + detailAddr + '</div>';
 
             // 마커를 클릭한 위치에 표시합니다 
