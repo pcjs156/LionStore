@@ -230,8 +230,8 @@
      {% if user.is_WebSeller %}
      <caption style="caption-side: bottom; text-align: right;">
           {% if webSellInfoRegistered %}
-          <a href="{% url 'webSellInfoDelete' product_id=product.id webSellInfo_id=targetInfo.id %}">판매정보 삭제하기</a> /
-          <a href="{% url 'webSellInfoModify' product_id=product.id webSellInfo_id=targetInfo.id %}">판매정보 수정하기</a>
+          <a href="{% url 'webSellInfoDelete' product_id=product.id webSellInfo_id=targetWebSellInfo.id %}">판매정보 삭제하기</a> /
+          <a href="{% url 'webSellInfoModify' product_id=product.id webSellInfo_id=targetWebSellInfo.id %}">판매정보 수정하기</a>
           {% else %}
           <a href="{% url 'webSellInfoCreate' product_id=product.id %}">웹 판매정보 추가</a>
           {% endif %}
@@ -290,8 +290,8 @@
      <div style="text-align: right; width: 70%; margin: 0 auto; padding-top: 12px;">
      <!-- 문구점 사장님인 경우에만 판매정보 입력/삭제/수정 가능 -->
      {% if stationerSellInfoRegistered %}
-          <a href="{% url 'stationerSellInfoModify' product_id=product.id stationerSellInfo_id=targetInfo.id %}">문구점 판매정보 수정</a> /
-          <a href="{% url 'stationerSellInfoDelete' product_id=product.id stationerSellInfo_id=targetInfo.id %}">문구점 판매정보 삭제</a>
+          <a href="{% url 'stationerSellInfoModify' product_id=product.id stationerSellInfo_id=targetStationerInfo.id %}">문구점 판매정보 수정</a> /
+          <a href="{% url 'stationerSellInfoDelete' product_id=product.id stationerSellInfo_id=targetStationerInfo.id %}">문구점 판매정보 삭제</a>
      {% else %}
           <a href="{% url 'stationerSellInfoCreate' product_id=product.id %}">문구점 판매정보 추가</a>
      {% endif %}
