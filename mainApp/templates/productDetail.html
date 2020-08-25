@@ -255,8 +255,8 @@
                     {{ info.price }}
                </td>
                <td id="webSellInfo_link">
-                    <a href="{% url 'redirectExternalLink' info.link %}"><i class="fa fa-external-link"
-                              aria-hidden="true">{{ info.link }}</i></a>
+                    <a href="{% url 'redirectExternalLink' info.link %}">{{ info.link }}<i class="fa fa-external-link"
+                              aria-hidden="true"></i></a>
                </td>
           </tr>
           {% endfor %}

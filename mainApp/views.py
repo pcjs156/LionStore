@@ -136,7 +136,6 @@ def productDetail_view(request, product_id):
         content['avr_costEffetivenessScore'] = 0
 
 
-
     # 리뷰를 작성한 적이 있는가?
     try:
         myReview = list(filter(lambda r: r.author == request.user, reviews))
@@ -165,7 +164,7 @@ def productDetail_view(request, product_id):
     content['tags'] = tags
 
     # 웹 판매정보 목록
-    webSellInfoList = WebSellInfo.objects.filter(product=product)
+    webSellInfoList = WebSellInfo.objects.filter(product=product).order('price')
     content['webSellInfoList'] = webSellInfoList
     if len(webSellInfoList) > 0:
         cheapestWebPrice = min(webSellInfoList, key=lambda info: info.price).price
@@ -952,21 +951,6 @@ def stationerSellInfoDelete(request, product_id, stationerSellInfo_id):
 @login_required(login_url='/account/logIn/')
 def webSellInfoCreate_view(request, product_id):
     if request.method == 'POST':
-        # try:
-        #     webSellInfos = WebSellInfo.objects.get(product=product)
-
-        # except:
-        #     webSellInfos = []
-
-        # alreadyExists = False
-        # for info in webSellInfos:
-        #     if info.seller == request.user:
-        #         alreadyExists = True
-        #         break
-
-        # if alreadyExists:
-        #     return redirect('productDetail', product_id=product_id)
-
         form = WebSellInfoForm(request.POST)
         new_sellInfo : WebSellInfo = form.save(commit=False)
         new_sellInfo.product = Product.objects.get(pk=product_id)

@@ -4,25 +4,58 @@
 {% block head %}
 <title>웹 판매 정보 생성</title>
 <!-- 제품별 웹 판매 정보를 새로 작성하는 페이지 -->
+<style>
+    article {
+        padding: 2rem;
+        margin: 0 auto;
+    }
+    article {
+        font-family: 'yg-jalnan';
+    }
+    .elementContainer {
+        margin: 2.5rem auto;
+        width: 40%;
+        text-align: center;
+    }
+    input {
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
 
-<!-- 이미 판매 정보를 등록한 경우 -->
-{% if alreadyExists %}
+<article>
+    <!-- 이미 판매 정보를 등록한 경우 -->
+    {% if alreadyExists %}
     <div>이미 판매 정보를 등록하셨습니다!</div>
     <div><a href="{% url 'productDetail' product.id %}">돌아가기</a></div>
     <div><a href="{% url 'webSellInfoModify' product_id=product.id webSellInfo_id=createdInfo.id %}">수정하기</a></div>
 
-<!-- 판매 정보를 등록한 적이 없는 경우 -->
-{% else %}
+    <!-- 판매 정보를 등록한 적이 없는 경우 -->
+    {% else %}
+    <div class="elementContainer">
+        <h5 style="color: gray;">제품명</h5>
+        <h6 style="color: gray;">{{ product.name }}</h6>
+    </div>
+
     <form method="POST">
         {% csrf_token %}
-        <div>판매 링크 : {{ form.link }}</div>
-        <div>판매가 : {{ form.price }}</div>
-
-        <input type="submit" value="등록">
+        <div class="checkout__form__input elementContainer">
+            <h4>가격</h4>
+            {{ form.price }}
+        </div>
+        <div class="checkout__form__input elementContainer">
+            <h4>판매 링크</h4>
+            {{ form.link }}
+        </div>
+        
+        <div style="text-align: center;">
+            <input type="submit" class="btn btn-warning" value="등록">
+        </div>
     </form>
-{% endif %}
+    {% endif %}
+</article>
 
 {% endblock %}
