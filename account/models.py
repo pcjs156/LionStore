@@ -91,6 +91,10 @@ class Customer(AbstractUser):
             typeMarker = "[UNKNOWN]"
         
         return f"{typeMarker} {self.username}"
+    
+    job_dict = {p[0]:p[1] for p in JOB}; job_dict_reversed = {p[1]:p[0] for p in JOB}
+    usage_dict = {p[0]:p[1] for p in USAGE}; usage_dict_reversed = {p[1]:p[0] for p in USAGE}
+    age_dict = {p[0]:p[1] for p in AGE}; age_dict_reversed = {p[1]:p[0] for p in AGE}
 
 
 
