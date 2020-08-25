@@ -7,21 +7,22 @@
 {% endblock %}
 
 {% block content %}
-<form method="POST" enctype="multipart/form-data" class="checkout__form">
-    {% csrf_token %}
-    <div class="checkout__form__input">
-        <p>ID <span>*</span>
-            <span style="color: gray;">150자 이하 문자, 숫자 그리고 @/./+/-/_만 가능합니다.</span> </p>
-        {{ form.username }}
-    </div>
-    <br>
 
-    <div id="password_guide">
-        <p>다른 개인 정보와 유사한 비밀번호는 사용할 수 없습니다.</p>
-        <p>비밀번호는 최소 8자 이상이어야 합니다.</p>
-        <p>통상적으로 자주 사용되는 비밀번호는 사용할 수 없습니다.</p>
-        <p>숫자로만 이루어진 비밀번호는 사용할 수 없습니다.</p>
-    </div>
+<br>
+<h3 style="text-align: center; padding: 1em 3rem 0 3rem; font-family: 'yg-jalnan'; color:#663e27;">
+    A. 안녕하세요, 온라인 판매자님! 회원가입 정보를 기입해주세요.</h3><br><br>
+
+    <form method="POST" enctype="multipart/form-data" class="checkout__form" style="text-align: center;">
+        {% csrf_token %}
+        <div class="checkout__form__input">
+            <p>ID <span>*</span> </p>
+            {{ form.username }}
+        </div>
+        <span style="color: gray; font-size: 13px;">*ID는 150자 이하 문자, 숫자 그리고 @/./+/-/_만 가능합니다.</span>
+    <br><br><br>
+
+    <!-- 패스워드 기입 관련 -->
+
     <div class="checkout__form__input">
         <p>Password <span>*</span></p>
         {{ form.password1 }}
@@ -30,7 +31,13 @@
         <p>Again <span>*</span></p>
         {{ form.password2 }}
     </div>
-    <br>
+    <div id="password_guide">
+        <p style="font-size: 8x;">*비밀번호는 최소 8자 이상이어야 합니다.</p>
+        <p style="font-size: 8x;">숫자로만 이루어진 비밀번호는 사용할 수 없습니다.</p>
+    </div>
+    <br><br>
+
+      <!-- 패스워드 기입 관련 끝-->
 
     <div class="checkout__form__input">
         <p>E-MAIL <span>*</span></p>
@@ -44,12 +51,12 @@
     </div>
     <br>
 
-    INTRODUCE <br>
+    <p style=" color: gray; font-size: 8x;">간단한 자기소개를 남겨주세요 !</p>
     {{ form.introduce }}
     <br>
 
     <div>
-        <span>PROFILE_IMAGE</span><br>
+        <p>PROFILE IMAGE <span style="color: red;">*</span></p>
         <input type="file" name="image" accept="image/*" id="id_image">
     </div>
     <br>
@@ -61,11 +68,11 @@
     <br>
 
     <div class="checkout__form__input">
-        <p>LINK<span>*</span></p>
+        <p>WEB/MOBBILE LINK<span>*</span></p>
         {{ form.link }}
     </div>
     <br>
 
-    <input type="submit">
+    <input type="submit" class="site-btn" value="회원가입 완료">
 </form>
 {% endblock %}

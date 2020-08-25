@@ -7,6 +7,11 @@
 {% endblock %}
 
 {% block content %}
-<a href="{% url 'webSellerSignUp' %}"><button>웹 판매자</button></a> <br>
-<a href="{% url 'stationerSignUp' %}"><button>문방구 사장님</button></a> <br>
+<h3 style="text-align: center; padding: 1em 3rem 0 3rem; font-family: 'yg-jalnan'; color:#663e27;">
+    Q. 온라인 판매자이신가요, 오프라인 판매자이신가요?</h3><br><br>
+<div style="text-align: center;">
+<a href="{% url 'webSellerSignUp' %}"><button type="submit" class="site-btn" style="font-family:'yg-jalnan';">웹/모바일(온라인) 판매자입니다</button></a> <br> <br>
+<a href="{% url 'stationerSignUp' %}"><button type="submit" class="site-btn" style="font-family:'yg-jalnan';">오프라인(문구점)판매자입니다</button></a> <br>
+<br><br><br><br>
+</div>
 {% endblock %}
