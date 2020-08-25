@@ -1134,6 +1134,7 @@ def mainPage_view(request):
     except:
         content['error'] = True
 
+    # 연령대 / 직업 / 주사용목적 중 하나를 랜덤하게 골라 특성이 같은 유저들의 인기 리뷰를 보여줌
     if request.user.is_authenticated:
         # 연령대 / 직업 / 주사용목적 중 '기타'로 되어 있지 않은 항목을 걸러냄(이 중에 랜덤하게 하나 보여줌)
         user : Customer = request.user
@@ -1176,6 +1177,45 @@ def mainPage_view(request):
                     content['userPropertyReviews'] = reviews
 
             content['userPropertyRecommend'] = userPropertyRecommend
+
+    # 관심 펜 중 랜덤하게 하나를 골라 인기 리뷰를 추천해줌\
+    if request.user.is_authenticated:
+        # 연령대 / 직업 / 주사용목적 중 '기타'로 되어 있지 않은 항목을 걸러냄(이 중에 랜덤하게 하나 보여줌)
+        user : Customer = request.user
+        penInteresting_1 = (user.penInterest_1, Customer.pen_dict[user.penInterest_1])
+        penInteresting_2 = (user.penInterest_2, Customer.pen_dict[user.penInterest_2])
+        penInteresting_3 = (user.penInterest_3, Customer.pen_dict[user.penInterest_3])
+        penInterestList = list(filter(lambda choice: choice[1] != "기타", [penInteresting_1, penInteresting_2, penInteresting_3]))
+        
+        # 만약 전부 '기타'이면 추천 불가능
+        if len(penInterestList) > 0:
+            pickedField = pickedKey, pickedVal = random.choice(penInterestList)
+
+            reviewers = Customer.objects.filter(penInterest_1=pickedKey) | \
+                        Customer.objects.filter(penInterest_2=pickedKey) | \
+                        Customer.objects.filter(penInterest_3=pickedKey)
+
+            content['propertyMessage'] = f"{Customer.pen_dict[pickedKey]}을(를) 선호하는 리뷰어님들의 인기 리뷰입니다."
+
+            # 만약 해당 펜을 선호하는 리뷰어가 없으면 추천 X
+            penInterestRecommend = (len(reviewers) > 0)
+            
+            if penInterestRecommend:
+                reviews = list()
+                for reviewer in reviewers:
+                    if reviewer != user:
+                        for review in PenReview.objects.filter(author=reviewer):
+                            reviews.append(review)
+
+                # 다 털어봤는데 리뷰가 없으면 추천 X
+                if len(reviews) == 0 :
+                    penInterestRecommend = False
+                else:
+                    reviews.sort(key=lambda x: x.likeCount, reverse=True)
+                    content['penInterestReviews'] = reviews
+
+            content['penInterestRecommend'] = penInterestRecommend
+
             
 
     return render(request, 'mainPage.html', content)
