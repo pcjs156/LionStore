@@ -1001,8 +1001,15 @@ def webSellInfoModify_view(request, product_id, webSellInfo_id):
             return redirect('productDetail', product_id=product_id)
 
     else:
+        content = dict()
+
         form = WebSellInfoForm(instance=webSellInfo)
-        return render(request, 'webSellInfoModify.html', {'form':form})
+        content['form'] = form
+
+        product = webSellInfo.product
+        content['product'] = product
+
+        return render(request, 'webSellInfoModify.html', content)
 
 
 def tagProduct_view(request, productTag_id):
