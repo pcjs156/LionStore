@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<style>
+    article {
+        padding: 2rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<article>
+    <h3>
+        <div class="alert alert-warning" role="alert">
+            {% if solo %}
+            <span class="badge badge-pill badge-warning">{{ tagName }}</span> 태그와 연결된
+            리뷰어 {{ soloReviewer.nickname}}님이 작성해주신 {{ reviewNumber }}건의 리뷰입니다.
+            {% else %}
+            <span class="badge badge-pill badge-warning">{{ tagName }}</span> 태그와 연결된
+            {{ reviewerNumber}}명의 리뷰어님이 작성해주신 {{ reviewNumber }}건의 리뷰입니다.
+            {% endif %}
+        </div>
+    </h3>
+
+    <div class="row property__gallery">
+        {% for review in reviews %}
+        <div class="col-lg-3 col-md-4 col-sm-6 mix women">
+            <div class="product__item">
+                <div class="product__item__pic set-bg" data-setbg="{{ review.reviewImage1.url }}">
+                    <ul class="product__hover">
+                        <li><a href="{{ review.reviewImage1.url }}" class="image-popup"><span
+                                    class="arrow_expand"></span></a></li>
+                    </ul>
+                </div>
+                <div class="product__item__text">
+                    <div><a href="{% url 'reviewDetail' review.id %}">{{ review }}</a></div>
+                    <div class="rating">
+                        <div class="rateit svg" data-rateit-value="{{ review.totalScore }}" data-rateit-readonly="true"
+                            data-rateit-starwidth="15" data-rateit-starheight="15">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- 페이지네이션 -->
+    <div class="pagination__option" style="text-align: center;">
+        {% if reviews.has_previous %}
+        <!-- 이전 페이지가 있을 때만 보임 -->
+        <a href="?page=1"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
+        <a href="?page={{ reviews.previous_page_number }}"><i class="fa fa-angle-left"></i></a>
+        {% else %}
+        <a href="?page=1"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
+        <a href="#"><i class="fa fa-step-backward" aria-hidden="true"></i></a>
+        {% endif %}
+        <!-- 무조건 보임 (1/n) -->
+        <span>{{ reviews.number }}</span>
+        <span>/</span>
+        <span>{{ reviews.paginator.num_pages }}</span>
+        {% if reviews.has_next %}
+        <!-- 다음 페이지가 있을 때만 보임 -->
+        <a href="?page={{ reviews.next_page_number }}"><i class="fa fa-angle-right"></i></a>
+        <a href="?page={{ reviews.paginator.num_pages }}"><i class="fa fa-angle-double-right"
+                aria-hidden="true"></i></a>
+        {% else %}
+        <a href="#"><i class="fa fa-step-forward" aria-hidden="true"></i></a>
+        <a href="?page={{ reviews.paginator.num_pages }}"><i class="fa fa-angle-double-right"
+                aria-hidden="true"></i></a>
+        {% endif %}
+    </div>
+</article>
+{% endblock %}

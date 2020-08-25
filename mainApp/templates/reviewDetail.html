@@ -157,7 +157,7 @@
         <div style="font-family: 'yg-jalnan'; color: black;"><i class="fa fa-tags" aria-hidden="true"></i>리뷰어 태그</div>
         {% if userTags %}
         {% for tag in userTags %}
-        <a class="badge badge-pill badge-warning" href="{% url 'tagProduct' tag.id %}">{{ tag }}</a>
+        <a class="badge badge-pill badge-warning" href="{% url 'reviewsByTag' tagName=tag.tagBody %}">{{ tag }}</a>
         {% endfor %}
         {% else %}
         <span class="badge badge-pill badge-danger">No TAG</span>

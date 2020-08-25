@@ -616,6 +616,39 @@ def reviewImageModify_view(request, review_id, imageIdx):
         return render(request, 'reviewImageModify.html', content)
 
 
+def reviewsByTag_view(request, tagName:str):
+    content = dict()
+
+    content['tagName'] = tagName
+
+    tags = CustomerTag.objects.filter(tagBody=tagName)
+    reviewers = set()
+    for tag in tags:
+        for user in tag.targetCustomer.all():
+            reviewers.add(user)
+    
+    reviews = list()
+    for reviewer in reviewers:
+        for review in PenReview.objects.filter(author=reviewer):
+            reviews.append(review)
+    
+    reviews.sort(key=lambda x: x.likeCount, reverse=True)
+
+    paginator = Paginator(reviews, 8)
+    page = request.GET.get('page')
+    reviews = paginator.get_page(page)
+    content['reviews'] = reviews
+
+    content['reviewerNumber'] = len(reviewers)
+    content['reviewNumber'] = len(reviews)
+
+    content['solo'] = (len(reviewers) == 1)
+    if len(reviewers) == 1:
+        content['soloReviewer'] = reviewers.pop()
+
+    return render(request, 'reviewsByTag.html', content)
+
+
 @login_required(login_url='/account/logIn/')
 def reviewImageDelete(request, review_id, imageIdx):
     review : PenReview = PenReview.objects.get(pk=review_id)

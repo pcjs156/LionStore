@@ -68,6 +68,8 @@ urlpatterns = [
 
     # 특정 태그가 달려있는 제품의 목록
     path('tagProduct/<int:productTag_id>', views.tagProduct_view, name="tagProduct"),
+    # 특정 태그를 가지는 사람들의 리뷰 목록
+    path('reviewsByTag/<tagName>', views.reviewsByTag_view, name="reviewsByTag"),
 
     # 외부 링크로 리다이렉트 하기 위한 url
     path('redirectExternalLink/<path:link>', tools.redirectExternalLink, name='redirectExternalLink'),
