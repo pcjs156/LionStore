@@ -874,20 +874,6 @@ def tagSearchResult_view(request):
 @login_required(login_url='/account/logIn/')
 def stationerSellInfoCreate_view(request, product_id):
     if request.method == 'POST':
-        # try:
-        #     stationerSellInfos = StationerSellInfo.objects.get(product=product)
-        # except:
-        #     stationerSellInfos = []
-
-        # alreadyExists = False
-        # for info in stationerSellInfos:
-        #     if info.seller == request.user:
-        #         alreadyExists = True
-        #         break
-
-        # if alreadyExists:
-        #     return redirect('productDetail', product_id=product_id)
-
         form = StationerSellInfoForm(request.POST)
         new_sellInfo : StationerSellInfo = form.save(commit=False)
         new_sellInfo.product = Product.objects.get(pk=product_id)
