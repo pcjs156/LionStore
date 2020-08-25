@@ -4,13 +4,51 @@
 {% block head %}
 <title>문구점 판매 정보 수정</title>
 <!-- 제품별 문구점 판매 정보를 수정하는 페이지 -->
+<style>
+    article {
+        margin: 4rem;
+        text-align: center;
+    }
+    .elementContainer {
+        margin: 2.5rem auto;
+        width: 40%;
+    }
+    #id_price {
+        width: 50%;
+    }
+    div {
+        font-family: 'yg-jalnan';
+    }
+    .btn {
+        margin-top: 1rem;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
-<form method="POST">
-    {% csrf_token %}
-    <div>판매가 : {{ form.price }}</div>
+<article>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="elementContainer">
+            <h5 style="color: gray;">제품명</h5>
+            <h6 style="color: gray;">{{ product.name }}</h6>
+        </div>
 
-    <input type="submit" value="수정">
-</form>
+        <div class="checkout__form__input elementContainer">
+            <h4>현재 가격</h4>
+            {{ currentPrice }}
+        <div>
+
+        <div class="elementContainer">
+            <i class="fa fa-arrow-down fa-2x" aria-hidden="true"></i>
+        </div>
+
+        <div class="checkout__form__input elementContainer">
+            <h4>수정할 가격</h4>
+            {{ form.price }}
+        </div>
+    
+        <button class="btn btn-warning">수정 완료</button>
+    </form>
+</article>
 {% endblock %}

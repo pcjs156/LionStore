@@ -941,8 +941,18 @@ def stationerSellInfoModify_view(request, product_id, stationerSellInfo_id):
             return redirect('productDetail', product_id=product_id)
     
     else:
-        form = StationerSellInfoForm(instance=stationerSellInfo)
-        return render(request, 'stationerSellInfoModify.html', {'form':form})
+        content = dict()
+        
+        form = StationerSellInfoForm()
+        content['form'] = form
+
+        currentPrice = stationerSellInfo.price
+        content['currentPrice'] = currentPrice
+
+        product = stationerSellInfo.product
+        content['product'] = product
+
+        return render(request, 'stationerSellInfoModify.html', content)
 
 
 @login_required(login_url='/account/logIn/')
