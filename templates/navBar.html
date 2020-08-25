@@ -42,14 +42,14 @@ a:hover {
 
 
     {% if user.is_authenticated %}
-    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; padding: 1px auto; margin-right: 1.5em;">
+    <div style="display: grid; grid-template-columns: 2fr 2fr 2fr; padding: 1px auto; margin-right: 1.5em;">
 
         <div class="header__menu" style="display: grid; grid-template-rows: 1fr 0fr; text-align: center;">
             <img class="profileImage" src="{{ user.image.url }}" alt="프로필 이미지"
-                style="width: 31.8px; height: 35px; margin-top: 2rem; margin-left: 1.7rem; margin-bottom: 0.3rem; padding-top: 0.2em;">
+                style="width: 31.8px; height: 35px; margin-top: 2rem; margin-left: 1.3rem; margin-bottom: 0.3rem; padding-top: 0.2em;">
             <ul>
                 <li>
-                    <a href="{% url 'myPage' %}" style="color: black; font-family: 'yg-jalnan'; font-size: 13px;">마이페이지</a>
+                    <a href="{% url 'myPage' %}" style="color: black; font-family: 'NanumSquareRound'; font-size: 14px;">마이페이지</a>
                     <ul class="dropdown"style="text-align: left; font-family: 'NanumSquareRound';">
                         <li><a href="{% url 'myPageRedirector' 'likeReviews' %}">좋아요한 리뷰</a></li>
                         <li><a href="{% url 'myPageRedirector' 'likeProducts' %}">좋아요한 제품</a></li>
@@ -65,13 +65,13 @@ a:hover {
             </ul>
 
         </div>
-        <div style="display: grid; grid-template-rows: 1fr 0.7fr ; text-align: center; font-family: 'yg-jalnan';">
+        <div style="display: grid; grid-template-rows: 1fr 0.7fr ; text-align: center; font-family: 'NanumSquareRound';">
             <i class="fa fa-sign-out fa-2x" aria-hidden="true" style="margin-top: 2.3rem; margin-left: 0.7rem;"></i>
-            <a href="{% url 'logOut' %}" style="color: black; font-size: 13px; padding: 0rem; margin-top: 0.35em;">로그아웃</a>
+            <a href="{% url 'logOut' %}" style="color: black; font-size: 14px; padding: 0rem; margin-top: 0.15em;">로그아웃</a>
         </div>
-        <div style="display: grid; grid-template-rows: 1fr 0.7fr; text-align: center; font-family: 'yg-jalnan';">
+        <div style="display: grid; grid-template-rows: 1fr 0.7fr; text-align: center; font-family: 'NanumSquareRound';">
             <i class="fa fa-plus-square fa-2x" aria-hidden="true" style="margin-top: 2.3rem; margin-left: 0.1rem;"></i>
-            <a href="{% url 'newProductRequest' %} " style="color: black; font-size: 13px; padding: 0rem; margin-top: 0.35em; margin-right: 0.4rem;">상품 등록</a>
+            <a href="{% url 'newProductRequest' %} " style="color: black; font-size: 14px; padding: 0rem; margin-top: 0.15em; margin-right: 0.4rem;">상품 등록</a>
         </div>
     </div>
     {% else %}
@@ -81,7 +81,7 @@ a:hover {
     </div>
     {% endif %}
 </div>
-<nav class="header__menu" style="text-align: center; font-family: 'yg-jalnan';">
+<nav class="header__menu" style="text-align: center; font-family: 'yg-jalnan'; letter-spacing :1.5px;">
     <ul>
         <li><a href="{% url 'redirectByCategoryName' '볼펜' %}">볼펜</a></li>&nbsp;
         <li><a href="{% url 'redirectByCategoryName' '만년필' %}">만년필</a></li>&nbsp;

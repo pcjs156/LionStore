@@ -6,9 +6,6 @@
 <!-- 상품별 디테일 페이지
      상품 정보, 리뷰 목록, 웹 판매 정보 목록, 문구점 정보 목록이 노출됨 -->
 <style>
-     hr {
-          width: 80%;
-     }
      #mainContainer {
           width: 80%;
           text-align: center;
@@ -33,6 +30,20 @@
           width:70vw; 
           height: 80vh
      }
+     @font-face {
+        font-family: 'yg-jalnan';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: 'NanumSquareRound';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+    }
+    
 </style>
 {% endblock %}
 
@@ -43,58 +54,63 @@
           <a href="{% url 'productList' product.category.id %}"><i class="fa fa-bars" aria-hidden="true"></i></i>{{ product.category.categoryName }}</a> >
           <span id="current_location">{{ product }}</span>
       </p>
-  
      <div class="container" id="imageContainer">
           <div class="row">
                <img class="col" id="product_image" src="{{ product.productImage.url }}" alt="{{ product.name }} 이미지">
                
-               <div class="col" style="padding: 1rem 2rem;">
-                    <div class="row" style="display: grid; grid-template-rows: 1fr 1fr 2fr 0.01fr 3fr;">
+               <div class="col" style="padding: 0rem 4.5rem; text-align: left;">
+                    <div class="row" style="display: grid; grid-template-rows: 0.1fr 0.5fr 0.3fr 0.01fr;">
+                         <div style="text-align: left;">
+                              {% if tags %}
+                                   {% for tag in tags %}
+                                   <a class="badge badge-pill badge-warning" style="font-family: 'NanumSquareRound'; font-size: 18px;" href="{% url 'tagProduct' tag.id %}">{{ tag }}</a>
+                                   {% endfor %}
+                              {% else %}
+                                   <span class="badge badge-pill badge-danger">No TAG</span>
+                              {% endif %}
+                         </div>
                          <div style="margin-bottom: 1rem;">
-                              <div style="font-family: 'yg-jalnan';">제품명</div>
-                              <div>{{ product.name }}</div>
+                              <div style="font-family: 'yg-jalnan'; font-size: 38px;">{{ product.name }}</div>
+                         </div>
+                         <div style="margin-bottom: 1rem;">
+                              <div style="font-family: 'NanumSquareRound'; font-size: 18px; letter-spacing :1.4px;"> 제조사</div>
+                              <div style="font-family: 'NanumSquareRound'; font-size: 30px;">{{ product.manufacturer }}</div>
                          </div>
 
                          <div style="margin-bottom: 1rem;">
-                              <div style="font-family: 'yg-jalnan';"> 제조사</div>
-                              <div>{{ product.manufacturer }}</div>
+                              <div style="font-family: 'NanumSquareRound'; font-size: 18px;">{{ product.description }}</div>
                          </div>
 
-                         <div style="margin-bottom: 1rem;">
-                              <div style="font-family: 'yg-jalnan';">제품 설명</div>
-                              <div>{{ product.description }}</div>
-                         </div>
-
-                         <hr>
+                         <hr style="width: 440px;">
 
                          <div>
-                              <div style="text-align: center;">
-                                   <div>총점</div>
+                              <div style="text-align: left;">
+                                   <div style="font-family: 'NanumSquareRound'; font-size: 25px; font-weight: bold;">총점</div>
                                    <div class="rateit svg" data-rateit-value="{{avr_totalScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
                                         step="0.1" data-rateit-starheight="15"></div>
                               </div>
-                              <div class="scoreContainer">
+                              <div class="scoreContainer" style="margin-top: 1.5rem;">
                                    <div class="row">
                                         <div class="col">
-                                             <div>그립감</div>
+                                             <div style="font-family: 'NanumSquareRound'; font-size: 20px; font-weight: bold;">그립감</div>
                                              <div class="rateit svg" data-rateit-value="{{avr_gripScore}}" data-rateit-readonly="true"
                                                   aria-valuenow="{{avr_gripScore}}" data-rateit-starwidth="15" data-rateit-starheight="15"></div>
                                         </div>
                
                                         <div class="col">
-                                             <div>수명</div>
+                                             <div style="font-family: 'NanumSquareRound'; font-size: 20px; font-weight: bold;">수명</div>
                                              <div class="rateit svg" data-rateit-value="{{avr_lifeScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
                                                   data-rateit-starheight="15"></div>
                                         </div>
                                    </div>
                                    <div class="row">
                                         <div class="col">
-                                             <div>내구도</div>
+                                             <div style="font-family: 'NanumSquareRound'; font-size: 20px; font-weight: bold;">내구도</div>
                                              <div class="rateit svg" data-rateit-value="{{avr_durabilityScore}}" data-rateit-readonly="true"
                                                   data-rateit-starwidth="15" data-rateit-starheight="15"></div>
                                         </div>
                                         <div class="col">
-                                             <div>디자인</div>
+                                             <div style="font-family: 'NanumSquareRound'; font-size: 20px; font-weight: bold;">디자인</div>
                                              <div class="rateit svg" data-rateit-value="{{avr_designScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
                                                   data-rateit-starheight="15"></div>
                                         </div>
@@ -102,13 +118,13 @@
                               </div>
                               <div class="row">
                                    <div class="col">
-                                        <div>사용감</div>
+                                        <div style="font-family: 'NanumSquareRound'; font-size: 20px; font-weight: bold;">사용감</div>
                                         <div class="rateit svg" data-rateit-value="{{avr_textureScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
                                         data-rateit-starheight="15"></div>
                                    </div>
           
                                    <div class="col">
-                                        <div>가성비</div>
+                                        <div style="font-family: 'NanumSquareRound'; font-size: 20px; font-weight: bold;">가성비</div>
                                         <div class="rateit svg" data-rateit-value="{{avr_costEffetivenessScore}}" data-rateit-readonly="true"
                                         data-rateit-starwidth="15" data-rateit-starheight="15"></div>
                                    </div>
@@ -121,20 +137,9 @@
      </div>
 </div>
 
-<br>
 
-<div id="tagContainer" style="width: 80%; margin: 0 auto 1rem auto; text-align: right;">
-     <div style="font-family: 'yg-jalnan'; color: black;"><i class="fa fa-tags" aria-hidden="true"></i>태그목록</div>
-     {% if tags %}
-          {% for tag in tags %}
-          <a class="badge badge-pill badge-warning" href="{% url 'tagProduct' tag.id %}">{{ tag }}</a>
-          {% endfor %}
-     {% else %}
-          <span class="badge badge-pill badge-danger">No TAG</span>
-     {% endif %}
-</div>
 
-<div style="width: 80%; margin: 0 auto 2rem auto; text-align: right;">
+<div style="width: 85%; text-align: right;">
      {{ likeMessage }}
      <a href="{% url 'productLikeProcess' product_id=product.id %}">
           {% if userLike %}
@@ -147,7 +152,7 @@
      </a>
 </div>
 
-<hr>
+<hr style="width: 70%;">
 
 <div id="reviewContainer" style="padding: 0 15%">
      <!-- 인기순 정렬로 전환 -->
@@ -190,12 +195,11 @@
 
      {% if not reviewCreated %}
      <!-- 리뷰를 작성하지 않은 경우 -->
-     <a href="{% url 'reviewCreate' product.id %}"><div style="padding-left: 0.3rem; text-align: right;">새 리뷰 작성</div></a>
+     <a class="badge badge-pill badge-warning" style="font-family: 'NanumSquareRound'; font-size: 18px;" href="{% url 'reviewCreate' product.id %}"><div style="padding-left: 0.3rem; text-align: right;">새 리뷰 작성</div></a>
      {% else %}
      <!-- 리뷰를 이미 작성한 경우 -->
-     <a href="{% url 'reviewDetail' myReview.id %}"><div style="padding-left: 0.3rem; text-align: right;">작성한 리뷰 보기</div></a>
+     <a class="badge badge-pill badge-warning" style="font-family: 'NanumSquareRound'; font-size: 18px;" href="{% url 'reviewDetail' myReview.id %}">작성한 리뷰 보기</a>
      {% endif %}
-
      <!-- 페이지네이션 -->
      <div class="pagination__option" style="text-align: center;">
           {% if reviews.has_previous %}
@@ -221,7 +225,7 @@
 
 </div>
 
-<hr>
+<hr style="width: 70%;">
 
 <table id="webSellInfos" class="table table-bordered table-hover"
      style="text-align: center; width: 70%; margin: auto auto;">
@@ -239,9 +243,9 @@
      {% endif %}
      <thead>
           <tr>
-               <th>판매자</th>
-               <th>가격</th>
-               <th>링크</th>
+               <th style="background-color: hsl(32, 81%, 44%); color: white;">판매자</th>
+               <th style="background-color: hsl(32, 81%, 44%); color: white;">가격</th>
+               <th style="background-color: hsl(32, 81%, 44%); color: white;">링크</th>
           </tr>
      </thead>
      <tbody>
@@ -298,7 +302,7 @@
      </div>
 {% endif %}
 
-<hr>
+<hr style="width: 70%;">
 
 <div id="videoContainer" style="margin: 2rem aut o;">
      <div style="font-family: 'yg-jalnan'; text-align: center; font-size: large;"><i class="fa fa-youtube-play" aria-hidden="true"></i>관련 영상</div>
