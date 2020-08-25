@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
 from django.contrib.auth import get_user_model
 from django.db import transaction
 
@@ -55,3 +55,10 @@ class StationerSignUpForm(UserCreationForm):
         user.is_Stationer = True
         user.save()
         return user
+
+class UserModifyForm(UserChangeForm):
+    class Meta:
+        model = Customer
+        fields = ['introduce', 'image',
+                  'age', 'job', 'usage',
+                  'penInterest_1', 'penInterest_2', 'penInterest_3', 'rawTagString']
