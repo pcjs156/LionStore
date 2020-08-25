@@ -8,15 +8,28 @@
      article {
           padding: 2rem;
      }
+     @font-face {
+         font-family: 'yg-jalnan';
+         src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff');
+         font-weight: normal;
+         font-style: normal;
+     }
+ 
+     @font-face {
+         font-family: 'NanumSquareRound';
+         src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff') format('woff');
+         font-weight: normal;
+         font-style: normal;
 </style>
+
 {% endblock %}
 
 {% block content %}
 
 <article>
      <h3>
-          <div class="alert alert-warning" role="alert">
-               {{ length }}건의 제품이 <span class="badge badge-pill badge-warning">{{ tag }}</span> 태그와 연결되어 있습니다.
+          <div class="alert alert-warning" role="alert" style="font-family: 'NanumSquareRound';">
+               {{ length }}건의 제품이 <span class="badge badge-pill badge-warning" style="font-family: 'yg-jalnan';">{{ tag }}</span> 태그와 연결되어 있습니다.
              </div>
      </h3>
 
