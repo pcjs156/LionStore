@@ -11,8 +11,10 @@
     </div>
 
     <div class="linkContainer" style="font-family: 'yg-jalnan'; font-size: 15px; color:#663e27;">
-        <span onclick="play()">박유빈</span> | 이현수 | 김시은 | 이예진 | 강영진 <br> 
+        <span onclick="play()">박유빈</span> | 이현수 | 김시은 | 이예진 | <span onclick="playKYJ()">강영진</span> <br> 
         <audio id='audio_play' src="{% static 'sounds/catSound.wav' %}"></audio> 
+        <audio id='audio_play_kyj' src="{% static 'sounds/Lion-Roar.wav' %}"></audio> 
+
     </div>
 
     
@@ -36,5 +38,14 @@
             audio.pause(); 
             audio.currentTime = 0 
         } 
-    } 
-    </script>
+    }
+    function playKYJ() { 
+        var audio = document.getElementById('audio_play_kyj'); 
+        if (audio.paused) { 
+            audio.play(); 
+        }else{ 
+            audio.pause(); 
+            audio.currentTime = 0 
+        } 
+    }
+</script>
