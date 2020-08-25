@@ -202,17 +202,15 @@
                 <img class="profile_image" src="{{ user.image.url }}" alt="{{ user.nickname }}님의 프로필 이미지"
                     style="max-width: 40px; max-height: 40px; width: auto; height: auto; display: block; margin:0px auto;">
             </div>
-            <div style="text-align: center; font-family: 'yg-jalnan';">
+            <div style="text-align: center; font-family: 'nanumsquareround';">
                 {{ user.nickname }}
             </div>
         </div>
         <form action="/store/commentCreate/{{ review.id }}" method="POST">
             <div class="post-comments" style="height: 100%;">
                 {% csrf_token %}
-                <input type="text" name="body" style="width: 100%; height: 80%;">
-                <br>
-                <div style="text-align: right;">
-                    <button type="submit" class="badge badge-light" style="padding: 2px auto;">작성</button>
+                <input type="text" name="body" style="width: 90%; height: 80%; border: 0px; border-radius: 3px;">
+                    <button type="submit" class="site-btn">댓글 작성</button>
                 </div>
             </div>
         </form>
@@ -234,8 +232,8 @@
                     alt="{{ comment.author.nickname }}님의 프로필 이미지"
                     style="max-width: 40px; max-height: 40px; width: auto; height: auto; display: block; margin:0px auto;">
             </div>
-            <div style="text-align: center; font-family: 'yg-jalnan';">
-                {{ comment.author.nickname }}
+           <div style="text-align: center; font-family: 'nanumsquareround';">
+            <b>   {{ comment.author.nickname }}</b>
             </div>
         </div>
         <div class="blog-comment">
