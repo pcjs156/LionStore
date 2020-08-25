@@ -77,9 +77,12 @@ def productDetail_view(request, product_id):
     # 비디오 링크 관련
     videoLinks = ProductVideoLink.objects.filter(product=product)
     videoLinkHashs = [getHash(linkObj.videoLink)for linkObj in videoLinks]
-    content['firstVideoHash'] = videoLinkHashs[0]
-    content['videoLinkHashs'] = videoLinkHashs[1:]
-    content['hasNoVideos'] = (len(videoLinkHashs) == 0)
+    if len(videoLinkHashs) != 0:
+        content['firstVideoHash'] = videoLinkHashs[0]
+        content['videoLinkHashs'] = videoLinkHashs[1:]
+        content['hasNoVideos'] = False
+    else:
+        content['hasNoVideos'] = True
 
     # 리뷰 관련
     # 인기순 정렬인 경우
@@ -489,7 +492,14 @@ def reviewDetail_view(request, review_id):
     content['comments'] = comments
 
     #사진 목록
+    firstImage = None
     images = [review.reviewImage1, review.reviewImage2, review.reviewImage3, review.reviewImage4, review.reviewImage5, review.reviewImage6]
+    for i in range(len(images)):
+        if images[i]:
+            firstImage = images.pop(i)
+            break
+
+    content['firstImage'] = firstImage
     content['images'] = images
     
     # 사진을 추가할 수 있는가?(사진이 6장 미만 등록되어 있는가?)

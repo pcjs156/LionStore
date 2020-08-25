@@ -21,9 +21,6 @@
           width: auto;
           height: auto;
      }
-     #webSellInfo_report {
-          width: 4rem;
-     }
      #no_review_message {
           text-align: center;
      }
@@ -43,7 +40,7 @@
 
 <div class="container" id="mainContainer">
      <p id="link_nav" style="text-align: left; margin-left: 0.4rem; margin-bottom: 0.5rem;">
-          <a href="{% url 'productList' product.category.id %}"><i class="fa fa-pencil" aria-hidden="true"></i>{{ product.category.categoryName }}</a> >
+          <a href="{% url 'productList' product.category.id %}"><i class="fa fa-bars" aria-hidden="true"></i></i>{{ product.category.categoryName }}</a> >
           <span id="current_location">{{ product }}</span>
       </p>
   
@@ -245,7 +242,6 @@
                <th>판매자</th>
                <th>가격</th>
                <th>링크</th>
-               <th>신고</th>
           </tr>
      </thead>
      <tbody>
@@ -262,14 +258,11 @@
                     <a href="{% url 'redirectExternalLink' info.link %}"><i class="fa fa-external-link"
                               aria-hidden="true">{{ info.link }}</i></a>
                </td>
-               <td id="webSellInfo_report">
-                    <a href="">신고</a>
-               </td>
           </tr>
           {% endfor %}
           {% else %}
           <tr>
-               <td colspan="4">아직 판매정보가 등록되지 않았습니다.</td>
+               <td colspan="3">아직 판매정보가 등록되지 않았습니다.</td>
           </tr>
           {% endif %}
      </tbody>
