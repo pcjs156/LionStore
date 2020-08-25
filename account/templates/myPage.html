@@ -38,10 +38,7 @@
     #myReview_likeCount, #product_like {
         width: 3rem;
     }
-    #webSellInfo_price, #stationerSellInfo_productName {
-        width: 5rem;
-    }
-    #myReview_reported, #webSellInfo_reported, #stationerSellInfo_reported {
+    #webSellInfo_price, #stationerSellInfo_price {
         width: 5rem;
     }
 </style>
@@ -154,7 +151,6 @@
                 <th>제조사</th>
                 <th>카테고리</th>
                 <th>Like</th>
-                <th>신고</th>
                 <th>한줄평</th>
                 <th>평점</th>
             </tr>
@@ -162,7 +158,7 @@
         <tbody>
         {% if hasMyReviews %}
             <tr>
-                <td colspan="7">아직 리뷰를 작성하지 않습니다.</td>
+                <td colspan="6">아직 리뷰를 작성하지 않습니다.</td>
             </tr>
         {% else %}
             {% for review in myReviews %}
@@ -178,11 +174,6 @@
                 </td>
                 <td id="myReview_likeCount">
                     {{ review.likeCount }}
-                </td>
-                <td id="myReview_reported">
-                    {% if review.reported %}
-                    🚨
-                    {% endif %}
                 </td>
                 <td id="myReview_comment">
                     <a href="{% url 'reviewDetail' review.id %}">{{ review.getShortComment }}</a>
@@ -208,14 +199,13 @@
                 <th>제조사</th>
                 <th>카테고리</th>
                 <th>가격</th>
-                <th>신고</th>
                 <th>링크</th>
             </tr>
         </thead>
         <tbody>
         {% if hasNoWebSellInfoList %}
             <tr>
-                <td colspan="6">아직 판매정보를 등록하지 않습니다.</td>
+                <td colspan="5">아직 판매정보를 등록하지 않습니다.</td>
             </tr>
         {% else %}
             {% for info in webSellInfoList %}
@@ -231,11 +221,6 @@
                 </td>
                 <td id="webSellInfo_price">
                     <a href="{% url 'webSellInfoModify' product_id=info.product.id webSellInfo_id=info.id %}">{{ info.price }}</a>
-                </td>
-                <td id="webSellInfo_reported">
-                    {% if info.reported %}
-                    🚨
-                    {% endif %}
                 </td>
                 <td id="webSellInfo_link">
                     <a href="{% url 'webSellInfoModify' product_id=info.product.id webSellInfo_id=info.id %}">{{ info.link }}</a><a href="{% url 'redirectExternalLink' info.link %}"><i class="fa fa-external-link" aria-hidden="true"></i></a>
@@ -258,14 +243,13 @@
                 <th>제품명</th>
                 <th>제조사</th>
                 <th>카테고리</th>
-                <th>신고</th>
                 <th>가격</th>
             </tr>
         </thead>
         <tbody>
         {% if hasNoStationerSellInfoList %}
             <tr>
-                <td colspan="5">아직 판매정보를 등록하지 않습니다.</td>
+                <td colspan="4">아직 판매정보를 등록하지 않습니다.</td>
             </tr>
         {% else %}
             {% for info in stationerSellInfoList %}
@@ -278,11 +262,6 @@
                 </td>
                 <td id="stationerSellInfo_category">
                     <a href="{url 'productList' info.product.category.id }">{{ info.product.category.categoryName }}</a>
-                </td>
-                <td id="stationerSellInfo_reported">
-                    {% if info.reported %}
-                    🚨
-                    {% endif %}
                 </td>
                 <td id="stationerSellInfo_price">
                     <a href="{% url 'stationerSellInfoModify' product_id=info.product.id stationerSellInfo_id=info.id %}">{{ info.price }}</a>
@@ -301,6 +280,16 @@
            <button class="btn btn-warning" style="background-color: #f9d691;">작성한 상품 등록 요청<i class="fa fa-external-link" aria-hidden="true"></i></button>
         </a>
     </div>
+
+    {% if user.is_Customer %}
+    <div style="text-align: right; width: 85%; margin-top: 1rem;">
+        <a href="{% url 'modifyUserInfo' %}">
+            <button class="btn btn-warning" style="background-color: #f9d691;">
+                개인정보 수정
+            </button>
+        </a>
+    </div>
+    {% endif %}
 
     {% if user.is_Customer or user.is_Stationer %}
     <div style="text-align: right; width: 85%; margin-top: 1rem;">

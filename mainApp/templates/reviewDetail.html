@@ -4,32 +4,93 @@
 {% block head %}
 <title>리뷰 상세 정보</title>
 <!-- 리뷰 상세 정보가 노출됨. 여기서 리뷰의 수정/삭제에 접근함.  -->
+<style>
+    article {
+        width: 70%;
+        margin: 2rem auto;
+    }
+
+    .blog-comment::before,
+    .blog-comment::after,
+    .blog-comment-form::before,
+    .blog-comment-form::after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    .blog-comment ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .blog-comment img {
+        opacity: 1;
+        filter: Alpha(opacity=100);
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        -o-border-radius: 4px;
+        border-radius: 4px;
+    }
+
+    .blog-comment img.avatar {
+        position: relative;
+        float: left;
+        width: 65px;
+        height: 65px;
+    }
+
+    .blog-comment .post-comments {
+        border: 1px solid #eee;
+        margin-bottom: 20px;
+        padding: 2rem 2rem 0 2rem;
+        position: relative;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        -o-border-radius: 4px;
+        border-radius: 4px;
+        background: #fff;
+        color: #6b6e80;
+        position: relative;
+    }
+
+    .blog-comment .meta {
+        color: #aaaaaa;
+        padding-bottom: 8px;
+        margin-bottom: 10px !important;
+    }
+
+    .blog-comment ul.comments ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .blog-comment-form {
+        padding-top: 40px;
+    }
+
+    .blog-comment h3,
+    .blog-comment-form h3 {
+        margin-bottom: 40px;
+        line-height: 30px;
+        font-weight: 800;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
-<a href="{% url 'productDetail' review.product.id %}">제품 보기</a>
+<article>
+    <p id="link_nav" style="text-align: left; margin-left: 0.4rem; margin-bottom: 0.5rem;">
+        <a href="{% url 'productDetail' review.product.id %}"><i class="fa fa-pencil"
+                aria-hidden="true"></i></i>{{ review.product.name }}</a> >
+        <span id="current_location">{{ review.getShortComment }}</span>
+    </p>
 
-{% if review.modified %}
-<div>{{ review.pub_date | date:"Y년 m월 d일 a h시 i분" }}에 수정됨</div>
-{% else %}
-<div>{{ review.pub_date | date:"Y년 m월 d일 a h시 i분" }}에 작성됨</div>
-{% endif %}
+    <br>
 
+    {% for image in images %}
 
-{% if author is user %}
-<br>
-<div>
-    <div>리뷰어 태그</div>
-    {% for tag in userTags %}
-    <span>{{ tag }}, </span>
-    {% endfor %}
-</div>
-<br>
-{% endif %}
-
-{% for image in images %}
-
-{% if image %}
+    {% if image %}
     {% if review.author == user %}
     <a href="{% url 'reviewImageModify' review_id=review.id imageIdx=forloop.counter0 %}">
         <img src="{{ image.url }}" style="width:5rem; height:5rem;">
@@ -37,157 +98,215 @@
     {% else %}
     <img src="{{ image.url }}" style="width:5rem; height:5rem;">
     {% endif %}
-{% endif %}
+    {% endif %}
 
-{% endfor %}
-
-{% if canAddImage and isAuthor %}
-<!-- Button trigger modal -->
-<div><a href="" data-toggle="modal" data-target="#reviewImageAddModal">리뷰 이미지 추가하기</a></div>
-{% endif %}
-
-<div>작성자 : {{ author }}</div>
-<div>제품명 : {{ product }}</div>
-<div>한줄평 : {{ comment }} </div>
-<div>장점 : {{ goodPoint }}</div>
-<div>단점 : {{ weakPoint }}</div>
-<br>
-
-<div>총점 {{ totalScore }}</div>
-<div class="rateit svg" data-rateit-value="{{totalScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
-    step="0.1" data-rateit-starheight="15"></div>
-
-<div>{{gripScore.name}}</div>
-<div class="rateit svg" data-rateit-value="{{gripScore.score}}" data-rateit-readonly="true"
-    aria-valuenow="{{gripScore.score}}" data-rateit-starwidth="15" data-rateit-starheight="15"></div>
-
-<div>{{lifeScore.name}}</div>
-<div class="rateit svg" data-rateit-value="{{lifeScore.score}}" data-rateit-readonly="true" data-rateit-starwidth="15"
-    data-rateit-starheight="15"></div>
-
-<div>{{durabilityScore.name}}</div>
-<div class="rateit svg" data-rateit-value="{{durabilityScore.score}}" data-rateit-readonly="true"
-    data-rateit-starwidth="15" data-rateit-starheight="15"></div>
-
-<div>{{designScore.name}}</div>
-<div class="rateit svg" data-rateit-value="{{designScore.score}}" data-rateit-readonly="true" data-rateit-starwidth="15"
-    data-rateit-starheight="15"></div>
-
-<div>{{textureScore.name}}</div>
-<div class="rateit svg" data-rateit-value="{{textureScore.score}}" data-rateit-readonly="true"
-    data-rateit-starwidth="15" data-rateit-starheight="15"></div>
-
-<div>{{costEffetivenessScore.name}}</div>
-<div class="rateit svg" data-rateit-value="{{costEffetivenessScore.score}}" data-rateit-readonly="true"
-    data-rateit-starwidth="15" data-rateit-starheight="15"></div>
-
-<hr>
-
-<div style="text-align: right;">
-    {{ likeMessage }}
-    <a href="{% url 'reviewLikeProcess' review_id=review.id %}">
-        {% if userLike %}
-        <!-- 유저가 좋아요를 누른 경우 -->
-        ❤️
-        {% else %}
-        <!-- 유저가 좋아요를 누르지 않은 경우 -->
-        🖤
-        {% endif %}
-    </a>
-</div>
-
-<hr>
-
-<form action="/store/commentCreate/{{ review.id }}" method="POST">
-    {% csrf_token %}
-    <input type="text" name="body">
-    <button type="submit">작성</button>
-</form>
-
-<div class="blog__details__comment">
-    {% for comment in comments %}
-    <div class="blog__comment__item">
-        <div class="blog__comment__item__pic">
-            <img class="profile_image" src="{{ comment.author.image.url }}" alt="{{ comment.author.nickname }}님의 프로필 이미지" style="max-width: 40px; max-height: 40x; width: auto; height: auto; display: block; margin:0px auto;">
-        </div>
-        <div class="blog__comment__item__text">
-            <h6>{{ comment.author.nickname }}</h6>
-            <p>{{ comment.body }}</p>
-            <ul>
-                <li><i class="fa fa-clock-o"></i> {{ comment.pub_date | date:"Y/m/d a h:i"}} </li>
-                {% if comment.author == request.user %}
-                <li><a href="{% url 'commentDelete' comment.id %}"><i class="fa fa-trash-o" aria-hidden="true"></i></a></li>
-                {% endif %}
-            </ul>
-        </div>
-    </div>
-    <br>
     {% endfor %}
-</div>
 
-<hr>
+    {% if canAddImage and isAuthor %}
+    <!-- Button trigger modal -->
+    <div><a href="" data-toggle="modal" data-target="#reviewImageAddModal">리뷰 이미지 추가하기</a></div>
+    {% endif %}
 
-<div>태그 목록</div>
-{% for tag in productTags %}
-<div><a href="{% url 'tagProduct' tag.id %}">{{ tag }}</a></div>
-{% endfor %}
+    <div>작성자 : {{ author }}</div>
+    <div>제품명 : {{ product }}</div>
+    <div>한줄평 : {{ comment }} </div>
+    <div>장점 : {{ goodPoint }}</div>
+    <div>단점 : {{ weakPoint }}</div>
+    <br>
 
-<hr>
+    <div>총점</div>
+    <div class="rateit svg" data-rateit-value="{{totalScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
+        step="0.1" data-rateit-starheight="15"></div>
 
+    <div>{{gripScore.name}}</div>
+    <div class="rateit svg" data-rateit-value="{{gripScore.score}}" data-rateit-readonly="true"
+        aria-valuenow="{{gripScore.score}}" data-rateit-starwidth="15" data-rateit-starheight="15"></div>
 
-{% if isAuthor %}
-<div><a href="{% url 'reviewModify' review.id %}">리뷰 수정</a></div>
+    <div>{{lifeScore.name}}</div>
+    <div class="rateit svg" data-rateit-value="{{lifeScore.score}}" data-rateit-readonly="true"
+        data-rateit-starwidth="15" data-rateit-starheight="15"></div>
 
-<!-- Button trigger modal -->
-<a href="" data-toggle="modal" data-target="#deleteModal">게시글 삭제하기</a>
+    <div>{{durabilityScore.name}}</div>
+    <div class="rateit svg" data-rateit-value="{{durabilityScore.score}}" data-rateit-readonly="true"
+        data-rateit-starwidth="15" data-rateit-starheight="15"></div>
 
-<!-- Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">리뷰 {{ review.id }}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+    <div>{{designScore.name}}</div>
+    <div class="rateit svg" data-rateit-value="{{designScore.score}}" data-rateit-readonly="true"
+        data-rateit-starwidth="15" data-rateit-starheight="15"></div>
+
+    <div>{{textureScore.name}}</div>
+    <div class="rateit svg" data-rateit-value="{{textureScore.score}}" data-rateit-readonly="true"
+        data-rateit-starwidth="15" data-rateit-starheight="15"></div>
+
+    <div>{{costEffetivenessScore.name}}</div>
+    <div class="rateit svg" data-rateit-value="{{costEffetivenessScore.score}}" data-rateit-readonly="true"
+        data-rateit-starwidth="15" data-rateit-starheight="15"></div>
+
+    <div id="tagContainer" style="margin: 0 auto 1rem auto; text-align: right;">
+        <div style="font-family: 'yg-jalnan'; color: black;"><i class="fa fa-tags" aria-hidden="true"></i>태그목록</div>
+        {% if productTags %}
+        {% for tag in productTags %}
+        <a class="badge badge-pill badge-warning" href="{% url 'tagProduct' tag.id %}">{{ tag }}</a>
+        {% endfor %}
+        {% else %}
+        <span class="badge badge-pill badge-danger">No TAG</span>
+        {% endif %}
+    </div>
+
+    <div id="tagContainer" style="margin: 0 auto 1rem auto; text-align: right;">
+        <div style="font-family: 'yg-jalnan'; color: black;"><i class="fa fa-tags" aria-hidden="true"></i>리뷰어 태그</div>
+        {% if userTags %}
+        {% for tag in userTags %}
+        <a class="badge badge-pill badge-warning" href="{% url 'tagProduct' tag.id %}">{{ tag }}</a>
+        {% endfor %}
+        {% else %}
+        <span class="badge badge-pill badge-danger">No TAG</span>
+        {% endif %}
+    </div>
+
+    <div style="text-align: right;">
+        {{ likeMessage }}
+        <a href="{% url 'reviewLikeProcess' review_id=review.id %}">
+            {% if userLike %}
+            <!-- 유저가 좋아요를 누른 경우 -->
+            ❤️
+            {% else %}
+            <!-- 유저가 좋아요를 누르지 않은 경우 -->
+            🖤
+            {% endif %}
+        </a>
+    </div>
+
+    {% if review.modified %}
+    <div style="text-align: right; font-size: smaller; color: gray;">Modified on
+        {{ review.pub_date | date:"Y-m-d h:i" }}</div>
+    {% else %}
+    <div style="text-align: right; font-size: smaller; color: gray;">Posted On {{ review.pub_date | date:"Y-m-d h:i" }}
+    </div>
+    {% endif %}
+
+    {% if isAuthor %}
+    <div style="text-align: right; color: black; font-size: x-small;">
+        <a href="{% url 'reviewModify' review.id %}">리뷰 수정</a> / 
+        <a href="" data-toggle="modal" data-target="#deleteModal" style="color: black;">게시글 삭제하기</a>
+    </div>
+    {% endif %}
+
+    <hr>
+
+    {% if user.is_authenticated %}
+    <div class="alert alert-secondary"
+        style="display: grid; grid-template-columns: 1fr 10fr; padding: 1rem 1rem 1rem 0;">
+        <div style="text-align: left;">
+            <div>
+                <img class="profile_image" src="{{ user.image.url }}" alt="{{ user.nickname }}님의 프로필 이미지"
+                    style="max-width: 40px; max-height: 40px; width: auto; height: auto; display: block; margin:0px auto;">
             </div>
-            <div class="modal-body">
-                삭제하시겠습니까?
+            <div style="text-align: center; font-family: 'yg-jalnan';">
+                {{ user.nickname }}
             </div>
-            <div class="modal-footer">
-                <a href="{% url 'reviewDelete' review.id %}"><button type="button" class="btn btn-danger">예</button></a>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">아니오</button>
+        </div>
+        <form action="/store/commentCreate/{{ review.id }}" method="POST">
+            <div class="post-comments" style="height: 100%;">
+                {% csrf_token %}
+                <input type="text" name="body" style="width: 100%; height: 80%;">
+                <br>
+                <div style="text-align: right;">
+                    <button type="submit" class="badge badge-light" style="padding: 2px auto;">작성</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    {% else %}
+    <div class="alert alert-secondary">
+        <div style="text-align: center; font-family: 'yg-jalnan';">
+            댓글을 작성하시려면 먼저 [ <a id="loginLink" href="{% url 'logIn' %}">로그인</a> ] 해주세요!
+        </div>
+    </div>
+    {% endif %}
+
+    {% for comment in comments %}
+    <div class="alert alert-secondary"
+        style="display: grid; grid-template-columns: 1fr 10fr; padding-bottom: 0; padding-left: 0;">
+        <div style="text-align: left; padding-top: 2rem;">
+            <div>
+                <img class="profile_image" src="{{ comment.author.image.url }}"
+                    alt="{{ comment.author.nickname }}님의 프로필 이미지"
+                    style="max-width: 40px; max-height: 40px; width: auto; height: auto; display: block; margin:0px auto;">
+            </div>
+            <div style="text-align: center; font-family: 'yg-jalnan';">
+                {{ comment.author.nickname }}
+            </div>
+        </div>
+        <div class="blog-comment">
+            <div class="post-comments">
+                <p style="padding-right: 2rem;">
+                    {{ comment.body }}
+                </p>
+                <hr>
+                <div style="text-align: right; margin-bottom: 0.5rem;">
+                    <span style="color: gray; font-size: smaller;">
+                        {{ comment.pub_date | date:"Y/m/d a h:i"}}
+                        {% if comment.author == request.user %}
+                        <a href="{% url 'commentDelete' comment.id %}"><i class="fa fa-trash-o"
+                                aria-hidden="true"></i></a>
+                        {% endif %}
+                    </span>
+                </div>
             </div>
         </div>
     </div>
-</div>
+    {% endfor %}
 
-<!-- Modal -->
-<div class="modal fade" id="reviewImageAddModal" tabindex="-1" role="dialog" aria-labelledby="reviewImageAddModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="reviewImageAddModalLabel">리뷰 이미지 추가 : {{ imageLeft }}장 가능</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="{% url 'reviewImageAdd' review.id %}" enctype="multipart/form-data" method="POST">
-                    {% csrf_token %}
-                    {{ newImageForm.reviewImage1 }}
-                    <br>
-            </div>
-            <div class="modal-footer">
-                <input type="submit" value="업로드" class="btn btn-success" style="text-align: right;">
-                </form>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+     {% if isAuthor %}
+    <!-- Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">리뷰 {{ review.id }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    삭제하시겠습니까?
+                </div>
+                <div class="modal-footer">
+                    <a href="{% url 'reviewDelete' review.id %}"><button type="button"
+                            class="btn btn-danger">예</button></a>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">아니오</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-{% endif %}
 
+    <!-- Modal -->
+    <div class="modal fade" id="reviewImageAddModal" tabindex="-1" role="dialog"
+        aria-labelledby="reviewImageAddModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reviewImageAddModalLabel">리뷰 이미지 추가 : {{ imageLeft }}장 가능</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'reviewImageAdd' review.id %}" enctype="multipart/form-data" method="POST">
+                        {% csrf_token %}
+                        {{ newImageForm.reviewImage1 }}
+                        <br>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" value="업로드" class="btn btn-success" style="text-align: right;">
+                    </form>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</article>
 {% endblock %}

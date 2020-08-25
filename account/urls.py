@@ -21,8 +21,6 @@ urlpatterns = [
 
     # 계정 정보 수정 관련
     path('modifyUserInfo/', views.modifyUserInfo_view, name='modifyUserInfo'),
-    path('modifyWebSellerInfo/', views.modifyWebSellerInfo_view, name='modifyWebSellerInfo'),
-    path('modifyStationerInfo/', views.modifyStationerSellInfo_view, name='modifyStationerInfo'),
 
     # 작성한 웹 판매 정보 목록
     path('webSellInfoList/', views.webSellerInfoList_view, name='webSellInfoList'),

@@ -103,10 +103,17 @@
     {% include 'footer.html' %}
     <div class="footer__newslatter" style="margin: auto 2rem; text-align: center;">
         <form action="{% url 'tagSearchResult' %}" method="GET"
+<<<<<<< HEAD
             style="display: inline-block; margin-bottom: 0px; width: 30%;">
             <input type="text" name="tagQuery">
             <input type="text" name="sort" value="popularity" style="display: none; visibility: hidden;">
             <button type="submit" class="site-btn" style="font-family:'NanumSquareRound';">태그로 검색하기</button> <br> <br>
+=======
+            style="display: inline-block; margin-bottom: 4px; width: 30%;">
+            <input type="text" name="tagQuery" required>
+            <input type="text" name="sort" value="popularity" style="display: none; visibility: hidden;" required>
+            <button type="submit" class="site-btn" style="font-family:'NanumSquareRound'; font-size: 19px; margin-right: 3.1rem;">태그로 검색</button>
+>>>>>>> d4737d6b168a9727889ddd20202df14197ce6f75
         </form>
     </div>
     <br>

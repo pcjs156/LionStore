@@ -11,8 +11,11 @@
     </div>
 
     <div class="linkContainer" style="font-family: 'yg-jalnan'; font-size: 15px; color:#663e27;">
-        박유빈 | 이현수 | 김시은 | 이예진 | 강영진 <br> 
-        </div>
+        <span onclick="play()">박유빈</span> | 이현수 | 김시은 | 이예진 | <span onclick="playKYJ()">강영진</span> <br> 
+        <audio id='audio_play' src="{% static 'sounds/catSound.wav' %}"></audio> 
+        <audio id='audio_play_kyj' src="{% static 'sounds/Lion-Roar.wav' %}"></audio> 
+
+    </div>
 
     
     <div id="lionStoreTitle" style="font-family: 'yg-jalnan'; font-size: 11px; color:#663e27;">
@@ -25,3 +28,24 @@
         <br>사자네 문방구 -->
     </div>
 </footer>
+
+<script type="text/javascript"> 
+    function play() { 
+        var audio = document.getElementById('audio_play'); 
+        if (audio.paused) { 
+            audio.play(); 
+        }else{ 
+            audio.pause(); 
+            audio.currentTime = 0 
+        } 
+    }
+    function playKYJ() { 
+        var audio = document.getElementById('audio_play_kyj'); 
+        if (audio.paused) { 
+            audio.play(); 
+        }else{ 
+            audio.pause(); 
+            audio.currentTime = 0 
+        } 
+    }
+</script>

@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate, logout
 
-from .forms import UserSignUpForm, UserLoginForm, WebSellerSignUpForm, StationerSignUpForm
+from .forms import *
 
 from account.models import Customer, CustomerTag
 from mainApp.models import *
@@ -37,6 +37,47 @@ def connectTagToUser(user:Customer, rawString:str):
         else:
             existTag = CustomerTag.objects.get(tagBody=newTagName)
             user.tags.add(existTag)
+
+
+def modifyUserTag(user:Customer, before:str):
+    newRawTagString = user.rawTagString
+    newTagNames = set(newRawTagString.split(' '))
+
+    beforeRawTagString = before
+
+    tagNames_toRemove = set(beforeRawTagString.split(' ')) - newTagNames
+    tagNames_toAdd = newTagNames -set(beforeRawTagString.split(' '))
+
+    for name in tagNames_toRemove:
+        targetTags = CustomerTag.objects.filter(tagBody=name)
+        for tag in targetTags:
+            tag.targetCustomer.remove(user)
+            user.tags.remove(tag)
+
+            tag.save()
+            user.save()
+            
+            if len(tag.targetCustomer.all()) == 0:
+                tag.delete()
+            
+    tag_namespace = set(map(lambda x: x.tagBody, CustomerTag.objects.all()))
+    for name in tagNames_toAdd:
+        if name not in tag_namespace:
+            newTag : CustomerTag = CustomerTag.objects.create(tagBody=name)
+            newTag.targetCustomer.add(user)
+            newTag.save()
+            user.tags.add(newTag)
+            user.save()
+        else:
+            existTag : CustomerTag = CustomerTag.objects.get(tagBody=name)
+            existTag.targetCustomer.add(user)
+            existTag.save()
+            user.tags.add(existTag)
+            user.save()
+    
+    user.save()
+    
+    user.save()
 
 
 def userSignUp_view(request):
@@ -118,16 +159,25 @@ def logout_view(request):
     return redirect("mainPage")
 
 
-def modifyStationerSellInfo_view(request):
-    return render(request, 'modifyStationerSellInfo.html')
-
-
+@login_required(login_url='/account/logIn/')
 def modifyUserInfo_view(request):
-    return render(request, 'modifyUserInfo.html')
+    if request.method == "POST":
+        beforeString = request.user.rawTagString
+        form = UserModifyForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
 
+            modifyUserTag(request.user, beforeString)
 
-def modifyWebSellerInfo_view(request):
-    return render(request, 'modifyWebSellerInfo.html')
+            return redirect('myPage')
+
+    else:
+        content = dict()
+
+        form = UserModifyForm(instance=request.user)
+        content['form'] = form
+
+        return render(request, 'modifyUserInfo.html', content)
 
 
 @login_required(login_url='/account/logIn/')

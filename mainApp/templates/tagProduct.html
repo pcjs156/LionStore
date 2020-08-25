@@ -4,32 +4,43 @@
 {% block head %}
 <title>태그 검색 결과</title>
 <!-- 특정 태그가 붙어 있는 제품의 목록을 보여주는 기능 -->
+<style>
+     article {
+          padding: 2rem;
+     }
+</style>
 {% endblock %}
 
 {% block content %}
 
-<div>{{ length }}건의 제품이 "{{ tag }}" 태그와 연결되어 있습니다.</div>
+<article>
+     <h3>
+          <div class="alert alert-warning" role="alert">
+               {{ length }}건의 제품이 <span class="badge badge-pill badge-warning">{{ tag }}</span> 태그와 연결되어 있습니다.
+             </div>
+     </h3>
 
-<div class="row property__gallery">
-    {% for product in productList %}
-    <div class="col-lg-3 col-md-4 col-sm-6 mix women">
-         <div class="product__item">
-              <div class="product__item__pic set-bg" data-setbg="{{ product.productImage.url }}">
-                   <ul class="product__hover">
-                        <li><a href="{{ product.productImage.url }}" class="image-popup"><span
-                                       class="arrow_expand"></span></a></li>
-                   </ul>
-              </div>
-              <div class="product__item__text">
-                   <div><a href="{% url 'productDetail' product.id %}">{{ product }}</a></div>                    <div class="rating">
-                        <div class="rateit svg" data-rateit-value="{{ product.averageScore }}"
-                             data-rateit-readonly="true" data-rateit-starwidth="15" data-rateit-starheight="15">
-                        </div>
-                   </div>
-              </div>
-         </div>
-    </div>
-    {% endfor %}
-</div>
+     <div class="row property__gallery">
+     {% for product in productList %}
+     <div class="col-lg-3 col-md-4 col-sm-6 mix women">
+          <div class="product__item">
+               <div class="product__item__pic set-bg" data-setbg="{{ product.productImage.url }}">
+                    <ul class="product__hover">
+                         <li><a href="{{ product.productImage.url }}" class="image-popup"><span
+                                        class="arrow_expand"></span></a></li>
+                    </ul>
+               </div>
+               <div class="product__item__text">
+                    <div><a href="{% url 'productDetail' product.id %}">{{ product }}</a></div>                    <div class="rating">
+                         <div class="rateit svg" data-rateit-value="{{ product.averageScore }}"
+                              data-rateit-readonly="true" data-rateit-starwidth="15" data-rateit-starheight="15">
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </div>
+     {% endfor %}
+     </div>
+</article>
 
 {% endblock %}

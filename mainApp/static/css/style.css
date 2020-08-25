@@ -178,7 +178,7 @@ ol {
 	border: none;
 	text-transform: uppercase;
 	display: inline-block;
-	padding: 12px 30px;
+	padding: 12px 25px;
 	border-radius: 50px;
 }
 
@@ -333,7 +333,7 @@ ol {
 }
 
 .header__menu {
-	padding: 30px 0 27px;
+	padding: 1px 0 27px;
 }
 
 .header__menu ul li {
@@ -368,12 +368,12 @@ ol {
 
 .header__menu ul li .dropdown {
 	position: absolute;
-	left: 0;
+	left: 0%;
 	top: 56px;
-	width: 150px;
+	width: 125px;
 	background: #111111;
-	text-align: center;
-	padding: 2px 0;
+	text-align: left;
+	margin-right: 2rem;
 	z-index: 9;
 	opacity: 0;
 	visibility: hidden;
@@ -385,13 +385,14 @@ ol {
 .header__menu ul li .dropdown li {
 	display: block;
 	margin-right: 0;
+	text-align: left;
 }
 
 .header__menu ul li .dropdown li a {
 	font-size: 14px;
 	color: #ffffff;
 	font-weight: 400;
-	padding: 8px 20px;
+	padding: 9px 12px;
 	text-transform: capitalize;
 }
 
@@ -400,7 +401,7 @@ ol {
 }
 
 .header__menu ul li a {
-	font-size: 15px;
+	font-size: 23px;
 	text-transform: uppercase;
 	color: #111111;
 	font-weight: 500;
@@ -509,7 +510,7 @@ ol {
 -----------------------*/
 
 .banner {
-	height: 500px;
+	height: 520px;
 }
 
 .banner__text span {
@@ -911,14 +912,15 @@ ol {
 }
 
 .footer__newslatter form input {
-	height: 52px;
-	width: 100%;
-	border: 1px solid #e1e1e1;
+	height: 60px;
+	width: 82%;
+	border: 2px solid #e1e1e1;
 	border-radius: 50px;
-	padding-left: 30px;
+	padding-left: 2px;
 	font-size: 14px;
 	color: #666666;
 }
+
 
 .footer__newslatter form input::-webkit-input-placeholder {
 	color: #666666;

@@ -77,7 +77,12 @@ def productDetail_view(request, product_id):
     # 비디오 링크 관련
     videoLinks = ProductVideoLink.objects.filter(product=product)
     videoLinkHashs = [getHash(linkObj.videoLink)for linkObj in videoLinks]
-    content['videoLinkHashs'] = videoLinkHashs
+    if len(videoLinkHashs) != 0:
+        content['firstVideoHash'] = videoLinkHashs[0]
+        content['videoLinkHashs'] = videoLinkHashs[1:]
+        content['hasNoVideos'] = False
+    else:
+        content['hasNoVideos'] = True
 
     # 리뷰 관련
     # 인기순 정렬인 경우
@@ -96,6 +101,8 @@ def productDetail_view(request, product_id):
         content['popularitySort'] = True
         reviews = PenReview.objects.filter(product=product).order_by('-likeCount')
         content['sortBy'] = 'popularity'
+
+    content['hasReviews'] = (len(reviews) > 0)
 
     # 평점 관련
     try:
@@ -129,7 +136,6 @@ def productDetail_view(request, product_id):
         content['avr_costEffetivenessScore'] = 0
 
 
-
     # 리뷰를 작성한 적이 있는가?
     try:
         myReview = list(filter(lambda r: r.author == request.user, reviews))
@@ -158,25 +164,25 @@ def productDetail_view(request, product_id):
     content['tags'] = tags
 
     # 웹 판매정보 목록
-    webSellInfoList = WebSellInfo.objects.filter(product=product)
+    webSellInfoList = WebSellInfo.objects.filter(product=product).order_by('price')
     content['webSellInfoList'] = webSellInfoList
     if len(webSellInfoList) > 0:
         cheapestWebPrice = min(webSellInfoList, key=lambda info: info.price).price
         content['cheapestWebPrice'] = cheapestWebPrice
     try:
         webSellInfoRegistered = False
-        targetInfo = None
+        targetWebSellInfo = None
         for info in webSellInfoList:
             if info.seller == request.user:
                 webSellInfoRegistered = True
-                targetInfo = info
+                targetWebSellInfo = info
                 break
         content['webSellInfoRegistered'] = webSellInfoRegistered
-        content['targetInfo'] = targetInfo
+        content['targetWebSellInfo'] = targetWebSellInfo
 
     except:
         content['webSellInfoRegistered'] = False
-        content['targetInfo'] = None
+        content['targetWebSellInfo'] = None
 
     # 웹 판매정보가 있는지 표시
     hasWebSellInfo = len(webSellInfoList) > 0
@@ -191,18 +197,18 @@ def productDetail_view(request, product_id):
 
     try:
         stationerSellInfoRegistered = False
-        targetInfo = None
+        targetStationerInfo = None
         for info in stationerSellInfoList:
             if info.seller == request.user:
                 stationerSellInfoRegistered = True
-                targetInfo = info
+                targetStationerInfo = info
                 break
         content['stationerSellInfoRegistered'] = stationerSellInfoRegistered
-        content['targetInfo'] = targetInfo
+        content['targetStationerInfo'] = targetStationerInfo
 
     except:
         content['webSellInfoRegistered'] = False
-        content['targetInfo'] = None
+        content['targetStationerInfo'] = None
 
     # 등록된 문구점 판매정보가 없다면 지도를 표시할 수 없으므로 표시해놓음
     hasStationerSellInfo = len(stationerSellInfoList) > 0
@@ -485,7 +491,14 @@ def reviewDetail_view(request, review_id):
     content['comments'] = comments
 
     #사진 목록
+    firstImage = None
     images = [review.reviewImage1, review.reviewImage2, review.reviewImage3, review.reviewImage4, review.reviewImage5, review.reviewImage6]
+    for i in range(len(images)):
+        if images[i]:
+            firstImage = images.pop(i)
+            break
+
+    content['firstImage'] = firstImage
     content['images'] = images
     
     # 사진을 추가할 수 있는가?(사진이 6장 미만 등록되어 있는가?)
@@ -650,8 +663,8 @@ def modifyReviewTags(review:PenReview, before:str):
         # but 방금 삭제로 인해 어떤 리뷰도 가리키지 않으면 삭제해야됨
         if len(targetTag.targetReview.all()) == 0:
             targetTag.delete()
-
-        targetTag.save()
+        else:
+            targetTag.save()
 
     review.save()
 
@@ -860,20 +873,6 @@ def tagSearchResult_view(request):
 @login_required(login_url='/account/logIn/')
 def stationerSellInfoCreate_view(request, product_id):
     if request.method == 'POST':
-        # try:
-        #     stationerSellInfos = StationerSellInfo.objects.get(product=product)
-        # except:
-        #     stationerSellInfos = []
-
-        # alreadyExists = False
-        # for info in stationerSellInfos:
-        #     if info.seller == request.user:
-        #         alreadyExists = True
-        #         break
-
-        # if alreadyExists:
-        #     return redirect('productDetail', product_id=product_id)
-
         form = StationerSellInfoForm(request.POST)
         new_sellInfo : StationerSellInfo = form.save(commit=False)
         new_sellInfo.product = Product.objects.get(pk=product_id)
@@ -927,8 +926,18 @@ def stationerSellInfoModify_view(request, product_id, stationerSellInfo_id):
             return redirect('productDetail', product_id=product_id)
     
     else:
-        form = StationerSellInfoForm(instance=stationerSellInfo)
-        return render(request, 'stationerSellInfoModify.html', {'form':form})
+        content = dict()
+        
+        form = StationerSellInfoForm()
+        content['form'] = form
+
+        currentPrice = stationerSellInfo.price
+        content['currentPrice'] = currentPrice
+
+        product = stationerSellInfo.product
+        content['product'] = product
+
+        return render(request, 'stationerSellInfoModify.html', content)
 
 
 @login_required(login_url='/account/logIn/')
@@ -942,21 +951,6 @@ def stationerSellInfoDelete(request, product_id, stationerSellInfo_id):
 @login_required(login_url='/account/logIn/')
 def webSellInfoCreate_view(request, product_id):
     if request.method == 'POST':
-        # try:
-        #     webSellInfos = WebSellInfo.objects.get(product=product)
-
-        # except:
-        #     webSellInfos = []
-
-        # alreadyExists = False
-        # for info in webSellInfos:
-        #     if info.seller == request.user:
-        #         alreadyExists = True
-        #         break
-
-        # if alreadyExists:
-        #     return redirect('productDetail', product_id=product_id)
-
         form = WebSellInfoForm(request.POST)
         new_sellInfo : WebSellInfo = form.save(commit=False)
         new_sellInfo.product = Product.objects.get(pk=product_id)
@@ -1007,8 +1001,15 @@ def webSellInfoModify_view(request, product_id, webSellInfo_id):
             return redirect('productDetail', product_id=product_id)
 
     else:
+        content = dict()
+
         form = WebSellInfoForm(instance=webSellInfo)
-        return render(request, 'webSellInfoModify.html', {'form':form})
+        content['form'] = form
+
+        product = webSellInfo.product
+        content['product'] = product
+
+        return render(request, 'webSellInfoModify.html', content)
 
 
 def tagProduct_view(request, productTag_id):
@@ -1051,6 +1052,7 @@ def userRecommendation_view(request):
     content['topSimilarity'] = topSimilarity
 
     return render(request, 'userRecommendation.html', content)
+
 
 def mainPage_view(request):
     content = dict()

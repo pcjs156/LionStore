@@ -104,8 +104,8 @@ class CustomerTag(models.Model):
     def __str__(self):
         return self.tagBody
 
-    def __eq__(self, other:str):
-        return self.tagBody == other
+    # def __eq__(self, other:str):
+    #     return self.tagBody == other
 
-    def __ne__(self, other:str):
-        return self.tagBody != other
+    # def __ne__(self, other:str):
+    #     return self.tagBody != other
