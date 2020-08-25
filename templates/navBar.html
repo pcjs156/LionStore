@@ -23,6 +23,10 @@ a:link {
 a:hover {
   color: rgb(177, 106, 13);
 }
+#searchInput {
+    padding-left: 2rem;
+    font-size: 1.1rem;
+}
 </style> 
 <div class="gridContainer"
     style="display: grid; grid-template-rows: 1fr; grid-template-columns: 1fr 3fr 0.6fr; padding: 1rem;">
@@ -34,7 +38,7 @@ a:hover {
 
     <div class="footer__newslatter" style="margin-left: 6rem; margin-top: 2em; text-align: left;">
         <form action="{% url 'keywordSearchResult' %}" method="GET" style="margin-bottom: 4px ;">
-            <input type="text" name="keywordQuery">
+            <input id="searchInput" type="text" name="keywordQuery">
             <input type="text" name="sort" value="popularity" style="display: none; visibility: hidden;">
             <button type="submit" class="site-btn" style="font-family:'NanumSquareRound'; font-size: 19px; margin-right: 12.6rem;">제품명 검색</button>
         </form>

@@ -663,8 +663,8 @@ def modifyReviewTags(review:PenReview, before:str):
         # but 방금 삭제로 인해 어떤 리뷰도 가리키지 않으면 삭제해야됨
         if len(targetTag.targetReview.all()) == 0:
             targetTag.delete()
-
-        targetTag.save()
+        else:
+            targetTag.save()
 
     review.save()
 
@@ -1052,6 +1052,7 @@ def userRecommendation_view(request):
     content['topSimilarity'] = topSimilarity
 
     return render(request, 'userRecommendation.html', content)
+
 
 def mainPage_view(request):
     content = dict()

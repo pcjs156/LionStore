@@ -3,10 +3,71 @@
 
 {% block head %}
 <title>일반 리뷰어 정보 변경</title>
+<style>
+    article {
+        padding: 2rem;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
-
-
-
+<article>
+    <form method="POST" enctype="multipart/form-data" class="checkout__form" style="text-align: center;">
+        {% csrf_token %}
+        <p style=" color: gray; font-size: 8x;">자기소개</p>
+        {{ form.introduce }}
+        <br>
+        <br>
+    
+        <div>
+            <p style="margin-bottom: 0;">PROFILE IMAGE</p>
+            <input type="file" name="image" accept="image/*" id="id_image">
+        </div>
+        <br>
+        <br>
+    
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; width: 50%; margin-left: 450px;">
+            <div>
+                <div>AGE</div>
+                {{ form.age }}
+            </div>
+        
+            <div>
+                <div>JOB</div>
+                {{ form.job }}
+            </div>
+        
+            <div>
+                <div>USAGE</div>
+                {{ form.usage }}
+            </div>
+        </div>
+    
+        <br>
+    
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; width: 50%; margin-left: 450px;">
+            <div>
+                <div>PEN 1</div>
+                {{form.penInterest_1}}
+            </div>
+            <div>
+                <div>PEN 2</div>
+                {{form.penInterest_2}}
+            </div>
+            <div>
+                <div>PEN 3</div>
+                {{form.penInterest_3}}
+            </div>
+        </div>
+        <br><br>
+    
+        <div class="checkout__form__input">
+            <p>TAG <span style="color: gray;"><span style="color: red;">*</span> 관심있는 키워드 해쉬태그를 지정하세요 (공백문자로 구분해 입력)</span></p>
+        </div>
+        {{ form.rawTagString }}
+        <br>
+        
+        <input type="submit" class="site-btn" value="수정 완료">
+    </form>
+</article>
 {% endblock %}
