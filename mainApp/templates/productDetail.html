@@ -46,7 +46,7 @@
 
         
     div.image{
-        width: 500px; height: 500px;
+        width: 360px; height: 360px;
     }
 </style>
 
@@ -61,7 +61,6 @@
                <a href="{% url 'productList' product.category.id %}"><i class="fa fa-bars" aria-hidden="true"></i></i>{{ product.category.categoryName }}</a> >
                <span id="current_location">{{ product }}</span>
           </p>
-     
           <div class="row">
                <div class="image col" id="imageContainer" style="width: 100%;">
                     <img src="{{ product.productImage.url }}" alt="{{ product.name }} 이미지" style="width: max-content;">
