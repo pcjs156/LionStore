@@ -1135,14 +1135,13 @@ def mainPage_view(request):
         content['error'] = True
 
     # 연령대 / 직업 / 주사용목적 중 하나를 랜덤하게 골라 특성이 같은 유저들의 인기 리뷰를 보여줌
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and request.user.is_Customer:
         # 연령대 / 직업 / 주사용목적 중 '기타'로 되어 있지 않은 항목을 걸러냄(이 중에 랜덤하게 하나 보여줌)
         user : Customer = request.user
         user_usage = (user.usage, Customer.usage_dict[user.usage])
         user_job = (user.job, Customer.job_dict[user.job])
         user_age = (user.age, Customer.age_dict[user.age])
         userPropertyList = list(filter(lambda choice: choice[1] != "기타", [user_usage, user_job, user_age]))
-        
         # 만약 전부 '기타'이면 추천 불가능
         if len(userPropertyList) > 0:
             pickedField = pickedKey, pickedVal = random.choice(userPropertyList)
@@ -1179,7 +1178,7 @@ def mainPage_view(request):
             content['userPropertyRecommend'] = userPropertyRecommend
 
     # 관심 펜 중 랜덤하게 하나를 골라 인기 리뷰를 추천해줌\
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and request.user.is_Customer:
         # 연령대 / 직업 / 주사용목적 중 '기타'로 되어 있지 않은 항목을 걸러냄(이 중에 랜덤하게 하나 보여줌)
         user : Customer = request.user
         penInteresting_1 = (user.penInterest_1, Customer.pen_dict[user.penInterest_1])
