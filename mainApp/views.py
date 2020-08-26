@@ -1083,7 +1083,6 @@ def userRecommendation_view(request):
 def mainPage_view(request):
     content = dict()
 
-    # 테스트/개발용이므로 서비스 할 때는 빠져아 함
     # 카테고리가 존재하지 않는 경우에만 하단의 모든 카테고리를 새로 생성하는 역할
     initializeCategory()
 
@@ -1126,6 +1125,52 @@ def mainPage_view(request):
 
     except:
         content['error'] = True
+
+    # 연령대 / 직업 / 주 사용 용도 중 1개 정보를 랜덤으로 골라
+    # 해당 정보가 겹치는 리뷰어들의 리뷰를 보여주는 기능
+    # 단, '기타'로 설정된 항목은 사용할 수 없으며
+    # 3가지 정보가 모두 '기타'인 경우 해당 기능 전체를 사용할 수 없다.
+    user : Customer = request.user
+
+    # 당연히 로그인 하지 않은 유저는 해당 기능을 사용할 수 없다
+    if user.is_authenticated:
+        user_age = ('age', user.age, Customer.age_dict[user.age])
+        user_job = ('job', user.job, Customer.job_dict[user.job])
+        user_usage = ('usage', user.usage, Customer.usage_dict[user.usage])
+        userInfoList = list(filter(lambda x: x[-1] != '기타', [user_age, user_job, user_usage]))
+        
+        # 최소 1개 이상의 정보는 공개되어야 함
+        propertyRecommend = (len(userInfoList) > 0)
+        if propertyRecommend:
+            picked = picked_field, picked_key, picked_val = random.choice(userInfoList)
+            
+            if picked_field == "age":
+                picked_reviewers = Customer.objects.filter(age=user_age[1])
+                propertyMessage = f"{user_age[-1]} 리뷰어님들의 인기 리뷰입니다."
+                content['propertyMessage'] = propertyMessage
+            elif picked_field == "job":
+                picked_reviewers = Customer.objects.filter(job=user_job[1])
+                propertyMessage = f"{user_job[-1]} 리뷰어님들의 인기 리뷰입니다."
+                content['propertyMessage'] = propertyMessage
+            elif picked_field == "usage":
+                picked_reviewers = Customer.objects.filter(usage=user_usage[1])
+                propertyMessage = f"주 사용처가 {user_usage[-1]}인 리뷰어님들의 인기 리뷰입니다."
+                content['propertyMessage'] = propertyMessage
+            
+            picked_reviews = list()
+            for reviewer in picked_reviewers:
+                for review in PenReview.objects.filter(author=reviewer):
+                    picked_reviews.append(review)
+            picked_reviews.sort(key=lambda x: x.likeCount, reverse=True)
+            
+            # 검색된 리뷰어들의 리뷰가 없으면(리뷰어가 검색되지 않는 경우에도 마찬가지) 기능 사용 불가
+            if len(picked_reviews) == 0:
+                propertyRecommend = False
+            else:
+                reviews_byProperty = picked_reviews[:4]
+                content['reviews_byProperty'] = reviews_byProperty
+       
+        content['propertyRecommend'] = propertyRecommend
             
     return render(request, 'mainPage.html', content)
 
