@@ -1138,6 +1138,8 @@ def mainPage_view(request):
     if request.user.is_authenticated:
         # 연령대 / 직업 / 주사용목적 중 '기타'로 되어 있지 않은 항목을 걸러냄(이 중에 랜덤하게 하나 보여줌)
         user : Customer = request.user
+        print(user.usage)
+        print(Customer.usage_dict)
         user_usage = (user.usage, Customer.usage_dict[user.usage])
         user_job = (user.job, Customer.job_dict[user.job])
         user_age = (user.age, Customer.age_dict[user.age])

@@ -1,10 +1,36 @@
 {% extends 'base.html' %}
 {% load static %}
-
+<link rel="stylesheet" href="{% static 'css/reviewdetail.css' %}">
 {% block head %}
 <title>리뷰 상세 정보</title>
 <!-- 리뷰 상세 정보가 노출됨. 여기서 리뷰의 수정/삭제에 접근함.  -->
 <style>
+    * {
+  box-sizing: border-box;
+}
+
+/* Create two unequal columns that floats next to each other */
+.column {
+  float: left;
+  padding: 0px;
+  
+}
+
+.img {
+  width: 35%;
+}
+
+.content {
+    padding-left: 5px;
+    width: 65%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
     article {
         width: 70%;
         margin: 2rem auto;
@@ -75,74 +101,123 @@
         line-height: 30px;
         font-weight: 800;
     }
+
+    @font-face {
+        font-family: 'NanumSquareRound';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+    }
 </style>
 {% endblock %}
 
 {% block content %}
 <article>
-    <p id="link_nav" style="text-align: left; margin-left: 0.4rem; margin-bottom: 0.5rem;">
+    <!-- 맨윗상단 설명 -->
+    <p id="link_nav" style="text-align: left; margin-left: -0.5rem; margin-bottom: 0.5rem;">
         <a href="{% url 'productDetail' review.product.id %}"><i class="fa fa-pencil"
                 aria-hidden="true"></i></i>{{ review.product.name }}</a> >
         <span id="current_location">{{ review.getShortComment }}</span>
     </p>
+<!-- 맨윗상단 설명 끝 -->
 
-    <br>
+<!-- 페이지 왼쪽 ! 이미지 -->
 
+<div class="column img" >
+        
     {% for image in images %}
 
     {% if image %}
     {% if review.author == user %}
     <a href="{% url 'reviewImageModify' review_id=review.id imageIdx=forloop.counter0 %}">
-        <img src="{{ image.url }}" style="width:5rem; height:5rem;">
+        <img src="{{ image.url }}" style="width:350px; height:350px;">
     </a>
     {% else %}
-    <img src="{{ image.url }}" style="width:5rem; height:5rem;">
+            <img src="{{ image.url }}" style="width:350px; height:350px;">
     {% endif %}
+    <br><br>
+    <div style="font-family: yg-jalnan;"><button class="site-btn"><a href="" data-toggle="modal" data-target="#reviewImageAddModal" style="color: white;">
+        리뷰 이미지 추가하기</a></button></div>
     {% endif %}
-
+</div>
     {% endfor %}
 
-    {% if canAddImage and isAuthor %}
-    <!-- Button trigger modal -->
-    <div><a href="" data-toggle="modal" data-target="#reviewImageAddModal">리뷰 이미지 추가하기</a></div>
-    {% endif %}
-    <div style="display: grid; grid-template-columns: 3fr 2fr 1fr; padding: 10px auto;">
-    <div>{{ author }}님의 리뷰</div>
-    <div>제품명 : {{ product }}</div>
-    <div>한줄평 : {{ comment }} </div>
-    <div>장점 : {{ goodPoint }}</div>
-    <div>단점 : {{ weakPoint }}</div>
+<!-- 페이지 오른쪽 ! 설명 -->
+
+<div class="column content" >
+    <!-- <div class="row" style="display: grid; grid-template-rows: 0fr 0.5fr 0.3fr 0.01fr; padding-left: 20px;"> -->
+             <!-- 제품제목 -->
+             <div style="font-family: yg-jalnan; color: rgb(80, 42, 27); font-size: 22px; text-align: left;">
+                {{ review.product.name }}
+            </div>
+             <!-- 제품제목 끝-->
+
+            {% if canAddImage and isAuthor %}
+            <!-- Button trigger modal -->
+            <br>
+            {% endif %}
+            <div style="font-family: nanumsquareround;"><b>리뷰어 <span style="font-size: 20px; color:rgb(94, 64, 10);">{{ author }}</span> 님의 글</b></div>
+            <br>
+            <div style="font-family: nanumsquareround;">
+            <div><b>제품명</b>  {{ product }}</div>
+            <div><b>한줄평</b>  {{ comment }} </div>
+            <div><b>장점</b>  {{ goodPoint }}</div>
+            <div><b>단점</b>  {{ weakPoint }}</div>
+            </div>
+            <hr>
+<!-- 점수 매기기 시작 -->
+<div style="font-family: nanumsquareround; font-weight: bolder;">
+            <div>총점</div>
+            <div class="rateit svg" data-rateit-value="{{totalScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
+                step="0.1" data-rateit-starheight="15"></div>
+                <br>
+    <div class="row">
+        <div class="col">           
+            <div>{{gripScore.name}}</div>
+            <div class="rateit svg" data-rateit-value="{{gripScore.score}}" data-rateit-readonly="true"
+                aria-valuenow="{{gripScore.score}}" data-rateit-starwidth="15" data-rateit-starheight="15"></div>
+                <br>
+        </div>
+        <div class="col"> 
+            <div>{{lifeScore.name}}</div>
+            <div class="rateit svg" data-rateit-value="{{lifeScore.score}}" data-rateit-readonly="true"
+                data-rateit-starwidth="15" data-rateit-starheight="15"></div>
+                <br>
+        </div>
     </div>
-    <br>
 
-    <div>총점</div>
-    <div class="rateit svg" data-rateit-value="{{totalScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
-        step="0.1" data-rateit-starheight="15"></div>
+    <div class="row">
+        <div class="col"> 
+            <div>{{durabilityScore.name}}</div>
+            <div class="rateit svg" data-rateit-value="{{durabilityScore.score}}" data-rateit-readonly="true"
+                data-rateit-starwidth="15" data-rateit-starheight="15"></div>
+                <br>
+        </div>
+        <div class="col"> 
+            <div>{{designScore.name}}</div>
+            <div class="rateit svg" data-rateit-value="{{designScore.score}}" data-rateit-readonly="true"
+                data-rateit-starwidth="15" data-rateit-starheight="15"></div>
+                <br>
+        </div>
+    </div>
 
-    <div>{{gripScore.name}}</div>
-    <div class="rateit svg" data-rateit-value="{{gripScore.score}}" data-rateit-readonly="true"
-        aria-valuenow="{{gripScore.score}}" data-rateit-starwidth="15" data-rateit-starheight="15"></div>
-
-    <div>{{lifeScore.name}}</div>
-    <div class="rateit svg" data-rateit-value="{{lifeScore.score}}" data-rateit-readonly="true"
-        data-rateit-starwidth="15" data-rateit-starheight="15"></div>
-
-    <div>{{durabilityScore.name}}</div>
-    <div class="rateit svg" data-rateit-value="{{durabilityScore.score}}" data-rateit-readonly="true"
-        data-rateit-starwidth="15" data-rateit-starheight="15"></div>
-
-    <div>{{designScore.name}}</div>
-    <div class="rateit svg" data-rateit-value="{{designScore.score}}" data-rateit-readonly="true"
-        data-rateit-starwidth="15" data-rateit-starheight="15"></div>
-
-    <div>{{textureScore.name}}</div>
-    <div class="rateit svg" data-rateit-value="{{textureScore.score}}" data-rateit-readonly="true"
-        data-rateit-starwidth="15" data-rateit-starheight="15"></div>
-
-    <div>{{costEffetivenessScore.name}}</div>
-    <div class="rateit svg" data-rateit-value="{{costEffetivenessScore.score}}" data-rateit-readonly="true"
-        data-rateit-starwidth="15" data-rateit-starheight="15"></div>
-
+    <div class="row">
+        <div class="col">
+            <div>{{textureScore.name}}</div>
+            <div class="rateit svg" data-rateit-value="{{textureScore.score}}" data-rateit-readonly="true"
+                data-rateit-starwidth="15" data-rateit-starheight="15"></div>
+                <br>
+        </div>
+        <div class="col">
+            <div>{{costEffetivenessScore.name}}</div>
+            <div class="rateit svg" data-rateit-value="{{costEffetivenessScore.score}}" data-rateit-readonly="true"
+                data-rateit-starwidth="15" data-rateit-starheight="15"></div>
+        </div>
+    </div>
+</div>
+    
+    <!-- 태그 관련 -->
+<div>
     <div id="tagContainer" style="margin: 0 auto 1rem auto; text-align: right;">
         <div style="font-family: 'yg-jalnan'; color: black;"><i class="fa fa-tags" aria-hidden="true"></i>태그목록</div>
         {% if productTags %}
@@ -177,10 +252,12 @@
             {% endif %}
         </a>
     </div>
+</div>   
 
     {% if review.modified %}
     <div style="text-align: right; font-size: smaller; color: gray;">Modified on
-        {{ review.pub_date | date:"Y-m-d h:i" }}</div>
+        {{ review.pub_date | date:"Y-m-d h:i" }}
+    </div>
     {% else %}
     <div style="text-align: right; font-size: smaller; color: gray;">Posted On {{ review.pub_date | date:"Y-m-d h:i" }}
     </div>
@@ -191,13 +268,21 @@
         <a href="{% url 'reviewModify' review.id %}">리뷰 수정</a> / 
         <a href="" data-toggle="modal" data-target="#deleteModal" style="color: black;">게시글 삭제하기</a>
     </div>
+   
     {% endif %}
 
-    <hr>
+<br>
+</div>
 
+
+
+
+<!-- 댓글 관련 -->
+<br>
+<div id="reviewContainer" style="padding: 0 0%">
     {% if user.is_authenticated %}
     <div class="alert alert-secondary"
-        style="display: grid; grid-template-columns: 1fr 10fr; padding: 1rem 1rem 1rem 0;">
+        style="display: grid; grid-template-columns: 1fr 10fr; padding: 1rem 1rem 1rem 0rem;">
         <div style="text-align: left;">
             <div>
                 <img class="profile_image" src="{{ user.image.url }}" alt="{{ user.nickname }}님의 프로필 이미지"
@@ -208,10 +293,10 @@
             </div>
         </div>
         <form action="/store/commentCreate/{{ review.id }}" method="POST">
-            <div class="post-comments" style="height: 100%;">
+            <div class="post-comments" style="height: 125%;">
                 {% csrf_token %}
-                <input type="text" name="body" style="width: 90%; height: 80%; border: 0px; border-radius: 3px;">
-                    <button type="submit" class="site-btn">댓글 작성</button>
+                <input type="text" name="body" style="width: 90%; height: 80%; border: 0px; border-radius: 5px;">&nbsp;
+                    <button type="submit" class="site-btn">    댓글 작성</button>
                 </div>
             </div>
         </form>
@@ -225,20 +310,18 @@
     {% endif %}
 
     {% for comment in comments %}
-    <div class="alert alert-secondary"
-        style="display: grid; grid-template-columns: 1fr 10fr; padding-bottom: 0; padding-left: 0;">
-        <div style="text-align: left; padding-top: 2rem;">
-            <div>
-                <img class="profile_image" src="{{ comment.author.image.url }}"
+    <div class="blog-comment">
+        <div class="post-comments">
+        <div style="text-align: left; padding-top: 0rem;">
+            
+                <!-- <img class="profile_image" src="{{ comment.author.image.url }}"
                     alt="{{ comment.author.nickname }}님의 프로필 이미지"
-                    style="max-width: 40px; max-height: 40px; width: auto; height: auto; display: block; margin:0px auto;">
-            </div>
-           <div style="text-align: center; font-family: 'nanumsquareround';">
+                    style="max-width: 40px; max-height: 40px; width: auto; height: auto; display: block; margin:0px auto;"> -->
+        
+           <div style="font-family: 'nanumsquareround';">
             <b>   {{ comment.author.nickname }}</b>
             </div>
         </div>
-        <div class="blog-comment">
-            <div class="post-comments">
                 <p style="padding-right: 2rem;">
                     {{ comment.body }}
                 </p>
@@ -255,7 +338,9 @@
             </div>
         </div>
     </div>
+</div>
     {% endfor %}
+
 
      {% if isAuthor %}
     <!-- Modal -->
@@ -280,6 +365,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- Modal -->
     <div class="modal fade" id="reviewImageAddModal" tabindex="-1" role="dialog"
@@ -307,5 +393,4 @@
         </div>
     </div>
     {% endif %}
-</article>
 {% endblock %}
