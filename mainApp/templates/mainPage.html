@@ -25,8 +25,9 @@
                {% if not error %}
                     {% for reviewer in topSimilarity_users %}
                     <div class="h4"
-                         style="text-align: left; padding: 1em 3rem 0 3rem; font-family: 'yg-jalnan'; color:#663e27;">추천
-                         리뷰 : {{ reviewer.nickname }}님의 리뷰
+                         style="text-align: left; padding: 1em 3rem 0 3rem; font-family: 'yg-jalnan'; color:#663e27;">
+                         <i class="fa fa-paw"></i>
+                         회원님과 취향이 비슷한 '{{ reviewer.nickname }}' 님의 리뷰입니다.
                          <hr>
                     </div>
                     <div class="row property__gallery" style="padding-left: 3em; padding-right: 3em;">
@@ -60,6 +61,7 @@
                {% if propertyRecommend %}
                     <div class="h4"
                          style="text-align: left; padding: 1em 3rem 0 3rem; font-family: 'yg-jalnan'; color:#663e27;">
+                         <i class="fa fa-paw"></i>
                          {{ propertyMessage }}
                          <hr>
                     </div>
@@ -89,8 +91,10 @@
                     <br>
                {% endif %}
                {% if penInterestRecommend %}
+               <i class="fa fa-paw"></i>
                     <div class="h4"
                          style="text-align: left; padding: 1em 3rem 0 3rem; font-family: 'yg-jalnan'; color:#663e27;">
+                         <i class="fa fa-paw"></i>
                          {{ penInterestMessage }}
                          <hr>
                     </div>
@@ -127,8 +131,8 @@
           {% endif %}
 
           <div class="h4"
-               style="text-align: left; padding: 1em 3rem 0 3rem; font-family: 'yg-jalnan'; color:#663e27;">최신
-               리뷰
+               style="text-align: left; padding: 1em 3rem 0 3rem; font-family: 'yg-jalnan'; color:#663e27;">
+               <i class="fa fa-paw"></i>사이트 최신 리뷰
                <hr>
           </div>
           <div class="row property__gallery" style="padding-left: 3em; padding-right: 3em;">
@@ -156,8 +160,9 @@
           </div>
 
           <br>
-
-          <div class="h4" style="padding: 1em 3rem 0 3rem;  font-family: 'yg-jalnan';color:#663e27;">인기 리뷰
+         
+          <div class="h4" style="padding: 1em 3rem 0 3rem;  font-family: 'yg-jalnan';color:#663e27;">
+               <i class="fa fa-paw"></i>사이트 종합 인기 리뷰
                <hr>
           </div>
           <div class="row property__gallery;" style="padding-left: 3em; padding-right: 3em;">
