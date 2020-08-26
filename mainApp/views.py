@@ -1196,7 +1196,7 @@ def mainPage_view(request):
                         Customer.objects.filter(penInterest_2=pickedKey) | \
                         Customer.objects.filter(penInterest_3=pickedKey)
 
-            content['propertyMessage'] = f"{Customer.pen_dict[pickedKey]}을(를) 선호하는 리뷰어님들의 인기 리뷰입니다."
+            content['penInterestMessage'] = f"{Customer.pen_dict[pickedKey]}을(를) 선호하는 리뷰어님들의 인기 리뷰입니다."
 
             # 만약 해당 펜을 선호하는 리뷰어가 없으면 추천 X
             penInterestRecommend = (len(reviewers) > 0)
