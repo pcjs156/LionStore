@@ -34,9 +34,11 @@ urlpatterns = [
     path('reviewModify/<int:review_id>', views.reviewModify_view, name="reviewModify"),
     path('reviewUpdate/<int:review_id>', views.reviewUpdate, name="reviewUpdate"),
     path('reviewDelete/<int:review_id>', views.reviewDelete, name="reviewDelete"),
-    path('reviewImageModify/<int:review_id>/<int:imageIdx>', views.reviewImageModify_view, name="reviewImageModify"),
-    path('reviewImageDelete/<int:review_id>/<int:imageIdx>', views.reviewImageDelete, name="reviewImageDelete"),
+    path('reviewImageModify/<int:review_id>/<path:imageURL>', views.reviewImageModify_view, name="reviewImageModify"),
+    path('reviewImageDelete/<int:review_id>/<path:imageURL>', views.reviewImageDelete, name="reviewImageDelete"),
     path('reviewImageAdd/<int:review_id>', views.reviewImageAdd, name="reviewImageAdd"),
+     path('firstReviewImageModify/<int:review_id>', views.firstReviewImageModify_view, name="firstReviewImageModify"),
+     path('firstReviewImageDelete/<int:review_id>', views.firstReviewImageDelete, name="firstReviewImageDelete"),
 
      # 댓글 관련
      path('commentCreate/<int:review_id>', views.commentCreate, name="commentCreate"),

@@ -492,10 +492,13 @@ def reviewDetail_view(request, review_id):
     #사진 목록
     images = [review.reviewImage1, review.reviewImage2, review.reviewImage3, review.reviewImage4, review.reviewImage5, review.reviewImage6]
     images = list(filter(lambda x: x, images))
+
+    firstImage = images.pop(0)
+    content['firstImage'] = firstImage
     content['images'] = images
     
     # 사진을 추가할 수 있는가?(사진이 6장 미만 등록되어 있는가?)
-    imageCnt = len(list(filter(lambda x: x, images)))
+    imageCnt = len(list(filter(lambda x: x, images))) + 1
     content['imageLeft'] = 6 - imageCnt
     canAddImage = imageCnt < 6
     content['canAddImage'] = canAddImage
@@ -581,14 +584,67 @@ def reviewImageAdd(request, review_id):
 
 
 @login_required(login_url='/account/logIn/')
-def reviewImageModify_view(request, review_id, imageIdx):
+def reviewImageModify_view(request, review_id, imageURL):
     if request.method == "POST":
         form = ReviewImageModifyingForm(request.POST, request.FILES)
 
         review = PenReview.objects.get(pk=review_id)
         tmp = form.save(commit=False)
         if tmp.reviewImage1 is not None:
-            exec(f"review.reviewImage{imageIdx+1} = tmp.reviewImage1")
+            targetIdx = -1
+            images = [review.reviewImage1, review.reviewImage2, review.reviewImage3, review.reviewImage4, review.reviewImage5, review.reviewImage6]
+            for i in range(len(images)):
+                if images[i].url == imageURL:
+                    targetIdx = i
+                    break
+            exec(f"review.reviewImage{targetIdx+1} = tmp.reviewImage1")
+            review.modified = True
+            review.save()
+
+        return redirect('reviewDetail', review_id=review_id)
+
+    else:
+        content = dict()
+        
+        form = ReviewImageModifyingForm()
+        content['form'] = form
+
+        review = PenReview.objects.get(pk=review_id)
+        content['review'] = review
+
+        targetIdx = -1
+        images = [review.reviewImage1, review.reviewImage2, review.reviewImage3, review.reviewImage4, review.reviewImage5, review.reviewImage6]
+        for i in range(len(images)):
+            if images[i].url == imageURL:
+                targetIdx = i
+                break
+
+        targetImage = eval(f"review.reviewImage{i+1}")
+        content['targetImage'] = targetImage
+
+        return render(request, 'reviewImageModify.html', content)
+
+@login_required(login_url='/account/logIn/')
+def firstReviewImageModify_view(request, review_id):
+    if request.method == "POST":
+        form = ReviewImageModifyingForm(request.POST, request.FILES)
+
+        review = PenReview.objects.get(pk=review_id)
+        tmp = form.save(commit=False)
+        if tmp.reviewImage1 is not None:
+            firstImageIdx = -1
+        
+            images = [review.reviewImage2, review.reviewImage3, review.reviewImage4, review.reviewImage5, review.reviewImage6]
+            for i in range(len(images)):
+                if images[i]:
+                    firstImageIdx = i
+                    break
+            
+            if i == -1:
+                review.reviewImage1 = tmp.reviewImage1
+            else:
+                exec(f"review.reviewImage{firstImageIdx+2} = tmp.reviewImage1")
+
             review.modified = True
             review.save()
 
@@ -603,10 +659,34 @@ def reviewImageModify_view(request, review_id, imageIdx):
         review = PenReview.objects.get(pk=review_id)
         content['review'] = review
 
-        content['imageIdx'] = imageIdx
-        exec(f"content['image'] = review.reviewImage{imageIdx+1}")
+        content['image'] = review.getMainImage()
 
-        return render(request, 'reviewImageModify.html', content)
+        return render(request, 'firstReviewImageModify.html', content)
+
+
+@login_required(login_url='/account/logIn/')
+def firstReviewImageDelete(request, review_id):
+    review : PenReview = PenReview.objects.get(pk=review_id)
+    review.modified = True
+
+    firstImageIdx = -1
+    images = [review.reviewImage2, review.reviewImage3, review.reviewImage4, review.reviewImage5, review.reviewImage6]
+    for i in range(len(images)):
+        if images[i]:
+            firstImageIdx = i
+            break
+    
+    if i == -1:
+        review.reviewImage1 = None
+    else:
+        exec(f"review.reviewImage{firstImageIdx+2} = None")
+
+    if not hasImageField(review):
+        review.reviewImage1 = review.product.productImage
+
+    review.save()
+
+    return redirect('reviewDetail', review_id=review_id)
 
 
 def reviewsByTag_view(request, tagName:str):
@@ -643,10 +723,19 @@ def reviewsByTag_view(request, tagName:str):
 
 
 @login_required(login_url='/account/logIn/')
-def reviewImageDelete(request, review_id, imageIdx):
+def reviewImageDelete(request, review_id, imageURL):
     review : PenReview = PenReview.objects.get(pk=review_id)
     review.modified = True
-    exec(f"review.reviewImage{imageIdx+1} = None")
+
+    targetIdx = -1
+    images = [review.reviewImage1, review.reviewImage2, review.reviewImage3, review.reviewImage4, review.reviewImage5, review.reviewImage6]
+    for i in range(len(images)):
+        print(images[i].url, "|", imageURL)
+        if images[i].url == imageURL:
+            targetIdx = i
+            break
+
+    exec(f"review.reviewImage{i+1}=None")
 
     if not hasImageField(review):
         review.reviewImage1 = review.product.productImage

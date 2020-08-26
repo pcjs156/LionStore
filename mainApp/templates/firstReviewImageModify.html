@@ -9,7 +9,7 @@
 {% block content %}
 
 <div>현재 이미지</div>
-<img src="{{ targetImage.url }}" style="width: 20rem; height: 20rem;">
+<img src="{{ image.url }}" style="width: 20rem; height: 20rem;">
 
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
@@ -17,7 +17,7 @@
     <br>
     <input type="submit" value="수정 완료">
 </form>
-<a href="{% url 'reviewImageDelete' review.id targetImage.url %}"><button>이미지 삭제</button></a>
+<a href="{% url 'firstReviewImageDelete' review.id %}"><button>이미지 삭제</button></a>
 <a href="{% url 'reviewDetail' review.id %}"><button>취소</button></a>
 
 {% endblock %}
