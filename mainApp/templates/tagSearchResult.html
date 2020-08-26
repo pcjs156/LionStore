@@ -8,11 +8,13 @@
 {% endblock %}
 
 {% block content %}
-
-<h3>{{ statusMessage }}</h3>
-
-<div><a href="{% url 'searchMain' %}">다시 검색하기</a></div>
-
+<br>
+<h4 style="text-align: center; padding: 1em 3rem 0 3rem; font-family: 'yg-jalnan'; color:#663e27;">
+     {{ statusMessage }}</h4><br>
+<div style="text-align: center;">
+<button type="input" class="site-btn" style="font-family: yg-jalnan;"><a href="{% url 'searchMain' %}"style="color:white;">다시 검색하기</a></button>
+</div>
+<br><br><br>
 <div class="row property__gallery">
      {% for pair in searchResult %}
      <div class="col-lg-3 col-md-4 col-sm-6 mix women">
