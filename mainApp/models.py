@@ -115,14 +115,22 @@ class Review(models.Model):
 
     def getTooltip(self):
         user = self.author
-        if user.is_Stationer:
-            return "문구점 사장님입니다."
-        elif user.is_WebSeller:
-            return "웹 판매자입니다."
 
-        user_usage = ("주 사용 용도", user.usage, Customer.usage_dict[user.usage])
-        user_job = ("직업", user.job, Customer.job_dict[user.job])
-        user_age = ("연령", user.age, Customer.age_dict[user.age])
+        try:
+            user_usage = ("주 사용 용도", user.usage, Customer.usage_dict[user.usage])
+        except:
+            user_usage = ("주 사용 용도", "U0", "기타")
+
+        try:
+            user_job = ("직업", user.job, Customer.job_dict[user.job])
+        except:
+            user_job = ("직업", "J0", "기타")
+
+        try:
+            user_age = ("연령", user.age, Customer.age_dict[user.age])
+        except:
+            user_age = ("연령", "etcs", "기타")
+
         userPropertyList = list(filter(lambda choice: choice[-1] != "기타", [user_usage, user_job, user_age]))
 
         if len(userPropertyList) <= 0 :

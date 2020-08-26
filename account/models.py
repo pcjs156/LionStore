@@ -93,9 +93,20 @@ class Customer(AbstractUser):
         return f"{typeMarker} {self.username}"
     
     job_dict = {p[0]:p[1] for p in JOB}
+    for p in JOB:
+        job_dict[p] = p[1]
+
     usage_dict = {p[0]:p[1] for p in USAGE}
+    for p in USAGE:
+        usage_dict[str(p)] = p[1]
+
     age_dict = {p[0]:p[1] for p in AGE}
+    for p in AGE:
+        age_dict[str(p)] = p[1]
+
     pen_dict = {p[0]:p[1] for p in PEN}
+    for p in PEN:
+        pen_dict[str(p)] = p[1]
 
 
 class CustomerTag(models.Model):

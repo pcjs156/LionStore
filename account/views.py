@@ -30,7 +30,6 @@ def connectTagToUser(user:Customer, rawString:str):
                 break
         
         if not alreadyExists:
-            print(newTagName + " 태그가 존재하지 않아 새로 생성합니다.")
             newTag = CustomerTag.objects.create(tagBody=newTagName)
             user.tags.add(newTag)
             newTag.targetCustomer.add(user)

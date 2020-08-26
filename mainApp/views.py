@@ -144,7 +144,6 @@ def productDetail_view(request, product_id):
         
         myReview = list(filter(lambda r: r.author == request.user, reviews))[0]
         content['myReview'] = myReview
-        print(myReview)
 
     except:
         content['reviewCreated'] = False

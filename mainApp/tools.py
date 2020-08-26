@@ -28,7 +28,6 @@ def automativeFilling_Product(countLimit=10):
     productList = Product.objects.all()
 
     if len(productList) > countLimit:
-        print(f"이미 {countLimit}개의 Product 모델이 존재해 새로 모델을 생성하지 않습니다.")
         return
 
     categories = ProductCategory.objects.all()
@@ -81,11 +80,6 @@ def redirectByCategoryName(request, categoryName):
     return views.productList_view(request, id)
 
 def getReviewerTagTooltip(user : Customer):
-    if user.is_Stationer:
-        return "문구점 사장님입니다."
-    elif user.is_WebSeller:
-        return "웹 판매자입니다."
-
     user_usage = ("주 사용 용도", user.usage, Customer.usage_dict[user.usage])
     user_job = ("직업", user.job, Customer.job_dict[user.job])
     user_age = ("연령", user.age, Customer.age_dict[user.age])
