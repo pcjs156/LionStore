@@ -43,77 +43,128 @@
         font-weight: normal;
         font-style: normal;
     }
-    
+
+        
+    div.image{
+        width: 500px; height: 500px;
+    }
+
+    li.image_li { float: left; margin-right: 50px; list-style: none; }
+
+     .clearfix:after {
+     content: " ";
+     visibility: hidden;
+     display: block;
+     height: 0;
+     clear: both;
+     }
 </style>
+
+<script>
+     window.onload = function() {
+          var divs = document.querySelectorAll('li > div');
+          for (var i = 0; i < divs.length; ++i) {
+          var div = divs[i];
+          var divAspect = div.offsetHeight / div.offsetWidth;
+          div.style.overflow = 'hidden';
+    
+          var img = div.querySelector('img');
+          var imgAspect = img.height / img.width;
+
+          if (imgAspect <= divAspect) {
+               // 이미지가 div보다 납작한 경우 세로를 div에 맞추고 가로는 잘라낸다
+               var imgWidthActual = div.offsetHeight / imgAspect;
+               var imgWidthToBe = div.offsetHeight / divAspect;
+               var marginLeft = -Math.round((imgWidthActual - imgWidthToBe) / 2)
+               img.style.cssText = 'width: auto; height: 100%; margin-left: '
+                      + marginLeft + 'px;'
+          } else {
+               // 이미지가 div보다 길쭉한 경우 가로를 div에 맞추고 세로를 잘라낸다
+               img.style.cssText = 'width: 100%; height: auto; margin-left: 0;';
+          }
+          }
+  
+          var btn = document.querySelector('#btnToggleOverflow');
+          btn.onclick = function() {
+          var val = divs[0].style.overflow == 'hidden' ? 'visible' : 'hidden';
+          for (var i = 0; i < divs.length; ++i)
+               divs[i].style.overflow = val;
+          };
+          };
+
+</script>
+
+
 {% endblock %}
 
 {% block content %}
 
-<div class="container" id="mainContainer">
-     <p id="link_nav" style="text-align: left; margin-left: 0.4rem; margin-bottom: 0.5rem;">
-          <a href="{% url 'productList' product.category.id %}"><i class="fa fa-bars" aria-hidden="true"></i></i>{{ product.category.categoryName }}</a> >
-          <span id="current_location">{{ product }}</span>
-      </p>
-     <div class="container" id="imageContainer">
-          <div class="row">
-               <img class="col" id="product_image" src="{{ product.productImage.url }}" alt="{{ product.name }} 이미지">
-               
-               <div class="col" style="padding: 0rem 4.5rem; text-align: left;">
-                    <div class="row" style="display: grid; grid-template-rows: 0.1fr 0.5fr 0.3fr 0.01fr;">
+<ul class="clearfix" id="mainContainer">
+     <li class="image_li">
+          <p id="link_nav" style="text-align: left; margin-left: 0.4rem; margin-bottom: 0.5rem;">
+               <a href="{% url 'productList' product.category.id %}"><i class="fa fa-bars" aria-hidden="true"></i></i>{{ product.category.categoryName }}</a> >
+               <span id="current_location">{{ product }}</span>
+          </p>
+          <div class="image" id="imageContainer">
+               <img src="{{ product.productImage.url }}" alt="{{ product.name }} 이미지">
+          </div>
+     </li>         
+     <li class="product_detail">
+          <div class="product_detail" style="text-align: left;">
+               <div class="row" style="display: grid; grid-template-rows: 0.1fr 0.5fr 0.3fr 0.01fr;">
+                    <div style="text-align: left;">
+                         {% if tags %}
+                              {% for tag in tags %}
+                              <a class="badge badge-pill badge-warning" style="font-family: 'NanumSquareRound'; font-size: 18px;" href="{% url 'tagProduct' tag.id %}">{{ tag }}</a>
+                              {% endfor %}
+                         {% else %}
+                              <span class="badge badge-pill badge-danger">No TAG</span>
+                         {% endif %}
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                         <div style="font-family: 'yg-jalnan'; font-size: 38px;">{{ product.name }}</div>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                         <div style="font-family: 'NanumSquareRound'; font-size: 18px; letter-spacing :1.4px;"> 제조사</div>
+                         <div style="font-family: 'NanumSquareRound'; font-size: 30px;">{{ product.manufacturer }}</div>
+                    </div>
+
+                    <div style="margin-bottom: 1rem;">
+                         <div style="font-family: 'NanumSquareRound'; font-size: 18px;">{{ product.description }}</div>
+                    </div>
+
+                    <hr style="width: 440px;">
+
+                    <div>
                          <div style="text-align: left;">
-                              {% if tags %}
-                                   {% for tag in tags %}
-                                   <a class="badge badge-pill badge-warning" style="font-family: 'NanumSquareRound'; font-size: 18px;" href="{% url 'tagProduct' tag.id %}">{{ tag }}</a>
-                                   {% endfor %}
-                              {% else %}
-                                   <span class="badge badge-pill badge-danger">No TAG</span>
-                              {% endif %}
+                              <div style="font-family: 'NanumSquareRound'; font-size: 25px; font-weight: bold;">총점</div>
+                              <div class="rateit svg" data-rateit-value="{{avr_totalScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
+                                   step="0.1" data-rateit-starheight="15"></div>
                          </div>
-                         <div style="margin-bottom: 1rem;">
-                              <div style="font-family: 'yg-jalnan'; font-size: 38px;">{{ product.name }}</div>
-                         </div>
-                         <div style="margin-bottom: 1rem;">
-                              <div style="font-family: 'NanumSquareRound'; font-size: 18px; letter-spacing :1.4px;"> 제조사</div>
-                              <div style="font-family: 'NanumSquareRound'; font-size: 30px;">{{ product.manufacturer }}</div>
-                         </div>
-
-                         <div style="margin-bottom: 1rem;">
-                              <div style="font-family: 'NanumSquareRound'; font-size: 18px;">{{ product.description }}</div>
-                         </div>
-
-                         <hr style="width: 440px;">
-
-                         <div>
-                              <div style="text-align: left;">
-                                   <div style="font-family: 'NanumSquareRound'; font-size: 25px; font-weight: bold;">총점</div>
-                                   <div class="rateit svg" data-rateit-value="{{avr_totalScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
-                                        step="0.1" data-rateit-starheight="15"></div>
-                              </div>
-                              <div class="scoreContainer" style="margin-top: 1.5rem;">
-                                   <div class="row">
-                                        <div class="col">
-                                             <div style="font-family: 'NanumSquareRound'; font-size: 20px; font-weight: bold;">그립감</div>
-                                             <div class="rateit svg" data-rateit-value="{{avr_gripScore}}" data-rateit-readonly="true"
+                         <div class="scoreContainer" style="margin-top: 1.5rem;">
+                              <div class="row">
+                                   <div class="col">
+                                        <div style="font-family: 'NanumSquareRound'; font-size: 20px; font-weight: bold;">그립감</div>
+                                        <div class="rateit svg" data-rateit-value="{{avr_gripScore}}" data-rateit-readonly="true"
                                                   aria-valuenow="{{avr_gripScore}}" data-rateit-starwidth="15" data-rateit-starheight="15"></div>
-                                        </div>
-               
-                                        <div class="col">
-                                             <div style="font-family: 'NanumSquareRound'; font-size: 20px; font-weight: bold;">수명</div>
-                                             <div class="rateit svg" data-rateit-value="{{avr_lifeScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
-                                                  data-rateit-starheight="15"></div>
-                                        </div>
                                    </div>
-                                   <div class="row">
-                                        <div class="col">
-                                             <div style="font-family: 'NanumSquareRound'; font-size: 20px; font-weight: bold;">내구도</div>
-                                             <div class="rateit svg" data-rateit-value="{{avr_durabilityScore}}" data-rateit-readonly="true"
-                                                  data-rateit-starwidth="15" data-rateit-starheight="15"></div>
-                                        </div>
-                                        <div class="col">
-                                             <div style="font-family: 'NanumSquareRound'; font-size: 20px; font-weight: bold;">디자인</div>
-                                             <div class="rateit svg" data-rateit-value="{{avr_designScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
+               
+                                   <div class="col">
+                                        <div style="font-family: 'NanumSquareRound'; font-size: 20px; font-weight: bold;">수명</div>
+                                        <div class="rateit svg" data-rateit-value="{{avr_lifeScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
                                                   data-rateit-starheight="15"></div>
-                                        </div>
+                                   </div>
+                              </div>
+                              <div class="row">
+                                   <div class="col">
+                                        <div style="font-family: 'NanumSquareRound'; font-size: 20px; font-weight: bold;">내구도</div>
+                                        <div class="rateit svg" data-rateit-value="{{avr_durabilityScore}}" data-rateit-readonly="true"
+                                                  data-rateit-starwidth="15" data-rateit-starheight="15"></div>
+                                   </div>
+                                   <div class="col">
+                                        <div style="font-family: 'NanumSquareRound'; font-size: 20px; font-weight: bold;">디자인</div>
+                                        <div class="rateit svg" data-rateit-value="{{avr_designScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
+                                                  data-rateit-starheight="15"></div>
                                    </div>
                               </div>
                               <div class="row">
@@ -128,15 +179,13 @@
                                         <div class="rateit svg" data-rateit-value="{{avr_costEffetivenessScore}}" data-rateit-readonly="true"
                                         data-rateit-starwidth="15" data-rateit-starheight="15"></div>
                                    </div>
-                              </div>                    
                               </div>
                          </div>
                     </div>
-               </div>
+               </div></div>
           </div>
-     </div>
-</div>
-
+     </li>
+</ul>
 
 
 <div style="width: 85%; text-align: right;">
