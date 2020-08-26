@@ -48,336 +48,298 @@
     div.image{
         width: 360px; height: 360px;
     }
-
-    li.image_li { float: left; margin-right: 50px; list-style: none; }
-
-     .clearfix:after {
-     content: " ";
-     visibility: hidden;
-     display: block;
-     height: 0;
-     clear: both;
-     }
 </style>
-
-<script>
-     window.onload = function() {
-          var divs = document.querySelectorAll('li > div');
-          for (var i = 0; i < divs.length; ++i) {
-          var div = divs[i];
-          var divAspect = div.offsetHeight / div.offsetWidth;
-          div.style.overflow = 'hidden';
-    
-          var img = div.querySelector('img');
-          var imgAspect = img.height / img.width;
-
-          if (imgAspect <= divAspect) {
-               // 이미지가 div보다 납작한 경우 세로를 div에 맞추고 가로는 잘라낸다
-               var imgWidthActual = div.offsetHeight / imgAspect;
-               var imgWidthToBe = div.offsetHeight / divAspect;
-               var marginLeft = -Math.round((imgWidthActual - imgWidthToBe) / 2)
-               img.style.cssText = 'width: auto; height: 100%; margin-left: '
-                      + marginLeft + 'px;'
-          } else {
-               // 이미지가 div보다 길쭉한 경우 가로를 div에 맞추고 세로를 잘라낸다
-               img.style.cssText = 'width: 100%; height: auto; margin-left: 0;';
-          }
-          }
-  
-          var btn = document.querySelector('#btnToggleOverflow');
-          btn.onclick = function() {
-          var val = divs[0].style.overflow == 'hidden' ? 'visible' : 'hidden';
-          for (var i = 0; i < divs.length; ++i)
-               divs[i].style.overflow = val;
-          };
-          };
-
-</script>
 
 
 {% endblock %}
 
 {% block content %}
 
-<ul class="clearfix" id="mainContainer">
-     <li class="image_li">
+<article>
+     <div id="mainContainer container" style="width: 80%; margin: 0 auto; padding: 2rem 5%;">
           <p id="link_nav" style="text-align: left; margin-left: 0.4rem; margin-bottom: 0.5rem;">
                <a href="{% url 'productList' product.category.id %}"><i class="fa fa-bars" aria-hidden="true"></i></i>{{ product.category.categoryName }}</a> >
                <span id="current_location">{{ product }}</span>
           </p>
-          <div class="image" id="imageContainer">
-               <img src="{{ product.productImage.url }}" alt="{{ product.name }} 이미지">
-          </div>
-     </li>         
-     <li class="image_li"style="text-align: left;">
-          <div class="row" style="display: grid; grid-template-rows: 0.1fr 0.5fr 0.3fr 0.01fr;">
-               <div style="text-align: left;">
-                    {% if tags %}
-                         {% for tag in tags %}
-                         <a class="badge badge-pill badge-warning" style="font-family: 'NanumSquareRound'; font-size: 18px;" href="{% url 'tagProduct' tag.id %}">{{ tag }}</a>
-                         {% endfor %}
-                    {% else %}
-                         <span class="badge badge-pill badge-danger">No TAG</span>
-                    {% endif %}
+          <div class="row">
+               <div class="image col" id="imageContainer" style="width: 100%;">
+                    <img src="{{ product.productImage.url }}" alt="{{ product.name }} 이미지" style="width: max-content;">
                </div>
-               <div style="margin-bottom: 1rem;">
-                    <div style="font-family: 'yg-jalnan'; font-size: 38px;">{{ product.name }}</div>
-               </div>
-               <div style="margin-bottom: 1rem;">
-                    <div style="font-family: 'NanumSquareRound'; font-size: 18px; letter-spacing :1.4px;"> 제조사</div>
-                    <div style="font-family: 'NanumSquareRound'; font-size: 30px;">{{ product.manufacturer }}</div>
-               </div>
-
-               <div style="margin-bottom: 1rem;">
-                    <div style="font-family: 'NanumSquareRound'; font-size: 18px;">{{ product.description }}</div>
-               </div>
-
-               <hr style="width: 440px;">
-
-               <div>
-                    <div style="text-align: left;">
-                         <div style="font-family: 'NanumSquareRound'; font-size: 25px; font-weight: bold;">총점</div>
-                         <div class="rateit svg" data-rateit-value="{{avr_totalScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
-                              step="0.1" data-rateit-starheight="15"></div>
+     
+               <div class="product_detail col container">
+                    <div class="product_detail row" style="text-align: left; display: grid; grid-template-rows: 1fr 1.5fr 1fr 0.1fr; width: 100%;">
+                         <div style="margin-bottom: 1rem;">
+                              <div style="font-family: 'yg-jalnan'; font-size: 38px;">{{ product.name }}</div>
+                         </div>
+                         <div style="margin-bottom: 1rem;">
+                              <div style="font-family: 'NanumSquareRound'; font-size: 18px; letter-spacing :1.4px;"> 제조사</div>
+                              <div style="font-family: 'NanumSquareRound'; font-size: 30px;">{{ product.manufacturer }}</div>
+                         </div>
+     
+                         <div style="margin-bottom: 1rem;">
+                              <div style="font-family: 'NanumSquareRound'; font-size: 18px;">{{ product.description }}</div>
+                         </div>
+     
+                         <div><hr></div>
                     </div>
-                    <div class="scoreContainer" style="margin-top: 1.5rem;">
-                         <div class="row">
-                              <div class="col">
-                                   <div style="font-family: 'NanumSquareRound'; font-size: 20px; font-weight: bold;">그립감</div>
-                                   <div class="rateit svg" data-rateit-value="{{avr_gripScore}}" data-rateit-readonly="true"
-                                        aria-valuenow="{{avr_gripScore}}" data-rateit-starwidth="15" data-rateit-starheight="15"></div>
+                    <div class="row">
+                         <div>
+                              <div style="text-align: left;">
+                                   <div style="font-family: 'NanumSquareRound'; font-size: 25px; font-weight: bold;">총점</div>
+                                   <div class="rateit svg" data-rateit-value="{{avr_totalScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
+                                        step="0.1" data-rateit-starheight="15"></div>
                               </div>
+                              <div class="scoreContainer" style="margin-top: 1.5rem;">
+                                   <div class="row">
+                                        <div class="col">
+                                             <div style="font-family: 'NanumSquareRound'; font-size: 20px; font-weight: bold;">그립감</div>
+                                             <div class="rateit svg" data-rateit-value="{{avr_gripScore}}" data-rateit-readonly="true"
+                                                       aria-valuenow="{{avr_gripScore}}" data-rateit-starwidth="15" data-rateit-starheight="15"></div>
+                                        </div>
+                    
+                                        <div class="col">
+                                             <div style="font-family: 'NanumSquareRound'; font-size: 20px; font-weight: bold;">수명</div>
+                                             <div class="rateit svg" data-rateit-value="{{avr_lifeScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
+                                                       data-rateit-starheight="15"></div>
+                                        </div>
+                                   </div>
+                                   <div class="row">
+                                        <div class="col">
+                                             <div style="font-family: 'NanumSquareRound'; font-size: 20px; font-weight: bold;">내구도</div>
+                                             <div class="rateit svg" data-rateit-value="{{avr_durabilityScore}}" data-rateit-readonly="true"
+                                                       data-rateit-starwidth="15" data-rateit-starheight="15"></div>
+                                        </div>
+                                        <div class="col">
+                                             <div style="font-family: 'NanumSquareRound'; font-size: 20px; font-weight: bold;">디자인</div>
+                                             <div class="rateit svg" data-rateit-value="{{avr_designScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
+                                                       data-rateit-starheight="15"></div>
+                                        </div>
+                                   </div>
+                                   <div class="row">
+                                        <div class="col">
+                                             <div style="font-family: 'NanumSquareRound'; font-size: 20px; font-weight: bold;">사용감</div>
+                                             <div class="rateit svg" data-rateit-value="{{avr_textureScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
+                                             data-rateit-starheight="15"></div>
+                                        </div>
                
-                              <div class="col">
-                                   <div style="font-family: 'NanumSquareRound'; font-size: 20px; font-weight: bold;">수명</div>
-                                   <div class="rateit svg" data-rateit-value="{{avr_lifeScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
-                                        data-rateit-starheight="15"></div>
+                                        <div class="col">
+                                             <div style="font-family: 'NanumSquareRound'; font-size: 20px; font-weight: bold;">가성비</div>
+                                             <div class="rateit svg" data-rateit-value="{{avr_costEffetivenessScore}}" data-rateit-readonly="true"
+                                             data-rateit-starwidth="15" data-rateit-starheight="15"></div>
+                                        </div>
+                                   </div>
                               </div>
                          </div>
-                         <div class="row">
-                              <div class="col">
-                                   <div style="font-family: 'NanumSquareRound'; font-size: 20px; font-weight: bold;">내구도</div>
-                                   <div class="rateit svg" data-rateit-value="{{avr_durabilityScore}}" data-rateit-readonly="true"
-                                                  data-rateit-starwidth="15" data-rateit-starheight="15"></div>
-                              </div>
-                              <div class="col">
-                                   <div style="font-family: 'NanumSquareRound'; font-size: 20px; font-weight: bold;">디자인</div>
-                                   <div class="rateit svg" data-rateit-value="{{avr_designScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
-                                        data-rateit-starheight="15"></div>
-                              </div>
+                    </div>
+               </div>         
+>>>>>>> c0fbd2721857d8f57d32c035ee52de2e0baa1b17
+          </div>
+     </div>
+     
+     <div id="tagContainer" style="margin: 0 auto 1rem auto; text-align: right; padding: 0 15%;">
+          <div style="font-family: 'yg-jalnan'; color: black;"><i class="fa fa-tags" aria-hidden="true"></i>태그목록</div>
+          {% if tags %}
+               {% for tag in tags %}
+               <a class="badge badge-pill badge-warning" style="font-family: 'NanumSquareRound';" href="{% url 'tagProduct' tag.id %}">{{ tag }}</a>
+               {% endfor %}
+          {% else %}
+               <span class="badge badge-pill badge-danger" style="font-family: 'NanumSquareRound';">No TAG</span>
+          {% endif %}
+      </div>
+     
+     <div style="width: 85%; text-align: right;">
+          {{ likeMessage }}
+          <a href="{% url 'productLikeProcess' product_id=product.id %}">
+               {% if userLike %}
+               <!-- 유저가 좋아요를 누른 경우 -->
+               ❤️
+               {% else %}
+               <!-- 유저가 좋아요를 누르지 않은 경우 -->
+               🖤
+               {% endif %}
+          </a>
+     </div>
+     
+     <hr style="width: 70%;">
+     
+     <div id="reviewContainer" style="padding: 0 15%">
+          <!-- 인기순 정렬로 전환 -->
+          {% if popularitySort %}
+          <div class="h6" style="text-align: left; font-family: 'yg-jalnan'; padding-left: 0.3rem;"><i class="fa fa-sort" aria-hidden="true"></i><span>인기순 정렬</span> / <span><a href="{% url 'productDetail' product.id %}?sort=new">최신순정렬</a></span></div>
+          <!-- 최신순 정렬로 전환 -->
+          {% else %}
+          <div class="h6" style="text-align: left; font-family: 'yg-jalnan'; padding-left: 0.3rem;"><i class="fa fa-sort" aria-hidden="true"></i><span><a href="{% url 'productDetail' product.id %}?sort=popularity">인기순 정렬</a></span> / <span>최신순정렬</span></div>
+          {% endif %}
+     
+          {% if hasReviews %}
+          <div class="row property__gallery">
+               {% for review in reviews %}
+               <div class="col-lg-3 col-md-4 col-sm-6 mix women">
+                    <div class="product__item">
+                         <div class="product__item__pic set-bg" data-setbg="{{ review.getMainImage.url }}">
+                              <ul class="product__hover">
+                                   <li><a href="{{ review.getMainImage.url }}" class="image-popup"><span
+                                                  class="arrow_expand"></span></a></li>
+                              </ul>
                          </div>
-                         <div class="row">
-                              <div class="col">
-                                   <div style="font-family: 'NanumSquareRound'; font-size: 20px; font-weight: bold;">사용감</div>
-                                   <div class="rateit svg" data-rateit-value="{{avr_textureScore}}" data-rateit-readonly="true" data-rateit-starwidth="15"
-                                        data-rateit-starheight="15"></div>
-                              </div>
-          
-                              <div class="col">
-                                   <div style="font-family: 'NanumSquareRound'; font-size: 20px; font-weight: bold;">가성비</div>
-                                   <div class="rateit svg" data-rateit-value="{{avr_costEffetivenessScore}}" data-rateit-readonly="true"
-                                        data-rateit-starwidth="15" data-rateit-starheight="15"></div>
+                         <div class="product__item__text">
+                              <h6>
+                                   <a href="{% url 'reviewDetail' review.id %}">
+                                        {{ review }}
+                                   </a>
+                              </h6>
+                              <div class="rating">
+                                   <div class="rateit svg" data-rateit-value="{{ review.totalScore }}" data-rateit-readonly="true"
+                                        data-rateit-starwidth="15" data-rateit-starheight="15">
+                                   </div>
                               </div>
                          </div>
                     </div>
                </div>
+               {% endfor %}
           </div>
-     </li>
-</ul>
-
-
-<div style="width: 85%; text-align: right;">
-     {{ likeMessage }}
-     <a href="{% url 'productLikeProcess' product_id=product.id %}">
-          {% if userLike %}
-          <!-- 유저가 좋아요를 누른 경우 -->
-          ❤️
           {% else %}
-          <!-- 유저가 좋아요를 누르지 않은 경우 -->
-          🖤
+          <div id="no_review_message">
+               <div>아직 리뷰가 없네요!</div>
+               <div>가장 먼저 작성해보시는건 어떨까요?</div>
+          </div>
           {% endif %}
-     </a>
-</div>
-
-<hr style="width: 70%;">
-
-<div id="reviewContainer" style="padding: 0 15%">
-     <!-- 인기순 정렬로 전환 -->
-     {% if popularitySort %}
-     <div class="h6" style="text-align: left; font-family: 'yg-jalnan'; padding-left: 0.3rem;"><i class="fa fa-sort" aria-hidden="true"></i><span>인기순 정렬</span> / <span><a href="{% url 'productDetail' product.id %}?sort=new">최신순정렬</a></span></div>
-     <!-- 최신순 정렬로 전환 -->
-     {% else %}
-     <div class="h6" style="text-align: left; font-family: 'yg-jalnan'; padding-left: 0.3rem;"><i class="fa fa-sort" aria-hidden="true"></i><span><a href="{% url 'productDetail' product.id %}?sort=popularity">인기순 정렬</a></span> / <span>최신순정렬</span></div>
-     {% endif %}
-
-     {% if hasReviews %}
-     <div class="row property__gallery">
-          {% for review in reviews %}
-          <div class="col-lg-3 col-md-4 col-sm-6 mix women">
-               <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="{{ review.getMainImage.url }}">
-                         <ul class="product__hover">
-                              <li><a href="{{ review.getMainImage.url }}" class="image-popup"><span
-                                             class="arrow_expand"></span></a></li>
-                         </ul>
-                    </div>
-                    <div class="product__item__text">
-                         <h6>
-                              <a href="{% url 'reviewDetail' review.id %}">
-                                   {{ review }}
-                              </a>
-                         </h6>
-                         <div class="rating">
-                              <div class="rateit svg" data-rateit-value="{{ review.totalScore }}" data-rateit-readonly="true"
-                                   data-rateit-starwidth="15" data-rateit-starheight="15">
-                              </div>
-                         </div>
-                    </div>
+     
+          {% if not reviewCreated %}
+          <!-- 리뷰를 작성하지 않은 경우 -->
+          <a class="badge badge-pill badge-warning" style="font-family: 'NanumSquareRound'; font-size: 18px;" href="{% url 'reviewCreate' product.id %}"><div style="padding-left: 0.3rem; text-align: right;">새 리뷰 작성</div></a>
+          {% else %}
+          <!-- 리뷰를 이미 작성한 경우 -->
+          <a class="badge badge-pill badge-warning" style="font-family: 'NanumSquareRound'; font-size: 18px;" href="{% url 'reviewDetail' myReview.id %}">작성한 리뷰 보기</a>
+          {% endif %}
+          <!-- 페이지네이션 -->
+          <div class="pagination__option" style="text-align: center;">
+               {% if reviews.has_previous %}
+               <a href="?page=1&sort={{ sortBy }}"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
+               <a href="?page={{ reviews.previous_page_number }}&sort={{ sortBy }}"><i class="fa fa-angle-left"></i></a>
+               {% else %}
+               <a href="?page=1&sort={{ sortBy }}"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
+               <a href="#"><i class="fa fa-step-backward" aria-hidden="true"></i></a>
+               {% endif %}
+               <span>{{ reviews.number }}</span>
+               <span>/</span>
+               <span>{{ reviews.paginator.num_pages }}</span>
+               {% if reviews.has_next %}
+               <a href="?page={{ reviews.next_page_number }}&sort={{ sortBy }}"><i class="fa fa-angle-right"></i></a>
+               <a href="?page={{ reviews.paginator.num_pages }}&sort={{ sortBy }}"><i class="fa fa-angle-double-right"
+                         aria-hidden="true"></i></a>
+               {% else %}
+               <a href="#"><i class="fa fa-step-forward" aria-hidden="true"></i></a>
+               <a href="?page={{ reviews.paginator.num_pages }}&sort={{ sortBy }}"><i class="fa fa-angle-double-right"
+                         aria-hidden="true"></i></a>
+               {% endif %}
+          </div>
+     
+     </div>
+     
+     <hr style="width: 70%;">
+     
+     <table id="webSellInfos" class="table table-bordered table-hover"
+          style="text-align: center; width: 70%; margin: auto auto;">
+          <caption style="caption-side: top; font-family: 'yg-jalnan'; color: black;"><i class="fa fa-krw" aria-hidden="true"
+                    style="font-weight: bold;"></i>등록된 판매정보</caption>
+          {% if user.is_WebSeller %}
+          <caption style="caption-side: bottom; text-align: right;">
+               {% if webSellInfoRegistered %}
+               <a href="{% url 'webSellInfoDelete' product_id=product.id webSellInfo_id=targetWebSellInfo.id %}">판매정보 삭제하기</a> /
+               <a href="{% url 'webSellInfoModify' product_id=product.id webSellInfo_id=targetWebSellInfo.id %}">판매정보 수정하기</a>
+               {% else %}
+               <a href="{% url 'webSellInfoCreate' product_id=product.id %}">웹 판매정보 추가</a>
+               {% endif %}
+          </caption>
+          {% endif %}
+          <thead>
+               <tr>
+                    <th style="background-color: hsl(32, 81%, 44%); color: white;">판매자</th>
+                    <th style="background-color: hsl(32, 81%, 44%); color: white;">가격</th>
+                    <th style="background-color: hsl(32, 81%, 44%); color: white;">링크</th>
+               </tr>
+          </thead>
+          <tbody>
+               {% if hasWebSellInfo %}
+               {% for info in webSellInfoList %}
+               <tr>
+                    <td id="webSellInfo_seller">
+                         {{ info.seller.nickname }}
+                    </td>
+                    <td id="webSellInfo_price">
+                         {{ info.price }}
+                    </td>
+                    <td id="webSellInfo_link">
+                         <a href="{% url 'redirectExternalLink' info.link %}">{{ info.link }}<i class="fa fa-external-link"
+                                   aria-hidden="true"></i></a>
+                    </td>
+               </tr>
+               {% endfor %}
+               {% else %}
+               <tr>
+                    <td colspan="3">아직 판매정보가 등록되지 않았습니다.</td>
+               </tr>
+               {% endif %}
+          </tbody>
+     </table>
+     <br>
+     
+     {% if hasStationerSellInfo %}
+          <!-- 문구점 판매정보가 등록된 경우 -->
+          {% if nullLocation %}
+               <!-- 위치 정보가 입력되어 있지 않은 경우 -->
+               <div style="font-family: 'yg-jalnan'; padding: 1rem;">
+                    <div style="text-align: center;">위치 정보가 입력되지 않았습니다.</div>
+                    <div style="text-align: center;">지도 기능을 이용하시려면 <a href="{% url 'setLocation' %}">위치를 설정</a>해주세요.</div>
                </div>
-          </div>
-          {% endfor %}
-     </div>
+          {% else %}
+               <!-- 위치 정보가 입력되어 있는 경우 -->
+               <div style="font-family: 'yg-jalnan'; color: black; width: 70%; margin: 0 auto; padding: 12px 0;"><i class="fa fa-map-marker" aria-hidden="true"></i> 문구점 판매 정보</div>
+               <div id="map" style="width:70%; height:30em; margin: 0 auto;"></div>
+          {% endif %}
      {% else %}
-     <div id="no_review_message">
-          <div>아직 리뷰가 없네요!</div>
-          <div>가장 먼저 작성해보시는건 어떨까요?</div>
-     </div>
-     {% endif %}
-
-     {% if not reviewCreated %}
-     <!-- 리뷰를 작성하지 않은 경우 -->
-     <a class="badge badge-pill badge-warning" style="font-family: 'NanumSquareRound'; font-size: 18px;" href="{% url 'reviewCreate' product.id %}"><div style="padding-left: 0.3rem; text-align: right;">새 리뷰 작성</div></a>
-     {% else %}
-     <!-- 리뷰를 이미 작성한 경우 -->
-     <a class="badge badge-pill badge-warning" style="font-family: 'NanumSquareRound'; font-size: 18px;" href="{% url 'reviewDetail' myReview.id %}">작성한 리뷰 보기</a>
-     {% endif %}
-     <!-- 페이지네이션 -->
-     <div class="pagination__option" style="text-align: center;">
-          {% if reviews.has_previous %}
-          <a href="?page=1&sort={{ sortBy }}"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
-          <a href="?page={{ reviews.previous_page_number }}&sort={{ sortBy }}"><i class="fa fa-angle-left"></i></a>
-          {% else %}
-          <a href="?page=1&sort={{ sortBy }}"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
-          <a href="#"><i class="fa fa-step-backward" aria-hidden="true"></i></a>
-          {% endif %}
-          <span>{{ reviews.number }}</span>
-          <span>/</span>
-          <span>{{ reviews.paginator.num_pages }}</span>
-          {% if reviews.has_next %}
-          <a href="?page={{ reviews.next_page_number }}&sort={{ sortBy }}"><i class="fa fa-angle-right"></i></a>
-          <a href="?page={{ reviews.paginator.num_pages }}&sort={{ sortBy }}"><i class="fa fa-angle-double-right"
-                    aria-hidden="true"></i></a>
-          {% else %}
-          <a href="#"><i class="fa fa-step-forward" aria-hidden="true"></i></a>
-          <a href="?page={{ reviews.paginator.num_pages }}&sort={{ sortBy }}"><i class="fa fa-angle-double-right"
-                    aria-hidden="true"></i></a>
-          {% endif %}
-     </div>
-
-</div>
-
-<hr style="width: 70%;">
-
-<table id="webSellInfos" class="table table-bordered table-hover"
-     style="text-align: center; width: 70%; margin: auto auto;">
-     <caption style="caption-side: top; font-family: 'yg-jalnan'; color: black;"><i class="fa fa-krw" aria-hidden="true"
-               style="font-weight: bold;"></i>등록된 판매정보</caption>
-     {% if user.is_WebSeller %}
-     <caption style="caption-side: bottom; text-align: right;">
-          {% if webSellInfoRegistered %}
-          <a href="{% url 'webSellInfoDelete' product_id=product.id webSellInfo_id=targetWebSellInfo.id %}">판매정보 삭제하기</a> /
-          <a href="{% url 'webSellInfoModify' product_id=product.id webSellInfo_id=targetWebSellInfo.id %}">판매정보 수정하기</a>
-          {% else %}
-          <a href="{% url 'webSellInfoCreate' product_id=product.id %}">웹 판매정보 추가</a>
-          {% endif %}
-     </caption>
-     {% endif %}
-     <thead>
-          <tr>
-               <th style="background-color: hsl(32, 81%, 44%); color: white;">판매자</th>
-               <th style="background-color: hsl(32, 81%, 44%); color: white;">가격</th>
-               <th style="background-color: hsl(32, 81%, 44%); color: white;">링크</th>
-          </tr>
-     </thead>
-     <tbody>
-          {% if hasWebSellInfo %}
-          {% for info in webSellInfoList %}
-          <tr>
-               <td id="webSellInfo_seller">
-                    {{ info.seller.nickname }}
-               </td>
-               <td id="webSellInfo_price">
-                    {{ info.price }}
-               </td>
-               <td id="webSellInfo_link">
-                    <a href="{% url 'redirectExternalLink' info.link %}">{{ info.link }}<i class="fa fa-external-link"
-                              aria-hidden="true"></i></a>
-               </td>
-          </tr>
-          {% endfor %}
-          {% else %}
-          <tr>
-               <td colspan="3">아직 판매정보가 등록되지 않았습니다.</td>
-          </tr>
-          {% endif %}
-     </tbody>
-</table>
-<br>
-
-{% if hasStationerSellInfo %}
-     <!-- 문구점 판매정보가 등록된 경우 -->
-     {% if nullLocation %}
-          <!-- 위치 정보가 입력되어 있지 않은 경우 -->
-          <div style="font-family: 'yg-jalnan'; padding: 1rem;">
-               <div style="text-align: center;">위치 정보가 입력되지 않았습니다.</div>
-               <div style="text-align: center;">지도 기능을 이용하시려면 <a href="{% url 'setLocation' %}">위치를 설정</a>해주세요.</div>
-          </div>
-     {% else %}
-          <!-- 위치 정보가 입력되어 있는 경우 -->
-          <div style="font-family: 'yg-jalnan'; color: black; width: 70%; margin: 0 auto; padding: 12px 0;"><i class="fa fa-map-marker" aria-hidden="true"></i> 문구점 판매 정보</div>
+          <!-- 문구점 판매정보가 등록되지 않은 경우 -->
+          <div style="font-family: 'yg-jalnan'; color: red; width: 70%; margin: 0 auto; padding: 12px 0;"><i class="fa fa-times" aria-hidden="true"></i>문구점 판매정보가 등록되지 않았습니다!</div>
           <div id="map" style="width:70%; height:30em; margin: 0 auto;"></div>
      {% endif %}
-{% else %}
-     <!-- 문구점 판매정보가 등록되지 않은 경우 -->
-     <div style="font-family: 'yg-jalnan'; color: red; width: 70%; margin: 0 auto; padding: 12px 0;"><i class="fa fa-times" aria-hidden="true"></i>문구점 판매정보가 등록되지 않았습니다!</div>
-     <div id="map" style="width:70%; height:30em; margin: 0 auto;"></div>
-{% endif %}
-
-{% if user.is_Stationer and not nullLocation %}
-     <div style="text-align: right; width: 70%; margin: 0 auto; padding-top: 12px;">
-     <!-- 문구점 사장님인 경우에만 판매정보 입력/삭제/수정 가능 -->
-     {% if stationerSellInfoRegistered %}
-          <a href="{% url 'stationerSellInfoModify' product_id=product.id stationerSellInfo_id=targetStationerInfo.id %}">문구점 판매정보 수정</a> /
-          <a href="{% url 'stationerSellInfoDelete' product_id=product.id stationerSellInfo_id=targetStationerInfo.id %}">문구점 판매정보 삭제</a>
-     {% else %}
-          <a href="{% url 'stationerSellInfoCreate' product_id=product.id %}">문구점 판매정보 추가</a>
-     {% endif %}
-     </div>
-{% endif %}
-
-<hr style="width: 70%;">
-
-<div id="videoContainer" style="margin: 2rem aut o;">
-     <div style="font-family: 'yg-jalnan'; text-align: center; font-size: large;"><i class="fa fa-youtube-play" aria-hidden="true"></i>관련 영상</div>
-     {% if hasNoVideos %}
-     <div style="font-family: 'yg-jalnan'; text-align: center; font-size: smaller; color: gray;">아직 관련 영상이 없네요 ㅠㅠ</div>
-     {% else %}
-     <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel" style="text-align: center;">
-          <div class="carousel-inner">
-            <div class="carousel-item active">
-               <iframe style="margin: 0 auto;" src="https://www.youtube.com/embed/{{ firstVideoHash }}" frameborder="0"
-               allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+     
+     {% if user.is_Stationer and not nullLocation %}
+          <div style="text-align: right; width: 70%; margin: 0 auto; padding-top: 12px;">
+          <!-- 문구점 사장님인 경우에만 판매정보 입력/삭제/수정 가능 -->
+          {% if stationerSellInfoRegistered %}
+               <a href="{% url 'stationerSellInfoModify' product_id=product.id stationerSellInfo_id=targetStationerInfo.id %}">문구점 판매정보 수정</a> /
+               <a href="{% url 'stationerSellInfoDelete' product_id=product.id stationerSellInfo_id=targetStationerInfo.id %}">문구점 판매정보 삭제</a>
+          {% else %}
+               <a href="{% url 'stationerSellInfoCreate' product_id=product.id %}">문구점 판매정보 추가</a>
+          {% endif %}
           </div>
-
-          {% for linkHash in videoLinkHashs %}
-          <div class="carousel-item">
-               <iframe style="margin: 0 auto;" src="https://www.youtube.com/embed/{{ linkHash }}" frameborder="0"
-               allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-          {% endfor %}
-     </div>
      {% endif %}
-</div>
+     
+     <hr style="width: 70%;">
+     
+     <div id="videoContainer" style="margin: 2rem aut o;">
+          <div style="font-family: 'yg-jalnan'; text-align: center; font-size: large;"><i class="fa fa-youtube-play" aria-hidden="true"></i>관련 영상</div>
+          {% if hasNoVideos %}
+          <div style="font-family: 'yg-jalnan'; text-align: center; font-size: smaller; color: gray;">아직 관련 영상이 없네요 ㅠㅠ</div>
+          {% else %}
+          <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel" style="text-align: center;">
+               <div class="carousel-inner">
+                 <div class="carousel-item active">
+                    <iframe style="margin: 0 auto;" src="https://www.youtube.com/embed/{{ firstVideoHash }}" frameborder="0"
+                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+               </div>
+     
+               {% for linkHash in videoLinkHashs %}
+               <div class="carousel-item">
+                    <iframe style="margin: 0 auto;" src="https://www.youtube.com/embed/{{ linkHash }}" frameborder="0"
+                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+               </div>
+               {% endfor %}
+          </div>
+          {% endif %}
+     </div>     
+</article>
 
 <script>
      {% if hasStationerSellInfo %}
@@ -540,5 +502,38 @@
     }
 
 });
+     </script>
+     <script>
+          window.onload = function() {
+               var divs = document.querySelectorAll('li > div');
+               for (var i = 0; i < divs.length; ++i) {
+               var div = divs[i];
+               var divAspect = div.offsetHeight / div.offsetWidth;
+               div.style.overflow = 'hidden';
+         
+               var img = div.querySelector('img');
+               var imgAspect = img.height / img.width;
+     
+               if (imgAspect <= divAspect) {
+                    // 이미지가 div보다 납작한 경우 세로를 div에 맞추고 가로는 잘라낸다
+                    var imgWidthActual = div.offsetHeight / imgAspect;
+                    var imgWidthToBe = div.offsetHeight / divAspect;
+                    var marginLeft = -Math.round((imgWidthActual - imgWidthToBe) / 2)
+                    img.style.cssText = 'width: auto; height: 100%; margin-left: '
+                           + marginLeft + 'px;'
+               } else {
+                    // 이미지가 div보다 길쭉한 경우 가로를 div에 맞추고 세로를 잘라낸다
+                    img.style.cssText = 'width: 100%; height: auto; margin-left: 0;';
+               }
+               }
+       
+               var btn = document.querySelector('#btnToggleOverflow');
+               btn.onclick = function() {
+               var val = divs[0].style.overflow == 'hidden' ? 'visible' : 'hidden';
+               for (var i = 0; i < divs.length; ++i)
+                    divs[i].style.overflow = val;
+               };
+               };
+     
      </script>
 {% endblock %}

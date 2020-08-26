@@ -7,18 +7,25 @@
 {% endblock %}
 
 {% block content %}
+<h4 style="text-align: center; padding: 1em 3rem 0 3rem; font-family: 'yg-jalnan'; color:#663e27;">
+    사자네 문방구에 새로운 펜을 등록해주세요!</h4>
+
+<h6 style="text-align: center; padding: 1em 3rem 0 3rem; font-family: 'yg-jalnan'; color:#663e27;">
+    등록된 펜은 운영진을 통해서 사이트에 등록되고 이후 리뷰를 작성하실 수 있습니다. </h6><br><br>
 
 <form method="POST">
     {% csrf_token %}
-    제품명 : {{ form.productName }}
-    <br>
-    제조사 : {{ form.productBrand }}
-    <br>
-    제품 설명 <br>
+    <div style="text-align: center; font-family: yg-jalnan;">
+    제품명  {{ form.productName }}
+    <br><br>
+    제조사  {{ form.productBrand }}
+    <br><br><br>
+    제품 설명 <br><br>
     {{ form.productDescription }}
-    <br>
-    <input class="btn btn-dark" type="submit" value="작성">
-
+    <br><br>
+    <input class="site-btn" type="submit" value="작성">
+    </div> 
+    <br><br>
 </form>
 
 {% endblock %}

@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/reviewdetail.css' %}">
+
 {% block head %}
 <title>리뷰 상세 정보</title>
 <!-- 리뷰 상세 정보가 노출됨. 여기서 리뷰의 수정/삭제에 접근함.  -->
@@ -124,24 +125,37 @@
 <!-- 페이지 왼쪽 ! 이미지 -->
 
 <div class="column img" >
-        
-    {% for image in images %}
+    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner"> 
+            <div class="carousel-item active">
+                {% for image in images %}
+                {% if image %}
+                {% if review.author == user %}
+                <a href="{% url 'reviewImageModify' review_id=review.id imageIdx=forloop.counter0 %}">
+                <img src="{{ image.url }}" class="d-block w-100" style="width:350px; height:350px;">
+                </a>
+                {% else %}
+                <img src="{{ image.url }}" class="d-block w-100" style="width:350px; height:350px;">
+                {% endif %}
+            </div>
+        </div>
+            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+              </a>
+              <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+    </div>
+</div>
 
-    {% if image %}
-    {% if review.author == user %}
-    <a href="{% url 'reviewImageModify' review_id=review.id imageIdx=forloop.counter0 %}">
-        <img src="{{ image.url }}" style="width:350px; height:350px;">
-    </a>
-    {% else %}
-            <img src="{{ image.url }}" style="width:350px; height:350px;">
     {% endif %}
+    {% endfor %}
     <br><br>
     <div style="font-family: yg-jalnan;"><button class="site-btn"><a href="" data-toggle="modal" data-target="#reviewImageAddModal" style="color: white;">
-        리뷰 이미지 추가하기</a></button></div>
-    {% endif %}
+        리뷰 이미지 추가하기</a></button></div>    
 </div>
-    {% endfor %}
-
 <!-- 페이지 오른쪽 ! 설명 -->
 
 <div class="column content" >
