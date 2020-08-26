@@ -82,7 +82,7 @@ class Review(models.Model):
     class Meta:
         verbose_name = "제품 리뷰"
 
-    author = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, related_name='reviewAuthor', verbose_name="리뷰 작성자")
+    author = models.ForeignKey("account.Customer", on_delete=models.SET_NULL, null=True, related_name='reviewAuthor', verbose_name="리뷰 작성자")
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, related_name='reviewTargetProduct', verbose_name="대상 상품")
     pub_date = models.DateTimeField(null=True, blank=True, verbose_name="리뷰 작성일")
     totalScore = models.DecimalField(max_digits=2, decimal_places=1, null=True, blank=False, verbose_name="총점")
@@ -112,6 +112,24 @@ class Review(models.Model):
 
     def getShortComment(self):
         return self.comment if len(self.comment) < 20 else self.comment[:17] + "..."
+
+    def getTooltip(self):
+        user = self.author
+        if user.is_Stationer:
+            return "문구점 사장님입니다."
+        elif user.is_WebSeller:
+            return "웹 판매자입니다."
+
+        user_usage = ("주 사용 용도", user.usage, Customer.usage_dict[user.usage])
+        user_job = ("직업", user.job, Customer.job_dict[user.job])
+        user_age = ("연령", user.age, Customer.age_dict[user.age])
+        userPropertyList = list(filter(lambda choice: choice[-1] != "기타", [user_usage, user_job, user_age]))
+
+        if len(userPropertyList) <= 0 :
+            return "모든 정보가 비공개 되어 있습니다."
+        
+        else :
+            return " | ".join([f"{p[-1]}" for p in userPropertyList])
 
 # 점수
 class Score(models.Model):

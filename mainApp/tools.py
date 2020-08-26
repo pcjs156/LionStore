@@ -82,10 +82,8 @@ def redirectByCategoryName(request, categoryName):
 
 def getReviewerTagTooltip(user : Customer):
     if user.is_Stationer:
-        print("문구점 사장님")
         return "문구점 사장님입니다."
     elif user.is_WebSeller:
-        print("웹 판매자")
         return "웹 판매자입니다."
 
     user_usage = ("주 사용 용도", user.usage, Customer.usage_dict[user.usage])

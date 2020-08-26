@@ -58,7 +58,7 @@
           <div class="row">
                <img class="col" id="product_image" src="{{ product.productImage.url }}" alt="{{ product.name }} 이미지">
                
-               <div class="col" style="text-align: left;">
+               <div class="col" style="padding: 0rem 4.5rem; text-align: left;">
                     <div class="row" style="display: grid; grid-template-rows: 0.1fr 0.5fr 0.3fr 0.01fr;">
                          <div style="text-align: left;">
                               {% if tags %}
@@ -175,7 +175,11 @@
                          </ul>
                     </div>
                     <div class="product__item__text">
-                         <h6><a href="{% url 'reviewDetail' review.id %}">{{ review }}</a></h6>
+                         <h6>
+                              <a href="{% url 'reviewDetail' review.id %}" data-toggle="tooltip" data-placement="bottom" title="{{ review.getTooltip }}">
+                                   {{ review }}
+                              </a>
+                         </h6>
                          <div class="rating">
                               <div class="rateit svg" data-rateit-value="{{ review.totalScore }}" data-rateit-readonly="true"
                                    data-rateit-starwidth="15" data-rateit-starheight="15">
