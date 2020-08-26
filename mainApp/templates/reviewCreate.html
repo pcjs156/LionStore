@@ -6,75 +6,107 @@
 <!-- 계정 유형과 관계 없이 로그인만 되어 있으면 리뷰 작성이 가능함
      해당 템플릿은 제품 상세 정보(productDetail.html)에서 접근 가능한 템플릿. -->
 {% endblock %}
+<style>
+
+</style>
 
 {% block content %}
+<h4 style="text-align: center; padding: 1em 3rem 0 3rem; font-family: 'yg-jalnan'; color:#663e27;">
+    사자네 문방구에 새로운 리뷰를 등록해주세요!</h4>
+
+<h6 style="text-align: center; padding: 1em 3rem 0 3rem; font-family: 'yg-jalnan'; color:#663e27;">
+    작성된 리뷰는 리뷰 추천 데이터로 이용됩니다. </h6><br><br>
+
 <form method="POST" enctype="multipart/form-data" id="form">
     {% csrf_token %}
-
-    한줄평 <br>
-    <input type="text" name="comment" id="comment">
+<div style="text-align: center; font-family: yg-jalnan;">
+    <i class="fa fa-pencil"></i>한줄평<br><br>
+    <input type="text" name="comment" id="comment" style="width: 420px; font-family: nanumsquareround;" 
+    placeholder="한마디로 이 펜은..">
+    <br>
     <br>
 
-    장점 <br>
+    <i class="fa fa-pencil"></i>장점 <br>
     {{form.goodPoint}}
-    <br>
+    <br> <br>
 
-    단점 <br>
+    <i class="fa fa-pencil"></i>단점 <br>
     {{form.weakPoint}}
-    <br>
+    <br> <br>
 
-    태그(띄어쓰기로 구분) <br>
+    <i class="fa fa-pencil"></i>태그(띄어쓰기로 구분) <br>
     {{ form.rawTagString }}
-    <br>
+    <br><br><br>
 
-    그립감 <br>
-    <input type="rating" name="grip" value="0" required="" id="id_grip" min="0" max="5" step="1" style="display: none;">
-    <div id="star_id_grade" class="rateit svg" data-rateit-backingfld="#id_grip" data-rateit-starwidth="15"
-        data-rateit-starheight="15"></div>
-    <br>
+   [부분별점/총점]
+   <br> <br>
+   <div class="container" style="width: 30%;">
+   <div class="row">
+        <div class="col">  
+                그립감 
+                <input type="rating" name="grip" value="0" required="" id="id_grip" min="0" max="5" step="1" style="display: none;">
+                <div id="star_id_grade" class="rateit svg" data-rateit-backingfld="#id_grip" data-rateit-starwidth="15"
+                    data-rateit-starheight="15"></div>
+                <br>
+        </div>
 
-    수명 <br>
-    <input type="rating" name="life" value="0" required="" id="id_life" min="0" max="5" step="1" style="display: none;">
-    <div id="star_id_life" class="rateit svg" data-rateit-backingfld="#id_life" data-rateit-starwidth="15"
-        data-rateit-starheight="15"></div>
-    <br>
-
-    내구도 <br>
-    <input type="rating" name="durability" value="0" required="" id="id_durability" min="0" max="5" step="1"
-        style="display: none;">
-    <div id="star_id_durability" class="rateit svg" data-rateit-backingfld="#id_durability" data-rateit-starwidth="15"
-        data-rateit-starheight="15"></div>
-    <br>
-
-    디자인 <br>
-    <input type="rating" name="design" value="0" required="" id="id_design" min="0" max="5" step="1"
-        style="display: none;">
-    <div id="star_id_design" class="rateit svg" data-rateit-backingfld="#id_design" data-rateit-starwidth="15"
-        data-rateit-starheight="15"></div>
-    <br>
-
-    사용감 <br>
-    <input type="rating" name="texture" value="0" required="" id="id_texture" min="0" max="5" step="1"
-        style="display: none;">
-    <div id="star_id_texture" class="rateit svg" data-rateit-backingfld="#id_texture" data-rateit-starwidth="15"
-        data-rateit-starheight="15"></div>
-    <br>
-
-    가성비 <br>
-    <input type="rating" name="costEffetiveness" value="0" required="" id="id_costEffetiveness" min="0" max="5" step="1"
-        style="display: none;">
-    <div id="star_id_costEffetiveness" class="rateit svg" data-rateit-backingfld="#id_costEffetiveness"
-        data-rateit-starwidth="15" data-rateit-starheight="15"></div>
-    <br>
-
-    <br>
-
-    <div style="color: red;">이미지를 등록하지 않으면 제품 대표 이미지로 대체됩니다.</div>
-    이미지1
-    <br>
-    <div>
-        {{ form.reviewImage1 }}
+        <div class="col"> 
+                수명 &nbsp;&nbsp;&nbsp;
+                <input type="rating" name="life" value="0" required="" id="id_life" min="0" max="5" step="1" style="display: none;">
+                <div id="star_id_life" class="rateit svg" data-rateit-backingfld="#id_life" data-rateit-starwidth="15"
+                    data-rateit-starheight="15"></div>
+                <br>
+        </div>
     </div>
+    <br>
+    <div class="row">
+        <div class="col">
+                내구도 
+                <input type="rating" name="durability" value="0" required="" id="id_durability" min="0" max="5" step="1"
+                    style="display: none;">
+                <div id="star_id_durability" class="rateit svg" data-rateit-backingfld="#id_durability" data-rateit-starwidth="15"
+                    data-rateit-starheight="15"></div>
+                <br>
+        </div>
+        <div class="col">
+                디자인 
+                <input type="rating" name="design" value="0" required="" id="id_design" min="0" max="5" step="1"
+                    style="display: none;">
+                <div id="star_id_design" class="rateit svg" data-rateit-backingfld="#id_design" data-rateit-starwidth="15"
+                    data-rateit-starheight="15"></div>
+                <br>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col">
+                사용감
+                <input type="rating" name="texture" value="0" required="" id="id_texture" min="0" max="5" step="1"
+                    style="display: none;">
+                <div id="star_id_texture" class="rateit svg" data-rateit-backingfld="#id_texture" data-rateit-starwidth="15"
+                    data-rateit-starheight="15"></div>
+                <br>
+        </div>
+        <div class="col">
+                가성비 
+                <input type="rating" name="costEffetiveness" value="0" required="" id="id_costEffetiveness" min="0" max="5" step="1"
+                    style="display: none;">
+                <div id="star_id_costEffetiveness" class="rateit svg" data-rateit-backingfld="#id_costEffetiveness"
+                    data-rateit-starwidth="15" data-rateit-starheight="15"></div>
+        </div>
+    </div>
+    </div>
+    <br>
+
+    <br>
+<!-- 이미지 삽입 -->
+<br>
+
+[이미지 등록]
+<br> <br>
+    <div style="color: red;">* 이미지를 등록하지 않으면 제품 대표 이미지로 대체됩니다.</div><br>
+    <div style= "text-align: center; width: 108%;"> 이미지1  {{ form.reviewImage1 }}</div>
+
     <br>
 
     <a href="#imageUploader2" data-toggle="collapse" aria-expanded="false" aria-controls="imageUploaderCollapse2"
@@ -84,7 +116,7 @@
     <div class="collapse" id="imageUploaderCollapse2">
         {{ form.reviewImage2 }}
     </div>
-    <br>
+    
 
     <a href="#imageUploader3" data-toggle="collapse" aria-expanded="false" aria-controls="imageUploaderCollapse3"
         data-target="#imageUploaderCollapse3">
@@ -93,7 +125,7 @@
     <div class="collapse" id="imageUploaderCollapse3">
         {{ form.reviewImage3 }}
     </div>
-    <br>
+  
 
     <a href="#imageUploader4" data-toggle="collapse" aria-expanded="false" aria-controls="imageUploaderCollapse4"
         data-target="#imageUploaderCollapse4">
@@ -102,7 +134,7 @@
     <div class="collapse" id="imageUploaderCollapse4">
         {{ form.reviewImage4 }}
     </div>
-    <br>
+ 
 
     <a href="#imageUploader5" data-toggle="collapse" aria-expanded="false" aria-controls="imageUploaderCollapse5"
         data-target="#imageUploaderCollapse5">
@@ -111,7 +143,7 @@
     <div class="collapse" id="imageUploaderCollapse5">
         {{ form.reviewImage5 }}
     </div>
-    <br>
+
 
     <a href="#imageUploader6" data-toggle="collapse" aria-expanded="false" aria-controls="imageUploaderCollapse6"
         data-target="#imageUploaderCollapse6">
@@ -120,9 +152,10 @@
     <div class="collapse" id="imageUploaderCollapse6">
         {{ form.reviewImage6 }}
     </div>
-    <br>
+    <br> <br> <br>
 
-    <button type="submit">리뷰 작성</button>
+    <button type="submit" class="site-btn">리뷰 작성</button>
+</div>
 </form>
-
+<br> <br> <br>
 {% endblock %}
