@@ -492,10 +492,13 @@ def reviewDetail_view(request, review_id):
     #사진 목록
     images = [review.reviewImage1, review.reviewImage2, review.reviewImage3, review.reviewImage4, review.reviewImage5, review.reviewImage6]
     images = list(filter(lambda x: x, images))
+
+    firstImage = images.pop(0)
+    content['firstImage'] = firstImage
     content['images'] = images
     
     # 사진을 추가할 수 있는가?(사진이 6장 미만 등록되어 있는가?)
-    imageCnt = len(list(filter(lambda x: x, images)))
+    imageCnt = len(list(filter(lambda x: x, images))) + 1
     content['imageLeft'] = 6 - imageCnt
     canAddImage = imageCnt < 6
     content['canAddImage'] = canAddImage
@@ -581,14 +584,67 @@ def reviewImageAdd(request, review_id):
 
 
 @login_required(login_url='/account/logIn/')
-def reviewImageModify_view(request, review_id, imageIdx):
+def reviewImageModify_view(request, review_id, imageURL):
     if request.method == "POST":
         form = ReviewImageModifyingForm(request.POST, request.FILES)
 
         review = PenReview.objects.get(pk=review_id)
         tmp = form.save(commit=False)
         if tmp.reviewImage1 is not None:
-            exec(f"review.reviewImage{imageIdx+1} = tmp.reviewImage1")
+            targetIdx = -1
+            images = [review.reviewImage1, review.reviewImage2, review.reviewImage3, review.reviewImage4, review.reviewImage5, review.reviewImage6]
+            for i in range(len(images)):
+                if images[i].url == imageURL:
+                    targetIdx = i
+                    break
+            exec(f"review.reviewImage{targetIdx+1} = tmp.reviewImage1")
+            review.modified = True
+            review.save()
+
+        return redirect('reviewDetail', review_id=review_id)
+
+    else:
+        content = dict()
+        
+        form = ReviewImageModifyingForm()
+        content['form'] = form
+
+        review = PenReview.objects.get(pk=review_id)
+        content['review'] = review
+
+        targetIdx = -1
+        images = [review.reviewImage1, review.reviewImage2, review.reviewImage3, review.reviewImage4, review.reviewImage5, review.reviewImage6]
+        for i in range(len(images)):
+            if images[i].url == imageURL:
+                targetIdx = i
+                break
+
+        targetImage = eval(f"review.reviewImage{i+1}")
+        content['targetImage'] = targetImage
+
+        return render(request, 'reviewImageModify.html', content)
+
+@login_required(login_url='/account/logIn/')
+def firstReviewImageModify_view(request, review_id):
+    if request.method == "POST":
+        form = ReviewImageModifyingForm(request.POST, request.FILES)
+
+        review = PenReview.objects.get(pk=review_id)
+        tmp = form.save(commit=False)
+        if tmp.reviewImage1 is not None:
+            firstImageIdx = -1
+        
+            images = [review.reviewImage2, review.reviewImage3, review.reviewImage4, review.reviewImage5, review.reviewImage6]
+            for i in range(len(images)):
+                if images[i]:
+                    firstImageIdx = i
+                    break
+            
+            if i == -1:
+                review.reviewImage1 = tmp.reviewImage1
+            else:
+                exec(f"review.reviewImage{firstImageIdx+2} = tmp.reviewImage1")
+
             review.modified = True
             review.save()
 
@@ -603,10 +659,34 @@ def reviewImageModify_view(request, review_id, imageIdx):
         review = PenReview.objects.get(pk=review_id)
         content['review'] = review
 
-        content['imageIdx'] = imageIdx
-        exec(f"content['image'] = review.reviewImage{imageIdx+1}")
+        content['image'] = review.getMainImage()
 
-        return render(request, 'reviewImageModify.html', content)
+        return render(request, 'firstReviewImageModify.html', content)
+
+
+@login_required(login_url='/account/logIn/')
+def firstReviewImageDelete(request, review_id):
+    review : PenReview = PenReview.objects.get(pk=review_id)
+    review.modified = True
+
+    firstImageIdx = -1
+    images = [review.reviewImage2, review.reviewImage3, review.reviewImage4, review.reviewImage5, review.reviewImage6]
+    for i in range(len(images)):
+        if images[i]:
+            firstImageIdx = i
+            break
+    
+    if i == -1:
+        review.reviewImage1 = None
+    else:
+        exec(f"review.reviewImage{firstImageIdx+2} = None")
+
+    if not hasImageField(review):
+        review.reviewImage1 = review.product.productImage
+
+    review.save()
+
+    return redirect('reviewDetail', review_id=review_id)
 
 
 def reviewsByTag_view(request, tagName:str):
@@ -643,10 +723,19 @@ def reviewsByTag_view(request, tagName:str):
 
 
 @login_required(login_url='/account/logIn/')
-def reviewImageDelete(request, review_id, imageIdx):
+def reviewImageDelete(request, review_id, imageURL):
     review : PenReview = PenReview.objects.get(pk=review_id)
     review.modified = True
-    exec(f"review.reviewImage{imageIdx+1} = None")
+
+    targetIdx = -1
+    images = [review.reviewImage1, review.reviewImage2, review.reviewImage3, review.reviewImage4, review.reviewImage5, review.reviewImage6]
+    for i in range(len(images)):
+        print(images[i].url, "|", imageURL)
+        if images[i].url == imageURL:
+            targetIdx = i
+            break
+
+    exec(f"review.reviewImage{i+1}=None")
 
     if not hasImageField(review):
         review.reviewImage1 = review.product.productImage
@@ -1126,84 +1215,84 @@ def mainPage_view(request):
     except:
         content['error'] = True
 
-    # 연령대 / 직업 / 주 사용 용도 중 1개 정보를 랜덤으로 골라
-    # 해당 정보가 겹치는 리뷰어들의 리뷰를 보여주는 기능
-    # + 관심 등록 펜 유형의 인기 리뷰를 보여주는 기능
-    # 단, '기타'로 설정된 항목은 사용할 수 없으며
-    # 3가지 정보가 모두 '기타'인 경우 해당 기능 전체를 사용할 수 없다.
-    user : Customer = request.user
+    # # 연령대 / 직업 / 주 사용 용도 중 1개 정보를 랜덤으로 골라
+    # # 해당 정보가 겹치는 리뷰어들의 리뷰를 보여주는 기능
+    # # + 관심 등록 펜 유형의 인기 리뷰를 보여주는 기능
+    # # 단, '기타'로 설정된 항목은 사용할 수 없으며
+    # # 3가지 정보가 모두 '기타'인 경우 해당 기능 전체를 사용할 수 없다.
+    # user : Customer = request.user
 
-    # 당연히 로그인 하지 않은 유저는 해당 기능을 사용할 수 없다
-    if user.is_authenticated:
-        # 이하 연령대/직업/주사용용도 기반 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        user_age = ('age', user.age, Customer.age_dict[user.age])
-        user_job = ('job', user.job, Customer.job_dict[user.job])
-        user_usage = ('usage', user.usage, Customer.usage_dict[user.usage])
-        userInfoList = list(filter(lambda x: x[-1] != '기타', [user_age, user_job, user_usage]))
+    # # 당연히 로그인 하지 않은 유저는 해당 기능을 사용할 수 없다
+    # if user.is_authenticated:
+    #     # 이하 연령대/직업/주사용용도 기반 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    #     user_age = ('age', user.age, Customer.age_dict[user.age])
+    #     user_job = ('job', user.job, Customer.job_dict[user.job])
+    #     user_usage = ('usage', user.usage, Customer.usage_dict[user.usage])
+    #     userInfoList = list(filter(lambda x: x[-1] != '기타', [user_age, user_job, user_usage]))
         
-        # 최소 1개 이상의 정보는 공개되어야 함
-        propertyRecommend = (len(userInfoList) > 0)
-        if propertyRecommend:
-            picked = picked_field, picked_key, picked_val = random.choice(userInfoList)
+    #     # 최소 1개 이상의 정보는 공개되어야 함
+    #     propertyRecommend = (len(userInfoList) > 0)
+    #     if propertyRecommend:
+    #         picked = picked_field, picked_key, picked_val = random.choice(userInfoList)
             
-            if picked_field == "age":
-                picked_reviewers = Customer.objects.filter(age=user_age[1])
-                propertyMessage = f"{user_age[-1]} 리뷰어님들의 인기 리뷰입니다."
-                content['propertyMessage'] = propertyMessage
-            elif picked_field == "job":
-                picked_reviewers = Customer.objects.filter(job=user_job[1])
-                propertyMessage = f"{user_job[-1]} 리뷰어님들의 인기 리뷰입니다."
-                content['propertyMessage'] = propertyMessage
-            elif picked_field == "usage":
-                picked_reviewers = Customer.objects.filter(usage=user_usage[1])
-                propertyMessage = f"주 사용처가 {user_usage[-1]}인 리뷰어님들의 인기 리뷰입니다."
-                content['propertyMessage'] = propertyMessage
+    #         if picked_field == "age":
+    #             picked_reviewers = Customer.objects.filter(age=user_age[1])
+    #             propertyMessage = f"{user_age[-1]} 리뷰어님들의 인기 리뷰입니다."
+    #             content['propertyMessage'] = propertyMessage
+    #         elif picked_field == "job":
+    #             picked_reviewers = Customer.objects.filter(job=user_job[1])
+    #             propertyMessage = f"{user_job[-1]} 리뷰어님들의 인기 리뷰입니다."
+    #             content['propertyMessage'] = propertyMessage
+    #         elif picked_field == "usage":
+    #             picked_reviewers = Customer.objects.filter(usage=user_usage[1])
+    #             propertyMessage = f"주 사용처가 {user_usage[-1]}인 리뷰어님들의 인기 리뷰입니다."
+    #             content['propertyMessage'] = propertyMessage
             
-            picked_reviews = list()
-            for reviewer in picked_reviewers:
-                for review in PenReview.objects.filter(author=reviewer):
-                    picked_reviews.append(review)
-            picked_reviews.sort(key=lambda x: x.likeCount, reverse=True)
+    #         picked_reviews = list()
+    #         for reviewer in picked_reviewers:
+    #             for review in PenReview.objects.filter(author=reviewer):
+    #                 picked_reviews.append(review)
+    #         picked_reviews.sort(key=lambda x: x.likeCount, reverse=True)
             
-            # 검색된 리뷰어들의 리뷰가 없으면(리뷰어가 검색되지 않는 경우에도 마찬가지) 기능 사용 불가
-            if len(picked_reviews) == 0:
-                propertyRecommend = False
-            else:
-                reviews_byProperty = picked_reviews[:4]
-                content['reviews_byProperty'] = reviews_byProperty
+    #         # 검색된 리뷰어들의 리뷰가 없으면(리뷰어가 검색되지 않는 경우에도 마찬가지) 기능 사용 불가
+    #         if len(picked_reviews) == 0:
+    #             propertyRecommend = False
+    #         else:
+    #             reviews_byProperty = picked_reviews[:4]
+    #             content['reviews_byProperty'] = reviews_byProperty
        
-        content['propertyRecommend'] = propertyRecommend
+    #     content['propertyRecommend'] = propertyRecommend
 
-        # 이상 연령대/직업/주사용용도 기반 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        # 이하 관심 펜 기반 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        userInterestPens = [(user.penInterest_1, Customer.pen_dict[user.penInterest_1]),
-                            (user.penInterest_2, Customer.pen_dict[user.penInterest_2]),
-                            (user.penInterest_3, Customer.pen_dict[user.penInterest_3])]
-        userInterestPens = list(filter(lambda x: x[-1] != '기타', userInterestPens))
+    #     # 이상 연령대/직업/주사용용도 기반 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    #     # 이하 관심 펜 기반 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    #     userInterestPens = [(user.penInterest_1, Customer.pen_dict[user.penInterest_1]),
+    #                         (user.penInterest_2, Customer.pen_dict[user.penInterest_2]),
+    #                         (user.penInterest_3, Customer.pen_dict[user.penInterest_3])]
+    #     userInterestPens = list(filter(lambda x: x[-1] != '기타', userInterestPens))
 
-        # 최소 1개 이상의 관심 펜은 지정되어야 함
-        penInterestRecommend = (len(userInterestPens) > 0)
-        if penInterestRecommend:
-            picked = picked_key, picked_val = random.choice(userInterestPens)
+    #     # 최소 1개 이상의 관심 펜은 지정되어야 함
+    #     penInterestRecommend = (len(userInterestPens) > 0)
+    #     if penInterestRecommend:
+    #         picked = picked_key, picked_val = random.choice(userInterestPens)
 
-            picked_category = ProductCategory.objects.get(categoryName=picked_val)
-            picked_pens = Product.objects.filter(category=picked_category)
-            content['penInterestMessage'] = f"{picked_category.categoryName} 카테고리의 인기 리뷰입니다."
+    #         picked_category = ProductCategory.objects.get(categoryName=picked_val)
+    #         picked_pens = Product.objects.filter(category=picked_category)
+    #         content['penInterestMessage'] = f"{picked_category.categoryName} 카테고리의 인기 리뷰입니다."
 
-            picked_reviews = list()
-            for pen in picked_pens:
-                for review in PenReview.objects.filter(product=pen):
-                    picked_reviews.append(review)
-            picked_reviews.sort(key=lambda x: x.likeCount, reverse=True)
+    #         picked_reviews = list()
+    #         for pen in picked_pens:
+    #             for review in PenReview.objects.filter(product=pen):
+    #                 picked_reviews.append(review)
+    #         picked_reviews.sort(key=lambda x: x.likeCount, reverse=True)
 
-            # 해당 카테고리에 펜이 없으면(또는 펜은 검색되는데 리뷰가 없으면) 기능 사용 불가
-            if len(picked_reviews) == 0:
-                penInterestRecommend = False
-            else:
-                reviews_byPenInterest = picked_reviews[:4]
-                content['reviews_byPenInterest'] = reviews_byPenInterest
+    #         # 해당 카테고리에 펜이 없으면(또는 펜은 검색되는데 리뷰가 없으면) 기능 사용 불가
+    #         if len(picked_reviews) == 0:
+    #             penInterestRecommend = False
+    #         else:
+    #             reviews_byPenInterest = picked_reviews[:4]
+    #             content['reviews_byPenInterest'] = reviews_byPenInterest
     
-        content['penInterestRecommend'] = penInterestRecommend
+    #     content['penInterestRecommend'] = penInterestRecommend
             
     return render(request, 'mainPage.html', content)
 
