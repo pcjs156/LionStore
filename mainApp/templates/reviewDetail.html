@@ -107,7 +107,7 @@
     <div><a href="" data-toggle="modal" data-target="#reviewImageAddModal">리뷰 이미지 추가하기</a></div>
     {% endif %}
     <div style="display: grid; grid-template-columns: 3fr 2fr 1fr; padding: 10px auto;">
-    <div data-toggle="tooltip" data-placement="right" title="{{ toolTipMessage }}">{{ author }}님의 리뷰</div>
+    <div data-toggle="tooltip" data-placement="right" title="{{ review.getTooltip }}">{{ author }}님의 리뷰</div>
     <div>제품명 : {{ product }}</div>
     <div>한줄평 : {{ comment }} </div>
     <div>장점 : {{ goodPoint }}</div>

@@ -34,7 +34,11 @@
                     </ul>
                 </div>
                 <div class="product__item__text">
-                    <div><a href="{% url 'reviewDetail' review.id %}">{{ review }}</a></div>
+                    <div>
+                        <a href="{% url 'reviewDetail' review.id %}" data-toggle="tooltip" data-placement="right" title="{{ review.getTooltip }}">
+                            {{ review }}
+                        </a>
+                    </div>
                     <div class="rating">
                         <div class="rateit svg" data-rateit-value="{{ review.totalScore }}" data-rateit-readonly="true"
                             data-rateit-starwidth="15" data-rateit-starheight="15">

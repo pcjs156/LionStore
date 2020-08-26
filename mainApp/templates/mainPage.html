@@ -41,7 +41,7 @@
                                              </ul>
                                         </div>
                                         <div class="product__item__text">
-                                             <h6><a href="{% url 'reviewDetail' review.id %}">{{ review }}</a></h6>
+                                             <h6><a href="{% url 'reviewDetail' review.id %}" data-toggle="tooltip" data-placement="right" title="{{ review.getTooltip }}">{{ review }}</a></h6>
                                              <div class="rating">
                                                   <div class="rateit svg" data-rateit-value="{{ review.totalScore }}"
                                                        data-rateit-readonly="true" data-rateit-starwidth="15"
@@ -75,7 +75,7 @@
                                         </ul>
                                    </div>
                                    <div class="product__item__text">
-                                        <h6><a href="{% url 'reviewDetail' review.id %}">{{ review }}</a></h6>
+                                        <h6><a href="{% url 'reviewDetail' review.id %}" data-toggle="tooltip" data-placement="right" title="{{ review.getTooltip }}">{{ review }}</a></h6>
                                         <div class="rating">
                                              <div class="rateit svg" data-rateit-value="{{ review.totalScore }}"
                                                   data-rateit-readonly="true" data-rateit-starwidth="15"
@@ -106,7 +106,7 @@
                                         </ul>
                                    </div>
                                    <div class="product__item__text">
-                                        <h6><a href="{% url 'reviewDetail' review.id %}">{{ review }}</a></h6>
+                                        <h6><a href="{% url 'reviewDetail' review.id %}" data-toggle="tooltip" data-placement="right" title="{{ review.getTooltip }}">{{ review }}</a></h6>
                                         <div class="rating">
                                              <div class="rateit svg" data-rateit-value="{{ review.totalScore }}"
                                                   data-rateit-readonly="true" data-rateit-starwidth="15"

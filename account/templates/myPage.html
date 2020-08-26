@@ -71,7 +71,7 @@
         {% else %}
             {% for review in likeReviewList %}
             <tr>
-                <td id="review_author">
+                <td id="review_author" data-toggle="tooltip" data-placement="right" title="{{ review.getTooltip }}">
                     {{ review.product.author.nickname }}
                 </td>
                 <td id="review_product_name">
