@@ -77,8 +77,6 @@ def modifyUserTag(user:Customer, before:str):
     
     user.save()
     
-    user.save()
-
 
 def userSignUp_view(request):
     if request.method == 'POST':
