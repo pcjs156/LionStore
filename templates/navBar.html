@@ -32,11 +32,11 @@ a:hover {
     </div>
 
 
-    <div class="footer__newslatter" style="margin-left: 6rem; margin-top: 2em; text-align: left;">
-        <form action="{% url 'keywordSearchResult' %}" method="GET" style="margin-bottom: 4px ;">
-            <input type="text" name="keywordQuery" required>
+    <div class="footer__newslatter" style="margin-left: 6rem; margin-top: 2em; text-align: left; width: 80%;">
+        <form action="{% url 'keywordSearchResult' %}" method="GET" style="margin-bottom: 4px;">
+            <input type="text" name="keywordQuery" required style="width: 100%;">
             <input type="text" name="sort" value="popularity" style="display: none; visibility: hidden;" required>
-            <button type="submit" class="site-btn" style="font-family:'NanumSquareRound'; font-size: 19px; margin-right: 12.6rem;">제품명 검색</button>
+            <button type="submit" class="site-btn" style="font-family:'NanumSquareRound'; font-size: 19px;">제품명 검색</button>
         </form>
     </div>
 

@@ -106,10 +106,10 @@
     <div class="footer__newslatter" style="margin: auto 2rem; text-align: center;">
         <form action="{% url 'tagSearchResult' %}" method="GET"
             style="display: inline-block; margin-bottom: 4px; width: 30%;">
-            <input type="text" name="tagQuery" required>
+            <input type="text" name="tagQuery" required style="width: 100%;">
             <input type="text" name="sort" value="popularity" style="display: none; visibility: hidden;" required>
             <button type="submit" class="site-btn"
-                style="font-family:'NanumSquareRound'; font-size: 19px; margin-right: 3.1rem;">태그로 검색</button>
+                style="font-family:'NanumSquareRound'; font-size: 19px;">태그로 검색</button>
         </form>
     </div>
     <br>
