@@ -664,41 +664,41 @@ def reviewImageDelete(request, review_id, imageIdx):
 
 
 def modifyReviewTags(review:PenReview, before:str):
-    currentRawTagString = review.rawTagString
-    currentTagNames = set(currentRawTagString.split(' '))
+    newRawTagString = review.rawTagString
+    newTagNames = set(newRawTagString.split(' '))
 
     beforeRawTagString = before
-    tagNames_toRemove = set(beforeRawTagString.split(' ')) - currentTagNames
 
-    existTags = set(list(obj.tag for obj in review.tags.all()))
+    tagNames_toRemove = set(beforeRawTagString.split(' ')) - newTagNames
+    tagNames_toAdd = newTagNames - set(beforeRawTagString.split(' '))
 
-    for name in currentTagNames:
-        if len(name) > 15 : continue
-
-        if name in existTags:
-            currentTagNames.remove(name)
-
-    # 새로운 태그 추가
-    for name in currentTagNames:
-        newTag = ReviewTag.objects.create(tag=name)
-        newTag.targetReview.add(review)
-        review.tags.add(newTag)
-        review.save()
-        newTag.save()
-
-    # 태그 삭제 검사 / 삭제
     for name in tagNames_toRemove:
-        targetTag = ReviewTag.objects.get(tag=name)
-        targetTag.targetReview.remove(review)
-        review.tags.remove(targetTag)
+        targetTags = ReviewTag.objects.filter(tag=name)
+        for tag in targetTags:
+            tag.targetReview.remove(review)
+            review.tags.remove(tag)
 
-        # 삭제해도 태그가 가리키는 리뷰가 남아있으면 삭제하면 안됨
-        # but 방금 삭제로 인해 어떤 리뷰도 가리키지 않으면 삭제해야됨
-        if len(targetTag.targetReview.all()) == 0:
-            targetTag.delete()
+            tag.save()
+            review.save()
+            
+            if len(tag.targetReview.all()) == 0:
+                tag.delete()
+            
+    tag_namespace = set(map(lambda x: x.tag, ReviewTag.objects.all()))
+    for name in tagNames_toAdd:
+        if name not in tag_namespace:
+            newTag : ReviewTag = ReviewTag.objects.create(tag=name)
+            newTag.targetReview.add(review)
+            newTag.save()
+            review.tags.add(newTag)
+            review.save()
         else:
-            targetTag.save()
-
+            existTag : ReviewTag = ReviewTag.objects.get(tag=name)
+            existTag.targetReview.add(review)
+            existTag.save()
+            review.tags.add(existTag)
+            review.save()
+    
     review.save()
 
 
