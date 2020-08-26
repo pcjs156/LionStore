@@ -121,7 +121,7 @@
                {% endif %}
           {% else %}
                <br>
-               <div style="font-family: yg-jalnan; color: rgb(80, 42, 27);text-align: center;"> 커스텀 리뷰 추천 기능을 이용하시려면 <a href="{% url 'logIn' %}">  로그인  </a>혹은 <a
+               <div style="font-family: yg-jalnan; color: rgb(80, 42, 27);text-align: center; padding-top: 2rem;"> 커스텀 리뷰 추천 기능을 이용하시려면 <a href="{% url 'logIn' %}">  로그인  </a>혹은 <a
                          href="{% url 'selectCustomerType' %}"> 회원가입 </a>이 필요합니다. </div>
                <br>
           {% endif %}
@@ -171,7 +171,7 @@
                               </ul>
                          </div>
                          <div class="product__item__text">
-                              <h6><a href="{% url 'reviewDetail' popularReview.id %}">{{ popularReview }}</a></h6>
+                              <h6><a href="{% url 'reviewDetail' popularReview.id %}" data-toggle="tooltip" data-placement="right" title="{{ popularReview.getTooltip }}">{{ popularReview }}</a></h6>
                               <div class="rating">
                                    <div class="rateit svg" data-rateit-value="{{ popularReview.totalScore }}"
                                         data-rateit-readonly="true" data-rateit-starwidth="15"
