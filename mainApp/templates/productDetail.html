@@ -56,8 +56,8 @@
 {% block content %}
 
 <article>
-     <div id="mainContainer container" style="width: 80%; margin: 0 auto; padding: 2rem 5%;">
-          <p id="link_nav" style="text-align: left; margin-left: 0.4rem; margin-bottom: 0.5rem;">
+     <div id="mainContainer container" style="width: 80%; margin: 0 auto; padding: 3rem 5%;">
+          <p id="link_nav" style="text-align: left; margin-left: 0.4rem; margin-right:0rem;">
                <a href="{% url 'productList' product.category.id %}"><i class="fa fa-bars" aria-hidden="true"></i></i>{{ product.category.categoryName }}</a> >
                <span id="current_location">{{ product }}</span>
           </p>
@@ -67,9 +67,9 @@
                </div>
      
                <div class="product_detail col container">
-                    <div class="product_detail row" style="text-align: left; display: grid; grid-template-rows: 1fr 1.5fr 1fr 0.1fr; width: 100%;">
-                         <div style="margin-bottom: 1rem;">
-                              <div style="font-family: 'yg-jalnan'; font-size: 38px;">{{ product.name }}</div>
+                    <div class="product_detail row" style="text-align: left; margin-left: 0.5rem; display: grid; grid-template-rows: 1fr 1.5fr 1fr 0.1fr; width: 100%;">
+                         <div style="margin-bottom: 1rem; ">
+                              <div style="font-family: 'yg-jalnan'; font-size: 35px;">{{ product.name }}</div>
                          </div>
                          <div style="margin-bottom: 1rem;">
                               <div style="font-family: 'NanumSquareRound'; font-size: 18px; letter-spacing :1.4px;"> 제조사</div>
@@ -82,7 +82,7 @@
      
                          <div><hr></div>
                     </div>
-                    <div class="row">
+                    <div class="row" style="margin-left: 0.5rem">
                          <div>
                               <div style="text-align: left;">
                                    <div style="font-family: 'NanumSquareRound'; font-size: 25px; font-weight: bold;">총점</div>
