@@ -113,6 +113,17 @@ class Review(models.Model):
     def getShortComment(self):
         return self.comment if len(self.comment) < 20 else self.comment[:17] + "..."
 
+    def getMainImage(self):
+        firstImage = self.reviewImage1
+        
+        images = [self.reviewImage2, self.reviewImage3, self.reviewImage4, self.reviewImage5, self.reviewImage6]
+        for image in images:
+            if image:
+                firstImage = image
+                break
+
+        return firstImage
+
 # 점수
 class Score(models.Model):
     class Meta:

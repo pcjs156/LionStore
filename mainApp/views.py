@@ -490,14 +490,8 @@ def reviewDetail_view(request, review_id):
     content['comments'] = comments
 
     #사진 목록
-    firstImage = None
     images = [review.reviewImage1, review.reviewImage2, review.reviewImage3, review.reviewImage4, review.reviewImage5, review.reviewImage6]
-    for i in range(len(images)):
-        if images[i]:
-            firstImage = images.pop(i)
-            break
-
-    content['firstImage'] = firstImage
+    images = list(filter(lambda x: x, images))
     content['images'] = images
     
     # 사진을 추가할 수 있는가?(사진이 6장 미만 등록되어 있는가?)
