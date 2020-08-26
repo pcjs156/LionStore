@@ -1126,18 +1126,6 @@ def mainPage_view(request):
     except:
         content['error'] = True
 
-<<<<<<< HEAD
-    # 연령대 / 직업 / 주사용목적 중 하나를 랜덤하게 골라 특성이 같은 유저들의 인기 리뷰를 보여줌
-    if request.user.is_authenticated:
-        # 연령대 / 직업 / 주사용목적 중 '기타'로 되어 있지 않은 항목을 걸러냄(이 중에 랜덤하게 하나 보여줌)
-        user : Customer = request.user
-        print(user.usage)
-        print(Customer.usage_dict)
-        user_usage = (user.usage, Customer.usage_dict[user.usage])
-        user_job = (user.job, Customer.job_dict[user.job])
-        user_age = (user.age, Customer.age_dict[user.age])
-        userPropertyList = list(filter(lambda choice: choice[1] != "기타", [user_usage, user_job, user_age]))
-=======
     # 연령대 / 직업 / 주 사용 용도 중 1개 정보를 랜덤으로 골라
     # 해당 정보가 겹치는 리뷰어들의 리뷰를 보여주는 기능
     # + 관심 등록 펜 유형의 인기 리뷰를 보여주는 기능
@@ -1152,7 +1140,6 @@ def mainPage_view(request):
         user_job = ('job', user.job, Customer.job_dict[user.job])
         user_usage = ('usage', user.usage, Customer.usage_dict[user.usage])
         userInfoList = list(filter(lambda x: x[-1] != '기타', [user_age, user_job, user_usage]))
->>>>>>> cbcabd657fdfb9631fc2d00187e304d79ed3783f
         
         # 최소 1개 이상의 정보는 공개되어야 함
         propertyRecommend = (len(userInfoList) > 0)
