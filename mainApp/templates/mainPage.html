@@ -41,7 +41,7 @@
                                              </ul>
                                         </div>
                                         <div class="product__item__text">
-                                             <h6><a href="{% url 'reviewDetail' review.id %}"">{{ review }}</a></h6>
+                                             <h6><a href="{% url 'reviewDetail' review.id %}">{{ review }}</a></h6>
                                              <div class="rating">
                                                   <div class="rateit svg" data-rateit-value="{{ review.totalScore }}"
                                                        data-rateit-readonly="true" data-rateit-starwidth="15"
@@ -65,6 +65,37 @@
                     </div>
                     <div class="row property__gallery" style="padding-left: 3em; padding-right: 3em;">
                          {% for review in reviews_byProperty %}
+                         <div class="col-lg-3 col-md-4 col-sm-6 mix women">
+                              <div class="product__item">
+                                   <div class="product__item__pic set-bg" data-setbg="{{ review.getMainImage.url }}">
+                                        <ul class="product__hover">
+                                             <li><a href="{{ review.getMainImage.url }}" class="image-popup"><span
+                                                            class="arrow_expand"></span></a></li>
+                                        </ul>
+                                   </div>
+                                   <div class="product__item__text">
+                                        <h6><a href="{% url 'reviewDetail' review.id %}"">{{ review }}</a></h6>
+                                        <div class="rating">
+                                             <div class="rateit svg" data-rateit-value="{{ review.totalScore }}"
+                                                  data-rateit-readonly="true" data-rateit-starwidth="15"
+                                                  data-rateit-starheight="15">
+                                             </div>
+                                        </div>
+                                   </div>
+                              </div>
+                         </div>
+                         {% endfor %}
+                    </div>
+                    <br>
+               {% endif %}
+               {% if penInterestRecommend %}
+                    <div class="h4"
+                         style="text-align: left; padding: 1em 3rem 0 3rem; font-family: 'yg-jalnan'; color:#663e27;">
+                         {{ penInterestMessage }}
+                         <hr>
+                    </div>
+                    <div class="row property__gallery" style="padding-left: 3em; padding-right: 3em;">
+                         {% for review in reviews_byPenInterest %}
                          <div class="col-lg-3 col-md-4 col-sm-6 mix women">
                               <div class="product__item">
                                    <div class="product__item__pic set-bg" data-setbg="{{ review.getMainImage.url }}">

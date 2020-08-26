@@ -1128,12 +1128,14 @@ def mainPage_view(request):
 
     # 연령대 / 직업 / 주 사용 용도 중 1개 정보를 랜덤으로 골라
     # 해당 정보가 겹치는 리뷰어들의 리뷰를 보여주는 기능
+    # + 관심 등록 펜 유형의 인기 리뷰를 보여주는 기능
     # 단, '기타'로 설정된 항목은 사용할 수 없으며
     # 3가지 정보가 모두 '기타'인 경우 해당 기능 전체를 사용할 수 없다.
     user : Customer = request.user
 
     # 당연히 로그인 하지 않은 유저는 해당 기능을 사용할 수 없다
     if user.is_authenticated:
+        # 이하 연령대/직업/주사용용도 기반 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         user_age = ('age', user.age, Customer.age_dict[user.age])
         user_job = ('job', user.job, Customer.job_dict[user.job])
         user_usage = ('usage', user.usage, Customer.usage_dict[user.usage])
@@ -1171,6 +1173,37 @@ def mainPage_view(request):
                 content['reviews_byProperty'] = reviews_byProperty
        
         content['propertyRecommend'] = propertyRecommend
+
+        # 이상 연령대/직업/주사용용도 기반 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        # 이하 관심 펜 기반 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        userInterestPens = [(user.penInterest_1, Customer.pen_dict[user.penInterest_1]),
+                            (user.penInterest_2, Customer.pen_dict[user.penInterest_2]),
+                            (user.penInterest_3, Customer.pen_dict[user.penInterest_3])]
+        userInterestPens = list(filter(lambda x: x[-1] != '기타', userInterestPens))
+
+        # 최소 1개 이상의 관심 펜은 지정되어야 함
+        penInterestRecommend = (len(userInterestPens) > 0)
+        if penInterestRecommend:
+            picked = picked_key, picked_val = random.choice(userInterestPens)
+
+            picked_category = ProductCategory.objects.get(categoryName=picked_val)
+            picked_pens = Product.objects.filter(category=picked_category)
+            content['penInterestMessage'] = f"{picked_category.categoryName} 카테고리의 인기 리뷰입니다."
+
+            picked_reviews = list()
+            for pen in picked_pens:
+                for review in PenReview.objects.filter(product=pen):
+                    picked_reviews.append(review)
+            picked_reviews.sort(key=lambda x: x.likeCount, reverse=True)
+
+            # 해당 카테고리에 펜이 없으면(또는 펜은 검색되는데 리뷰가 없으면) 기능 사용 불가
+            if len(picked_reviews) == 0:
+                penInterestRecommend = False
+            else:
+                reviews_byPenInterest = picked_reviews[:4]
+                content['reviews_byPenInterest'] = reviews_byPenInterest
+    
+        content['penInterestRecommend'] = penInterestRecommend
             
     return render(request, 'mainPage.html', content)
 
