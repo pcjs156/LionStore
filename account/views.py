@@ -176,7 +176,13 @@ def modifyUserInfo_view(request):
     else:
         content = dict()
 
-        form = UserModifyForm(instance=request.user)
+        if request.user.is_Customer:
+            form = UserModifyForm(instance=request.user)
+        elif request.user.is_Stationer:
+            form = StationerModifyForm(instance=request.user)
+        elif request.user.is_WebSeller:
+            form = WebSellerModifyForm(instance=request.user)
+            
         content['form'] = form
 
         return render(request, 'modifyUserInfo.html', content)

@@ -281,7 +281,6 @@
         </a>
     </div>
 
-    {% if user.is_Customer %}
     <div style="text-align: right; width: 85%; margin-top: 1rem;">
         <a href="{% url 'modifyUserInfo' %}">
             <button class="btn btn-warning" style="background-color: #f9d691;">
@@ -289,7 +288,6 @@
             </button>
         </a>
     </div>
-    {% endif %}
 
     {% if user.is_Customer or user.is_Stationer %}
     <div style="text-align: right; width: 85%; margin-top: 1rem;">

@@ -2,10 +2,16 @@
 {% load static %}
 
 {% block head %}
-<title>일반 리뷰어 정보 변경</title>
+<title>개인 정보 수정</title>
 <style>
     article {
         padding: 2rem;
+    }
+    textarea {
+        resize: none;
+    }
+    #id_telephone, #id_link {
+        width: 10%;
     }
 </style>
 {% endblock %}
@@ -66,6 +72,29 @@
         </div>
         {{ form.rawTagString }}
         <br>
+        <br>
+
+        {% if user.is_Stationer %}
+        <div class="checkout__form__input">
+            <p>TEL<span>*</span></p>
+            {{ form.telephone }}
+        </div>
+        <br>    
+        {% endif %}
+
+        {% if user.is_WebSeller %}
+        <div class="checkout__form__input">
+            <p>TEL<span>*</span></p>
+            {{ form.telephone }}
+        </div>
+        <br>
+    
+        <div class="checkout__form__input">
+            <p>WEB/MOBBILE LINK<span>*</span></p>
+            {{ form.link }}
+        </div>
+        <br>    
+        {% endif %}
         
         <input type="submit" class="site-btn" value="수정 완료">
     </form>
