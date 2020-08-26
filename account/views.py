@@ -105,6 +105,7 @@ def webSellerSignUp_view(request):
         if form.is_valid():
             user = form.save()
             user.save()
+            connectTagToUser(user, form.cleaned_data['rawTagString'])
 
             login(request, user)
             return redirect("mainPage")
@@ -122,6 +123,9 @@ def stationerSignUp_view(request):
 
         if form.is_valid():
             user = form.save()
+            user.save()
+            connectTagToUser(user, form.cleaned_data['rawTagString'])
+
             login(request, user)
             return redirect("setLocation")
         
