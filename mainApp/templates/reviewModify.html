@@ -47,67 +47,90 @@
 {% endblock %}
 
 {% block content %}
-<div class="h3" style="text-align: left; font-family: 'yg-jalnan';">리뷰수정하기</div>
+<div id="mainContainer container" style="width: 80%; margin: 2rem auto; padding: 2rem 5%;">
+    <div class="product_detail col container">
+        <div class="product_detail row" style="text-align: left; display: grid; grid-template-rows: 1fr 1.5fr; width: 100%;">
+            <p class="h2" style="text-align: left; font-family: 'yg-jalnan'; color: hsl(32, 81%, 44%);">리뷰수정하기</p>
 
-<div class="reviewmodify">
-    <form action="{% url 'reviewUpdate' review.id %}" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-
-        <p class="h6" style="text-align: left; font-family: 'yg-jalnan';">한줄평</p>
-        <input type="text" name="comment" id="comment" value="{{ review.comment }}">
-        <br>
-</div>
-        <p class="h6" style="text-align: left; font-family: 'yg-jalnan';">그립감</p>
-        <input type="rating" name="grip" value="{{ review.grip.score }}" required="" id="id_grip" min="0" max="5" step="1" style="display: none;">
-        <div id="star_id_grade" class="rateit svg" data-rateit-backingfld="#id_grip" data-rateit-starwidth="15"
-            data-rateit-starheight="15"></div>
-        <br>
-
-        <p class="h6" style="text-align: left; font-family: 'yg-jalnan';">수명</p>
-        <input type="rating" name="life" value="{{ review.life.score }}" required="" id="id_life" min="0" max="5" step="1" style="display: none;">
-        <div id="star_id_life" class="rateit svg" data-rateit-backingfld="#id_life" data-rateit-starwidth="15"
-            data-rateit-starheight="15"></div>
-        <br>
-
-        <p class="h6" style="text-align: left; font-family: 'yg-jalnan';">내구도</p>
-        <input type="rating" name="durability" value="{{ review.durability.score }}" required="" id="id_durability" min="0" max="5" step="1"
-            style="display: none;">
-        <div id="star_id_durability" class="rateit svg" data-rateit-backingfld="#id_durability" data-rateit-starwidth="15"
-            data-rateit-starheight="15"></div>
-        <br>
-
-        <p class="h6" style="text-align: left; font-family: 'yg-jalnan';">디자인</p>
-        <input type="rating" name="design" value="{{ review.design.score }}" required="" id="id_design" min="0" max="5" step="1"
-            style="display: none;">
-        <div id="star_id_design" class="rateit svg" data-rateit-backingfld="#id_design" data-rateit-starwidth="15"
-            data-rateit-starheight="15"></div>
-        <br>
-
-        <p class="h6" style="text-align: left; font-family: 'yg-jalnan';">사용감</p>
-        <input type="rating" name="texture" value="{{ review.texture.score }}" required="" id="id_texture" min="0" max="5" step="1"
-            style="display: none;">
-        <div id="star_id_texture" class="rateit svg" data-rateit-backingfld="#id_texture" data-rateit-starwidth="15"
-            data-rateit-starheight="15"></div>
-        <br>
-
-        <p class="h6" style="text-align: left; font-family: 'yg-jalnan';">가성비</p>
-        <input type="rating" name="costEffetiveness" value="{{ review.costEffetiveness.score }}" required="" id="id_costEffetiveness" min="0" max="5" step="1"
-             style="display: none;">
-        <div id="star_id_costEffetiveness" class="rateit svg" data-rateit-backingfld="#id_costEffetiveness"
-            data-rateit-starwidth="15" data-rateit-starheight="15"></div>
-        <br>
-
-        <p class="h6" style="text-align: left; font-family: 'yg-jalnan';">장점</p>
-    <textarea name="goodPoint" id="goodPoint" cols="101" rows="10" style="border: 1.5px solid #66666644;">{{ review.goodPoint }}</textarea>
+            <div class="reviewmodify" style="width: 85%;">
+                <form action="{% url 'reviewUpdate' review.id %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <p class="h5" style="text-align: left; font-family: 'yg-jalnan';">한줄평</p>
+                    <input type="text" name="comment" id="comment" value="{{ review.comment }}">
+                
+            </div>  
+        </div>  
+    </div>
+    <hr>
+    <div class="product_detail col container">
+        <div class="scoreContainer" style="margin-top: 1.5rem;">
+            <div class="row">
+                <div class="col">
+                    <div class="h6" style="font-family: 'yg-jalnan'; font-weight: bold;">그립감</div>
+                    <input type="rating" name="grip" value="{{ review.grip.score }}" required="" id="id_grip" min="0" max="5" step="1" style="display: none;">
+                    <div id="star_id_grade" class="rateit svg" data-rateit-backingfld="#id_grip" data-rateit-starwidth="15"
+                        data-rateit-starheight="15"></div>
+                </div>
+            <br>
+                <div class="col">
+                    <div class="h6" style="font-family: 'yg-jalnan'; font-weight: bold;">수명</div>
+                    <input type="rating" name="life" value="{{ review.life.score }}" required="" id="id_life" min="0" max="5" step="1" style="display: none;">
+                    <div id="star_id_life" class="rateit svg" data-rateit-backingfld="#id_life" data-rateit-starwidth="15"
+                       data-rateit-starheight="15"></div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col">
+                    <div class="h6" style="font-family: 'yg-jalnan'; font-weight: bold;">내구도</div>
+                    <input type="rating" name="durability" value="{{ review.durability.score }}" required="" id="id_durability" min="0" max="5" step="1"
+                        style="display: none;">
+                    <div id="star_id_durability" class="rateit svg" data-rateit-backingfld="#id_durability" data-rateit-starwidth="15"
+                        data-rateit-starheight="15"></div>
+                </div>
+            <br>
+                <div class="col">
+                    <div class="h6" style="font-family: 'yg-jalnan'; font-weight: bold;">디자인</div>
+                    <input type="rating" name="design" value="{{ review.design.score }}" required="" id="id_design" min="0" max="5" step="1"
+                        style="display: none;">
+                    <div id="star_id_design" class="rateit svg" data-rateit-backingfld="#id_design" data-rateit-starwidth="15"
+                        data-rateit-starheight="15"></div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col">
+                    <div class="h6" style="font-family: 'yg-jalnan'; font-weight: bold;">사용감</div>
+                    <input type="rating" name="texture" value="{{ review.texture.score }}" required="" id="id_texture" min="0" max="5" step="1"
+                        style="display: none;">
+                    <div id="star_id_texture" class="rateit svg" data-rateit-backingfld="#id_texture" data-rateit-starwidth="15"
+                        data-rateit-starheight="15"></div>
+                </div>
+            <br>
+                <div class="col">
+                    <div class="h6" style="font-family: 'yg-jalnan'; font-weight: bold;">가성비</div>
+                    <input type="rating" name="costEffetiveness" value="{{ review.costEffetiveness.score }}" required="" id="id_costEffetiveness" min="0" max="5" step="1"
+                        style="display: none;">
+                    <div id="star_id_costEffetiveness" class="rateit svg" data-rateit-backingfld="#id_costEffetiveness"
+                        data-rateit-starwidth="15" data-rateit-starheight="15"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <p class="h5" style="text-align: left; font-family: 'yg-jalnan';">장점</p>
+    <textarea name="goodPoint" id="goodPoint" cols="118" rows="10" style="border: 1.5px solid #66666644;">{{ review.goodPoint }}</textarea>
     <br>
-
-    <p class="h6" style="text-align: left; font-family: 'yg-jalnan';">단점</p>
-    <textarea name="weakPoint" id="weakPoint" cols="101" rows="10" style="border: 1.5px solid #66666644;" >{{ review.weakPoint }}</textarea>
     <br>
-
-    <p class="h6" style="text-align: left; font-family: 'yg-jalnan';">태그 목록(공백 문자로 구분됩니다.)</p>
-    <textarea name="rawTagString" id="rawTagString" cols="101" rows="2" style="border: 1.5px solid #66666644;">{{ review.rawTagString }}</textarea>
+    <p class="h5" style="text-align: left; font-family: 'yg-jalnan';">단점</p>
+    <textarea name="weakPoint" id="weakPoint" cols="118" rows="10" style="border: 1.5px solid #66666644;" >{{ review.weakPoint }}</textarea>
     <br>
+    <br>
+    <hr>
+    <p class="h5" style="text-align: left; font-family: 'yg-jalnan';">태그 목록(공백 문자로 구분됩니다.)</p>
+    <textarea name="rawTagString" id="rawTagString" cols="118" rows="2" style="border: 1.5px solid #66666644;">{{ review.rawTagString }}</textarea>
+    <br><br>
     <button type="submit" class="modify-btn" style="font-family:'NanumSquareRound'; font-size: 19px;">수정 완료</button>
     </form>
+</div>
 {% endblock %}
