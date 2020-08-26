@@ -437,8 +437,6 @@ def reviewDetail_view(request, review_id):
 
     # 작성자
     content['author'] = review.author.nickname
-    # 작성자 정보 툴팁 메시지
-    content['toolTipMessage'] = getReviewerTagTooltip(review.author)
     # 제품명
     content['product'] = review.product.name
     # 한줄평

@@ -113,32 +113,6 @@ class Review(models.Model):
     def getShortComment(self):
         return self.comment if len(self.comment) < 20 else self.comment[:17] + "..."
 
-    def getTooltip(self):
-        user = self.author
-
-        try:
-            user_usage = ("주 사용 용도", user.usage, Customer.usage_dict[user.usage])
-        except:
-            user_usage = ("주 사용 용도", "U0", "기타")
-
-        try:
-            user_job = ("직업", user.job, Customer.job_dict[user.job])
-        except:
-            user_job = ("직업", "J0", "기타")
-
-        try:
-            user_age = ("연령", user.age, Customer.age_dict[user.age])
-        except:
-            user_age = ("연령", "etcs", "기타")
-
-        userPropertyList = list(filter(lambda choice: choice[-1] != "기타", [user_usage, user_job, user_age]))
-
-        if len(userPropertyList) <= 0 :
-            return "모든 정보가 비공개 되어 있습니다."
-        
-        else :
-            return " | ".join([f"{p[-1]}" for p in userPropertyList])
-
 # 점수
 class Score(models.Model):
     class Meta:

@@ -78,15 +78,3 @@ def getCategoryId(categoryName):
 def redirectByCategoryName(request, categoryName):
     id = getCategoryId(categoryName)
     return views.productList_view(request, id)
-
-def getReviewerTagTooltip(user : Customer):
-    user_usage = ("주 사용 용도", user.usage, Customer.usage_dict[user.usage])
-    user_job = ("직업", user.job, Customer.job_dict[user.job])
-    user_age = ("연령", user.age, Customer.age_dict[user.age])
-    userPropertyList = list(filter(lambda choice: choice[-1] != "기타", [user_usage, user_job, user_age]))
-
-    if len(userPropertyList) <= 0 :
-        return "모든 정보가 비공개 되어 있습니다."
-    
-    else :
-        return " | ".join([f"{p[-1]}" for p in userPropertyList])
