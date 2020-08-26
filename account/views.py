@@ -165,7 +165,13 @@ def logout_view(request):
 def modifyUserInfo_view(request):
     if request.method == "POST":
         beforeString = request.user.rawTagString
-        form = UserModifyForm(request.POST, request.FILES, instance=request.user)
+        if request.user.is_Customer:
+            form = UserModifyForm(request.POST, request.FILES, instance=request.user)
+        elif request.user.is_Stationer:
+            form = StationerModifyForm(request.POST, request.FILES, instance=request.user)
+        elif request.user.is_WebSeller:
+            form = WebSellerModifyForm(request.POST, request.FILES, instance=request.user)
+
         if form.is_valid():
             form.save()
 
@@ -182,7 +188,7 @@ def modifyUserInfo_view(request):
             form = StationerModifyForm(instance=request.user)
         elif request.user.is_WebSeller:
             form = WebSellerModifyForm(instance=request.user)
-            
+
         content['form'] = form
 
         return render(request, 'modifyUserInfo.html', content)
