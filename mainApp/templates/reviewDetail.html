@@ -125,20 +125,20 @@
 <!-- 페이지 왼쪽 ! 이미지 -->
 
 <div class="column img" >
-    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+    <!-- <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner"> 
-            <div class="carousel-item active">
+            <div class="carousel-item active"> -->
                 {% for image in images %}
                 {% if image %}
                 {% if review.author == user %}
                 <a href="{% url 'reviewImageModify' review_id=review.id imageIdx=forloop.counter0 %}">
-                <img src="{{ image.url }}" class="d-block w-100" style="width:350px; height:350px;">
+                <img src="{{ image.url }}"  style="width:350px; height:350px;">
                 </a>
                 {% else %}
-                <img src="{{ image.url }}" class="d-block w-100" style="width:350px; height:350px;">
+                <img src="{{ image.url }}" style="width:350px; height:350px;">
                 {% endif %}
-            </div>
-        </div>
+            <!-- </div>
+        </div> -->
             <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="sr-only">Previous</span>
@@ -147,9 +147,6 @@
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="sr-only">Next</span>
             </a>
-    </div>
-</div>
-
     {% endif %}
     {% endfor %}
     <br><br>
