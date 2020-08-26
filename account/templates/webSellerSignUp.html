@@ -56,10 +56,52 @@
     <br>
 
     <div>
-        <p>PROFILE IMAGE <span style="color: red;">*</span></p>
+        <p>PROFILE IMAGE</p>
         <input type="file" name="image" accept="image/*" id="id_image">
     </div>
     <br>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; width: 50%; margin-left: 450px;">
+        <div>
+            <div>AGE</div>
+            {{ form.age }}
+        </div>
+    
+        <div>
+            <div>JOB</div>
+            {{ form.job }}
+        </div>
+    
+        <div>
+            <div>USAGE</div>
+            {{ form.usage }}
+        </div>
+    </div>
+
+    <br>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; width: 50%; margin-left: 450px;">
+        <div>
+            <div>PEN 1</div>
+            {{form.penInterest_1}}
+        </div>
+        <div>
+            <div>PEN 2</div>
+            {{form.penInterest_2}}
+        </div>
+        <div>
+            <div>PEN 3</div>
+            {{form.penInterest_3}}
+        </div>
+    </div>
+    <br><br> <br> <br>
+
+    <div class="checkout__form__input">
+        <p>TAG <span style="color: gray;">관심있는 키워드 해쉬태그를 지정하세요 (공백문자로 구분해 입력)</span></p>
+    </div>
+    {{ form.rawTagString }}
+    <br>
+
 
     <div class="checkout__form__input">
         <p>TEL<span>*</span></p>

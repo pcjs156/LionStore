@@ -32,7 +32,9 @@ class WebSellerSignUpForm(UserCreationForm):
         model = Customer
         fields = ['username', 'password1', 'password2', 'email',
                   'nickname', 'introduce', 'image',
-                  'telephone', 'link']
+                  'telephone', 'link',
+                  'age', 'job', 'usage',
+                  'penInterest_1', 'penInterest_2', 'penInterest_3', 'rawTagString']
     
     @transaction.atomic
     def save(self):
@@ -47,7 +49,9 @@ class StationerSignUpForm(UserCreationForm):
         model = Customer
         fields = ['username', 'password1', 'password2', 'email',
                   'nickname', 'introduce', 'image',
-                  'telephone']
+                  'telephone',
+                  'age', 'job', 'usage',
+                  'penInterest_1', 'penInterest_2', 'penInterest_3', 'rawTagString']
     
     @transaction.atomic
     def save(self):
@@ -62,3 +66,19 @@ class UserModifyForm(UserChangeForm):
         fields = ['introduce', 'image',
                   'age', 'job', 'usage',
                   'penInterest_1', 'penInterest_2', 'penInterest_3', 'rawTagString']
+
+class WebSellerModifyForm(UserChangeForm):
+    class Meta:
+        model = Customer
+        fields = ['introduce', 'image',
+                  'age', 'job', 'usage',
+                  'penInterest_1', 'penInterest_2', 'penInterest_3', 'rawTagString',
+                  'link', 'telephone']
+
+class StationerModifyForm(UserChangeForm):
+    class Meta:
+        model = Customer
+        fields = ['introduce', 'image',
+                  'age', 'job', 'usage',
+                  'penInterest_1', 'penInterest_2', 'penInterest_3', 'rawTagString',
+                  'telephone']

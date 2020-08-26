@@ -144,7 +144,6 @@ def productDetail_view(request, product_id):
         
         myReview = list(filter(lambda r: r.author == request.user, reviews))[0]
         content['myReview'] = myReview
-        print(myReview)
 
     except:
         content['reviewCreated'] = False
@@ -491,14 +490,8 @@ def reviewDetail_view(request, review_id):
     content['comments'] = comments
 
     #사진 목록
-    firstImage = None
     images = [review.reviewImage1, review.reviewImage2, review.reviewImage3, review.reviewImage4, review.reviewImage5, review.reviewImage6]
-    for i in range(len(images)):
-        if images[i]:
-            firstImage = images.pop(i)
-            break
-
-    content['firstImage'] = firstImage
+    images = list(filter(lambda x: x, images))
     content['images'] = images
     
     # 사진을 추가할 수 있는가?(사진이 6장 미만 등록되어 있는가?)
@@ -664,41 +657,41 @@ def reviewImageDelete(request, review_id, imageIdx):
 
 
 def modifyReviewTags(review:PenReview, before:str):
-    currentRawTagString = review.rawTagString
-    currentTagNames = set(currentRawTagString.split(' '))
+    newRawTagString = review.rawTagString
+    newTagNames = set(newRawTagString.split(' '))
 
     beforeRawTagString = before
-    tagNames_toRemove = set(beforeRawTagString.split(' ')) - currentTagNames
 
-    existTags = set(list(obj.tag for obj in review.tags.all()))
+    tagNames_toRemove = set(beforeRawTagString.split(' ')) - newTagNames
+    tagNames_toAdd = newTagNames - set(beforeRawTagString.split(' '))
 
-    for name in currentTagNames:
-        if len(name) > 15 : continue
-
-        if name in existTags:
-            currentTagNames.remove(name)
-
-    # 새로운 태그 추가
-    for name in currentTagNames:
-        newTag = ReviewTag.objects.create(tag=name)
-        newTag.targetReview.add(review)
-        review.tags.add(newTag)
-        review.save()
-        newTag.save()
-
-    # 태그 삭제 검사 / 삭제
     for name in tagNames_toRemove:
-        targetTag = ReviewTag.objects.get(tag=name)
-        targetTag.targetReview.remove(review)
-        review.tags.remove(targetTag)
+        targetTags = ReviewTag.objects.filter(tag=name)
+        for tag in targetTags:
+            tag.targetReview.remove(review)
+            review.tags.remove(tag)
 
-        # 삭제해도 태그가 가리키는 리뷰가 남아있으면 삭제하면 안됨
-        # but 방금 삭제로 인해 어떤 리뷰도 가리키지 않으면 삭제해야됨
-        if len(targetTag.targetReview.all()) == 0:
-            targetTag.delete()
+            tag.save()
+            review.save()
+            
+            if len(tag.targetReview.all()) == 0:
+                tag.delete()
+            
+    tag_namespace = set(map(lambda x: x.tag, ReviewTag.objects.all()))
+    for name in tagNames_toAdd:
+        if name not in tag_namespace:
+            newTag : ReviewTag = ReviewTag.objects.create(tag=name)
+            newTag.targetReview.add(review)
+            newTag.save()
+            review.tags.add(newTag)
+            review.save()
         else:
-            targetTag.save()
-
+            existTag : ReviewTag = ReviewTag.objects.get(tag=name)
+            existTag.targetReview.add(review)
+            existTag.save()
+            review.tags.add(existTag)
+            review.save()
+    
     review.save()
 
 
@@ -1090,7 +1083,6 @@ def userRecommendation_view(request):
 def mainPage_view(request):
     content = dict()
 
-    # 테스트/개발용이므로 서비스 할 때는 빠져아 함
     # 카테고리가 존재하지 않는 경우에만 하단의 모든 카테고리를 새로 생성하는 역할
     initializeCategory()
 
@@ -1134,6 +1126,7 @@ def mainPage_view(request):
     except:
         content['error'] = True
 
+<<<<<<< HEAD
     # 연령대 / 직업 / 주사용목적 중 하나를 랜덤하게 골라 특성이 같은 유저들의 인기 리뷰를 보여줌
     if request.user.is_authenticated:
         # 연령대 / 직업 / 주사용목적 중 '기타'로 되어 있지 않은 항목을 걸러냄(이 중에 랜덤하게 하나 보여줌)
@@ -1144,82 +1137,87 @@ def mainPage_view(request):
         user_job = (user.job, Customer.job_dict[user.job])
         user_age = (user.age, Customer.age_dict[user.age])
         userPropertyList = list(filter(lambda choice: choice[1] != "기타", [user_usage, user_job, user_age]))
-        
-        # 만약 전부 '기타'이면 추천 불가능
-        if len(userPropertyList) > 0:
-            pickedField = pickedKey, pickedVal = random.choice(userPropertyList)
-            fieldType = pickedKey[0] # 직업(J) | 주사용목적(U) | 연령대(숫자)
+=======
+    # 연령대 / 직업 / 주 사용 용도 중 1개 정보를 랜덤으로 골라
+    # 해당 정보가 겹치는 리뷰어들의 리뷰를 보여주는 기능
+    # + 관심 등록 펜 유형의 인기 리뷰를 보여주는 기능
+    # 단, '기타'로 설정된 항목은 사용할 수 없으며
+    # 3가지 정보가 모두 '기타'인 경우 해당 기능 전체를 사용할 수 없다.
+    user : Customer = request.user
 
-            if fieldType == "U":
-                reviewers = Customer.objects.filter(usage=pickedKey)
-                content['propertyMessage'] = f"주 사용 목적이 [{Customer.usage_dict[pickedKey]}]인 리뷰어님들의 인기 리뷰입니다."
-            elif fieldType == "J":
-                reviewers = Customer.objects.filter(job=pickedKey)
-                content['propertyMessage'] = f"직업이 [{Customer.job_dict[pickedKey]}]인 리뷰어님들의 인기 리뷰입니다."
+    # 당연히 로그인 하지 않은 유저는 해당 기능을 사용할 수 없다
+    if user.is_authenticated:
+        # 이하 연령대/직업/주사용용도 기반 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        user_age = ('age', user.age, Customer.age_dict[user.age])
+        user_job = ('job', user.job, Customer.job_dict[user.job])
+        user_usage = ('usage', user.usage, Customer.usage_dict[user.usage])
+        userInfoList = list(filter(lambda x: x[-1] != '기타', [user_age, user_job, user_usage]))
+>>>>>>> cbcabd657fdfb9631fc2d00187e304d79ed3783f
+        
+        # 최소 1개 이상의 정보는 공개되어야 함
+        propertyRecommend = (len(userInfoList) > 0)
+        if propertyRecommend:
+            picked = picked_field, picked_key, picked_val = random.choice(userInfoList)
+            
+            if picked_field == "age":
+                picked_reviewers = Customer.objects.filter(age=user_age[1])
+                propertyMessage = f"{user_age[-1]} 리뷰어님들의 인기 리뷰입니다."
+                content['propertyMessage'] = propertyMessage
+            elif picked_field == "job":
+                picked_reviewers = Customer.objects.filter(job=user_job[1])
+                propertyMessage = f"{user_job[-1]} 리뷰어님들의 인기 리뷰입니다."
+                content['propertyMessage'] = propertyMessage
+            elif picked_field == "usage":
+                picked_reviewers = Customer.objects.filter(usage=user_usage[1])
+                propertyMessage = f"주 사용처가 {user_usage[-1]}인 리뷰어님들의 인기 리뷰입니다."
+                content['propertyMessage'] = propertyMessage
+            
+            picked_reviews = list()
+            for reviewer in picked_reviewers:
+                for review in PenReview.objects.filter(author=reviewer):
+                    picked_reviews.append(review)
+            picked_reviews.sort(key=lambda x: x.likeCount, reverse=True)
+            
+            # 검색된 리뷰어들의 리뷰가 없으면(리뷰어가 검색되지 않는 경우에도 마찬가지) 기능 사용 불가
+            if len(picked_reviews) == 0:
+                propertyRecommend = False
             else:
-                reviewers = Customer.objects.filter(age=pickedKey)
-                content['propertyMessage'] = f"[{Customer.age_dict[pickedKey]}] 리뷰어님들의 인기 리뷰입니다."
+                reviews_byProperty = picked_reviews[:4]
+                content['reviews_byProperty'] = reviews_byProperty
+       
+        content['propertyRecommend'] = propertyRecommend
 
+        # 이상 연령대/직업/주사용용도 기반 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        # 이하 관심 펜 기반 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        userInterestPens = [(user.penInterest_1, Customer.pen_dict[user.penInterest_1]),
+                            (user.penInterest_2, Customer.pen_dict[user.penInterest_2]),
+                            (user.penInterest_3, Customer.pen_dict[user.penInterest_3])]
+        userInterestPens = list(filter(lambda x: x[-1] != '기타', userInterestPens))
 
-            # 만약 해당하는 유형의 리뷰어가 없으면 추천 X
-            userPropertyRecommend = (len(reviewers) > 0)
+        # 최소 1개 이상의 관심 펜은 지정되어야 함
+        penInterestRecommend = (len(userInterestPens) > 0)
+        if penInterestRecommend:
+            picked = picked_key, picked_val = random.choice(userInterestPens)
+
+            picked_category = ProductCategory.objects.get(categoryName=picked_val)
+            picked_pens = Product.objects.filter(category=picked_category)
+            content['penInterestMessage'] = f"{picked_category.categoryName} 카테고리의 인기 리뷰입니다."
+
+            picked_reviews = list()
+            for pen in picked_pens:
+                for review in PenReview.objects.filter(product=pen):
+                    picked_reviews.append(review)
+            picked_reviews.sort(key=lambda x: x.likeCount, reverse=True)
+
+            # 해당 카테고리에 펜이 없으면(또는 펜은 검색되는데 리뷰가 없으면) 기능 사용 불가
+            if len(picked_reviews) == 0:
+                penInterestRecommend = False
+            else:
+                reviews_byPenInterest = picked_reviews[:4]
+                content['reviews_byPenInterest'] = reviews_byPenInterest
+    
+        content['penInterestRecommend'] = penInterestRecommend
             
-            if userPropertyRecommend:
-                reviews = list()
-                for reviewer in reviewers:
-                    if reviewer != user:
-                        for review in PenReview.objects.filter(author=reviewer):
-                            reviews.append(review)
-
-                # 다 털어봤는데 리뷰가 없으면 추천 X
-                if len(reviews) == 0 :
-                    userPropertyRecommend = False
-                else:
-                    reviews.sort(key=lambda x: x.likeCount, reverse=True)
-                    content['userPropertyReviews'] = reviews
-
-            content['userPropertyRecommend'] = userPropertyRecommend
-
-    # 관심 펜 중 랜덤하게 하나를 골라 인기 리뷰를 추천해줌\
-    if request.user.is_authenticated:
-        # 연령대 / 직업 / 주사용목적 중 '기타'로 되어 있지 않은 항목을 걸러냄(이 중에 랜덤하게 하나 보여줌)
-        user : Customer = request.user
-        penInteresting_1 = (user.penInterest_1, Customer.pen_dict[user.penInterest_1])
-        penInteresting_2 = (user.penInterest_2, Customer.pen_dict[user.penInterest_2])
-        penInteresting_3 = (user.penInterest_3, Customer.pen_dict[user.penInterest_3])
-        penInterestList = list(filter(lambda choice: choice[1] != "기타", [penInteresting_1, penInteresting_2, penInteresting_3]))
-        
-        # 만약 전부 '기타'이면 추천 불가능
-        if len(penInterestList) > 0:
-            pickedField = pickedKey, pickedVal = random.choice(penInterestList)
-
-            reviewers = Customer.objects.filter(penInterest_1=pickedKey) | \
-                        Customer.objects.filter(penInterest_2=pickedKey) | \
-                        Customer.objects.filter(penInterest_3=pickedKey)
-
-            content['propertyMessage'] = f"{Customer.pen_dict[pickedKey]}을(를) 선호하는 리뷰어님들의 인기 리뷰입니다."
-
-            # 만약 해당 펜을 선호하는 리뷰어가 없으면 추천 X
-            penInterestRecommend = (len(reviewers) > 0)
-            
-            if penInterestRecommend:
-                reviews = list()
-                for reviewer in reviewers:
-                    if reviewer != user:
-                        for review in PenReview.objects.filter(author=reviewer):
-                            reviews.append(review)
-
-                # 다 털어봤는데 리뷰가 없으면 추천 X
-                if len(reviews) == 0 :
-                    penInterestRecommend = False
-                else:
-                    reviews.sort(key=lambda x: x.likeCount, reverse=True)
-                    content['penInterestReviews'] = reviews
-
-            content['penInterestRecommend'] = penInterestRecommend
-
-            
-
     return render(request, 'mainPage.html', content)
 
 

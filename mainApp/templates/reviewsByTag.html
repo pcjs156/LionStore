@@ -27,14 +27,18 @@
         {% for review in reviews %}
         <div class="col-lg-3 col-md-4 col-sm-6 mix women">
             <div class="product__item">
-                <div class="product__item__pic set-bg" data-setbg="{{ review.reviewImage1.url }}">
+                <div class="product__item__pic set-bg" data-setbg="{{ review.getMainImage.url }}">
                     <ul class="product__hover">
-                        <li><a href="{{ review.reviewImage1.url }}" class="image-popup"><span
+                        <li><a href="{{ review.getMainImage.url }}" class="image-popup"><span
                                     class="arrow_expand"></span></a></li>
                     </ul>
                 </div>
                 <div class="product__item__text">
-                    <div><a href="{% url 'reviewDetail' review.id %}">{{ review }}</a></div>
+                    <div>
+                        <a href="{% url 'reviewDetail' review.id %}">
+                            {{ review }}
+                        </a>
+                    </div>
                     <div class="rating">
                         <div class="rateit svg" data-rateit-value="{{ review.totalScore }}" data-rateit-readonly="true"
                             data-rateit-starwidth="15" data-rateit-starheight="15">

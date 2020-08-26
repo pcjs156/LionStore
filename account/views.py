@@ -30,7 +30,6 @@ def connectTagToUser(user:Customer, rawString:str):
                 break
         
         if not alreadyExists:
-            print(newTagName + " 태그가 존재하지 않아 새로 생성합니다.")
             newTag = CustomerTag.objects.create(tagBody=newTagName)
             user.tags.add(newTag)
             newTag.targetCustomer.add(user)
@@ -77,8 +76,6 @@ def modifyUserTag(user:Customer, before:str):
     
     user.save()
     
-    user.save()
-
 
 def userSignUp_view(request):
     if request.method == 'POST':
@@ -107,6 +104,7 @@ def webSellerSignUp_view(request):
         if form.is_valid():
             user = form.save()
             user.save()
+            connectTagToUser(user, form.cleaned_data['rawTagString'])
 
             login(request, user)
             return redirect("mainPage")
@@ -124,6 +122,9 @@ def stationerSignUp_view(request):
 
         if form.is_valid():
             user = form.save()
+            user.save()
+            connectTagToUser(user, form.cleaned_data['rawTagString'])
+
             login(request, user)
             return redirect("setLocation")
         
@@ -163,7 +164,13 @@ def logout_view(request):
 def modifyUserInfo_view(request):
     if request.method == "POST":
         beforeString = request.user.rawTagString
-        form = UserModifyForm(request.POST, request.FILES, instance=request.user)
+        if request.user.is_Customer:
+            form = UserModifyForm(request.POST, request.FILES, instance=request.user)
+        elif request.user.is_Stationer:
+            form = StationerModifyForm(request.POST, request.FILES, instance=request.user)
+        elif request.user.is_WebSeller:
+            form = WebSellerModifyForm(request.POST, request.FILES, instance=request.user)
+
         if form.is_valid():
             form.save()
 
@@ -174,7 +181,13 @@ def modifyUserInfo_view(request):
     else:
         content = dict()
 
-        form = UserModifyForm(instance=request.user)
+        if request.user.is_Customer:
+            form = UserModifyForm(instance=request.user)
+        elif request.user.is_Stationer:
+            form = StationerModifyForm(instance=request.user)
+        elif request.user.is_WebSeller:
+            form = WebSellerModifyForm(instance=request.user)
+
         content['form'] = form
 
         return render(request, 'modifyUserInfo.html', content)

@@ -168,14 +168,18 @@
           {% for review in reviews %}
           <div class="col-lg-3 col-md-4 col-sm-6 mix women">
                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="{{ review.reviewImage1.url }}">
+                    <div class="product__item__pic set-bg" data-setbg="{{ review.getMainImage.url }}">
                          <ul class="product__hover">
-                              <li><a href="{{ review.reviewImage1.url }}" class="image-popup"><span
+                              <li><a href="{{ review.getMainImage.url }}" class="image-popup"><span
                                              class="arrow_expand"></span></a></li>
                          </ul>
                     </div>
                     <div class="product__item__text">
-                         <h6><a href="{% url 'reviewDetail' review.id %}">{{ review }}</a></h6>
+                         <h6>
+                              <a href="{% url 'reviewDetail' review.id %}">
+                                   {{ review }}
+                              </a>
+                         </h6>
                          <div class="rating">
                               <div class="rateit svg" data-rateit-value="{{ review.totalScore }}" data-rateit-readonly="true"
                                    data-rateit-starwidth="15" data-rateit-starheight="15">
@@ -277,8 +281,10 @@
      <!-- 문구점 판매정보가 등록된 경우 -->
      {% if nullLocation %}
           <!-- 위치 정보가 입력되어 있지 않은 경우 -->
-          <div>위치 정보가 입력되지 않았습니다.</div>
-          <div>지도 기능을 이용하시려면 <a href="{% url 'setLocation' %}">위치를 설정</a>해주세요.</div>
+          <div style="font-family: 'yg-jalnan'; padding: 1rem;">
+               <div style="text-align: center;">위치 정보가 입력되지 않았습니다.</div>
+               <div style="text-align: center;">지도 기능을 이용하시려면 <a href="{% url 'setLocation' %}">위치를 설정</a>해주세요.</div>
+          </div>
      {% else %}
           <!-- 위치 정보가 입력되어 있는 경우 -->
           <div style="font-family: 'yg-jalnan'; color: black; width: 70%; margin: 0 auto; padding: 12px 0;"><i class="fa fa-map-marker" aria-hidden="true"></i> 문구점 판매 정보</div>
@@ -290,7 +296,7 @@
      <div id="map" style="width:70%; height:30em; margin: 0 auto;"></div>
 {% endif %}
 
-{% if user.is_Stationer %}
+{% if user.is_Stationer and not nullLocation %}
      <div style="text-align: right; width: 70%; margin: 0 auto; padding-top: 12px;">
      <!-- 문구점 사장님인 경우에만 판매정보 입력/삭제/수정 가능 -->
      {% if stationerSellInfoRegistered %}

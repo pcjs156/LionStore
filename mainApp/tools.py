@@ -4,6 +4,7 @@ from faker import Faker
 import random
 
 from .models import PenReview, ProductCategory
+from account.models import Customer, CustomerTag
 from . import views
 
 CATEGORY_NAMES = tuple("볼펜 만년필 캘리그라피펜 연필 색연필 형광펜 샤프펜슬 유성펜 사인펜 젤펜 기타".split(' '))
@@ -27,7 +28,6 @@ def automativeFilling_Product(countLimit=10):
     productList = Product.objects.all()
 
     if len(productList) > countLimit:
-        print(f"이미 {countLimit}개의 Product 모델이 존재해 새로 모델을 생성하지 않습니다.")
         return
 
     categories = ProductCategory.objects.all()

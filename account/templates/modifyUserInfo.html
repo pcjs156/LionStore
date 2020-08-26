@@ -2,10 +2,16 @@
 {% load static %}
 
 {% block head %}
-<title>일반 리뷰어 정보 변경</title>
+<title>개인 정보 수정</title>
 <style>
     article {
         padding: 2rem;
+    }
+    textarea {
+        resize: none;
+    }
+    #id_telephone, #id_link {
+        width: 10%;
     }
 </style>
 {% endblock %}
@@ -62,10 +68,33 @@
         <br><br>
     
         <div class="checkout__form__input">
-            <p>TAG <span style="color: gray;"><span style="color: red;">*</span> 관심있는 키워드 해쉬태그를 지정하세요 (공백문자로 구분해 입력)</span></p>
+            <p>TAG <span style="color: gray;">관심있는 키워드 해쉬태그를 지정하세요 (공백문자로 구분해 입력)</span></p>
         </div>
         {{ form.rawTagString }}
         <br>
+        <br>
+
+        {% if user.is_Stationer %}
+        <div class="checkout__form__input">
+            <p>TEL<span>*</span></p>
+            {{ form.telephone }}
+        </div>
+        <br>    
+        {% endif %}
+
+        {% if user.is_WebSeller %}
+        <div class="checkout__form__input">
+            <p>TEL<span>*</span></p>
+            {{ form.telephone }}
+        </div>
+        <br>
+    
+        <div class="checkout__form__input">
+            <p>WEB/MOBBILE LINK<span>*</span></p>
+            {{ form.link }}
+        </div>
+        <br>    
+        {% endif %}
         
         <input type="submit" class="site-btn" value="수정 완료">
     </form>
