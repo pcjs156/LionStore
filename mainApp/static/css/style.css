@@ -946,8 +946,6 @@ ol {
 }
 
 .reviewmodify form input {
-	height: 90px;
-	width: 120%;
 	border: 1.5px solid #66666644;
 	border-radius: 7px;
 	padding-left: 2px;
