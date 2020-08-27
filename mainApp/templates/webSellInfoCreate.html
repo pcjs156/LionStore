@@ -20,34 +20,35 @@
     input {
         margin-bottom: 2rem;
         text-align: center;
+        font-family: 'yg-jalnan';
     }
 </style>
 {% endblock %}
 
 {% block content %}
 
-<article>
+<article >
     <!-- 이미 판매 정보를 등록한 경우 -->
     {% if alreadyExists %}
-    <div>이미 판매 정보를 등록하셨습니다!</div>
-    <div><a href="{% url 'productDetail' product.id %}">돌아가기</a></div>
-    <div><a href="{% url 'webSellInfoModify' product_id=product.id webSellInfo_id=createdInfo.id %}">수정하기</a></div>
+    <div style="font-family: 'yg-jalnan';">이미 판매 정보를 등록하셨습니다!</div>
+    <div style="font-family: 'yg-jalnan';"><a href="{% url 'productDetail' product.id %}">돌아가기</a></div>
+    <div style="font-family: 'yg-jalnan';"><a href="{% url 'webSellInfoModify' product_id=product.id webSellInfo_id=createdInfo.id %}">수정하기</a></div>
 
     <!-- 판매 정보를 등록한 적이 없는 경우 -->
     {% else %}
     <div class="elementContainer">
-        <h5 style="color: gray;">제품명</h5>
-        <h6 style="color: gray;">{{ product.name }}</h6>
+        <h5 style="color: gray; font-family: 'yg-jalnan';">제품명</h5>
+        <h6 style="color: gray; font-family: 'yg-jalnan';">{{ product.name }}</h6>
     </div>
 
     <form method="POST">
         {% csrf_token %}
         <div class="checkout__form__input elementContainer">
-            <h4>가격</h4>
+            <h4 style="font-family: 'yg-jalnan';">가격</h4>
             {{ form.price }}
         </div>
         <div class="checkout__form__input elementContainer">
-            <h4>판매 링크</h4>
+            <h4 style="font-family: 'yg-jalnan';">판매 링크</h4>
             {{ form.link }}
         </div>
         

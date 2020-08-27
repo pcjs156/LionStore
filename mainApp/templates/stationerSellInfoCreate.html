@@ -20,6 +20,7 @@
     input {
         margin-bottom: 2rem;
         text-align: center;
+        font-family: 'yg-jalnan';
     }
 </style>
 {% endblock %}
@@ -29,23 +30,23 @@
 <article>
     <!-- 위치 정보가 입력되지 않은 경우 -->
     {% if nullLocation %}
-    <div>위치 정보가 입력되지 않았습니다!</div>
-    <div><a href="{% url 'setLocation' %}">위치정보 입력하기</a></div>
+    <div style="font-family: 'yg-jalnan';">위치 정보가 입력되지 않았습니다!</div>
+    <div style="font-family: 'yg-jalnan';"><a href="{% url 'setLocation' %}">위치정보 입력하기</a></div>
     <!-- 위치 정보가 입력된 경우 -->
     {% else %}
         {% if alreadyExists %}
-        <div>이미 판매 정보를 등록하셨습니다!</div>
-        <div><a href="{% url 'productDetail' product.id %}">돌아가기</a></div>
-        <div><a href="{% url 'stationerSellInfoModify' product_id=product.id stationerSellInfo_id=createdInfo.id %}">수정하기</a></div>
+        <div style="font-family: 'yg-jalnan';">이미 판매 정보를 등록하셨습니다!</div>
+        <div style="font-family: 'yg-jalnan';"><a href="{% url 'productDetail' product.id %}">돌아가기</a></div>
+        <div style="font-family: 'yg-jalnan';"><a href="{% url 'stationerSellInfoModify' product_id=product.id stationerSellInfo_id=createdInfo.id %}">수정하기</a></div>
         {% else %}
             <div class="elementContainer">
-                <h5 style="color: gray;">제품명</h5>
-                <h6 style="color: gray;">{{ product.name }}</h6>
+                <h5 style="color: gray; font-family: 'yg-jalnan';">제품명</h5>
+                <h6 style="color: gray; font-family: 'yg-jalnan';">{{ product.name }}</h6>
             </div>
             <form method="POST">
                 {% csrf_token %}
                 <div class="checkout__form__input elementContainer">
-                    <h4>가격</h4>
+                    <h4 style="font-family: 'yg-jalnan';">가격</h4>
                     {{ form.price }}
                     
                     <br><br>
