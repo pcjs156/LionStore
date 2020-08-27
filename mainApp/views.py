@@ -1226,29 +1226,43 @@ def mainPage_view(request):
 
     # 당연히 로그인 하지 않은 유저는 해당 기능을 사용할 수 없다
     if user.is_authenticated:
+        if str(user.job).startswith('('):
+            job = str(user.job)[1:-1].split(', ')[0][1:-1]
+            usage = str(user.usage)[1:-1].split(', ')[0][1:-1]
+            age = str(user.age)[1:-1].split(', ')[0][1:-1]
+        else:
+            job = user.job
+            usage = user.usage
+            age = user.age
+
         # 이하 연령대/직업/주사용용도 기반 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        user_age = ('age', user.age.__str__(), Customer.age_dict[user.age.__str__()])
-        user_job = ('job', user.job.__str__(), Customer.job_dict[user.job.__str__()])
-        user_usage = ('usage', user.usage.__str__(), Customer.usage_dict[user.usage.__str__()])
-        userInfoList = list(filter(lambda x: x[-1] != '기타', [user_age, user_job, user_usage]))
-        
+        user_job = Customer.job_dict[job] if Customer.job_dict[job] != "기타" else ""
+        user_usage = Customer.usage_dict[usage] if Customer.usage_dict[usage] != "기타" else ""
+        user_age = Customer.age_dict[age] if Customer.age_dict[age] != "기타" else ""
+
+        userInfoList = [("age", user.age, user_age), ("job", user.job, user_job), ("usage", user.usage, user_usage)]
+        userInfoList = list(filter(lambda x: x[-1] != '', userInfoList))
+
         # 최소 1개 이상의 정보는 공개되어야 함
         propertyRecommend = (len(userInfoList) > 0)
         if propertyRecommend:
             picked = picked_field, picked_key, picked_val = random.choice(userInfoList)
             
             if picked_field == "age":
-                picked_reviewers = Customer.objects.filter(age=user_age[1]).exclude(username=user.username)
-                propertyMessage = f"{user_age[-1]} 리뷰어님들의 인기 리뷰입니다."
+                picked_reviewers = Customer.objects.filter(age=picked_key).exclude(username=user.username)
+                propertyMessage = f"{picked_val} 리뷰어님들의 인기 리뷰입니다."
                 content['propertyMessage'] = propertyMessage
             elif picked_field == "job":
-                picked_reviewers = Customer.objects.filter(job=user_job[1]).exclude(username=user.username)
-                propertyMessage = f"{user_job[-1]} 리뷰어님들의 인기 리뷰입니다."
+                picked_reviewers = Customer.objects.filter(job=picked_key).exclude(username=user.username)
+                propertyMessage = f"{picked_val} 리뷰어님들의 인기 리뷰입니다."
                 content['propertyMessage'] = propertyMessage
             elif picked_field == "usage":
-                picked_reviewers = Customer.objects.filter(usage=user_usage[1]).exclude(username=user.username)
-                propertyMessage = f"주 사용처가 {user_usage[-1]}인 리뷰어님들의 인기 리뷰입니다."
+                picked_reviewers = Customer.objects.filter(usage=picked_key).exclude(username=user.username)
+                propertyMessage = f"주 사용처가 {picked_val}인 리뷰어님들의 인기 리뷰입니다."
                 content['propertyMessage'] = propertyMessage
+            else:
+                picked_reviewers = []
+            
 
             picked_reviews = list()
             for reviewer in picked_reviewers:
@@ -1267,9 +1281,18 @@ def mainPage_view(request):
 
         # 이상 연령대/직업/주사용용도 기반 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         # 이하 관심 펜 기반 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        userInterestPens = [(user.penInterest_1.__str__(), Customer.pen_dict[user.penInterest_1.__str__()]),
-                            (user.penInterest_2.__str__(), Customer.pen_dict[user.penInterest_2.__str__()]),
-                            (user.penInterest_3.__str__(), Customer.pen_dict[user.penInterest_3.__str__()])]
+        if str(user.job).startswith('('):
+            penInterest_1 = str(user.penInterest_1)[1:-1].split(', ')[0][1:-1]
+            penInterest_2 = str(user.penInterest_2)[1:-1].split(', ')[0][1:-1]
+            penInterest_3 = str(user.penInterest_3)[1:-1].split(', ')[0][1:-1]
+        else:
+            penInterest_1 = user.penInterest_1
+            penInterest_2 = user.penInterest_2
+            penInterest_3 = user.penInterest_3
+
+        userInterestPens = [(penInterest_1, Customer.pen_dict[penInterest_1]),
+                            (penInterest_2, Customer.pen_dict[penInterest_2]),
+                            (penInterest_3, Customer.pen_dict[penInterest_3])]
         userInterestPens = list(filter(lambda x: x[-1] != '기타', userInterestPens))
 
         # 최소 1개 이상의 관심 펜은 지정되어야 함

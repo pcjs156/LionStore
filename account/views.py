@@ -188,7 +188,7 @@ def modifyUserInfo_view(request):
 
     else:
         content = dict()
-
+        print(request.user.is_WebSeller)
         if request.user.is_Customer:
             form = UserModifyForm(instance=request.user)
         elif request.user.is_Stationer:

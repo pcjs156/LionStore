@@ -58,7 +58,7 @@ class WebSellInfo(models.Model):
         verbose_name = "웹 판매 정보"
 
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=False, related_name='webSellInfoTargetProduct', verbose_name="대상 상품")
-    seller = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, related_name='webSellInfoSeller', verbose_name="웹 판매자")
+    seller = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True, related_name='webSellInfoSeller', verbose_name="웹 판매자")
     link = models.CharField(max_length=300, null=False, blank=False, verbose_name="판매정보 링크")
     price = models.PositiveIntegerField(null=False, blank=False, verbose_name="판매가")
     reported = models.BooleanField(default=False, verbose_name="신고")
@@ -73,7 +73,7 @@ class StationerSellInfo(models.Model):
         verbose_name = "문방구 판매 정보"
 
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=False, related_name='StationerSellInfoTargetProduct', verbose_name="대상 상품")
-    seller = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, related_name='StationerSellInfoSeller', verbose_name="문방구 판매자")
+    seller = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True, related_name='StationerSellInfoSeller', verbose_name="문방구 판매자")
     price = models.PositiveIntegerField(verbose_name="판매가")
     reported = models.BooleanField(default=False, verbose_name="신고")
 

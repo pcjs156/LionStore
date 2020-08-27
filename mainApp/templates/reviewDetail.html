@@ -190,7 +190,7 @@
                         <div style="font-family: yg-jalnan; color: rgb(80, 42, 27); font-size: 22px; text-align: left;">
                             {{ review.product.name }}
                         </div>
-                        <div style="font-family: nanumsquareround;"><b>리뷰어 <span style="font-size: 20px; color:rgb(94, 64, 10);">{{ author }}</span> 님의 글</b></div>
+                        <div style="font-family: nanumsquareround;"><b>리뷰어 <span style="font-size: 20px; color:rgb(94, 64, 10);" data-toggle="tooltip" data-placement="bottom" title="{{ review.author.getTooltipMessage }}">{{ author }}</span> 님의 글</b></div>
                         <br>
                         <div style="font-family: nanumsquareround;">
                             <div>
