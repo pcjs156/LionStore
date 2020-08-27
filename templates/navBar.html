@@ -30,10 +30,10 @@
     a:hover {
     color: rgb(177, 106, 13);
     }
-    .col-md-4 {
+    .my_md_4 {
         padding: 0;
     }
-    .fa {
+    .icon {
         margin: 0;
         width: 40px;
         height: 40px;
@@ -61,7 +61,7 @@
             {% if user.is_authenticated %}
             <div class="navBarContainer">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-4 my_md_4">
                         <div>
                             <img class="profileImage" src="{{ user.image.url }}" alt="프로필 이미지" style="width: 40px; height: 40px;">
                         </div>
@@ -85,13 +85,13 @@
                         </div>
                     </div>
 
-                    <div class="col-md-4">
-                        <div><i class="fa fa-sign-out fa-2x" aria-hidden="true"></i></div>
+                    <div class="col-md-4 my_md_4">
+                        <div><i class="fa fa-sign-out fa-2x icon" aria-hidden="true"></i></div>
                         <div><a href="{% url 'logOut' %}" style="color: black; font-family: 'NanumSquareRound'; font-size: 14px;">로그아웃</a></div>
                     </div>
 
-                    <div class="col-md-4">
-                        <div><i class="fa fa-plus-square fa-2x" aria-hidden="true"></i></div>
+                    <div class="col-md-4 my_md_4">
+                        <div><i class="fa fa-plus-square fa-2x icon" aria-hidden="true"></i></div>
                         <div><a href="{% url 'newProductRequest' %} " style="color: black; font-family: 'NanumSquareRound'; font-size: 14px;">상품 등록</a></div>
                     </div>
                 </div>

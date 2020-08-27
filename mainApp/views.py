@@ -967,8 +967,6 @@ def tagSearchResult_view(request):
 
     content = dict()
 
-    tagQuery = request.GET['tagQuery']
-
     if tagQuery:
         if tagQuery:
             similarityPair = getTopRelatedReviews(20, tagQuery)

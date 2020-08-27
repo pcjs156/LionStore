@@ -9,18 +9,20 @@
 
 {% block content %}
 
-<h3>{{ statusMessage }}</h3>
+<h4 style="text-align: center; padding: 1em 3rem 0 3rem; font-family: 'yg-jalnan'; color:#663e27;"><i class="fa fa-edit"></i>
+     {{ statusMessage }}</h4><br>
+<br><br><br>
 
-<div><a href="{% url 'searchMain' %}">다시 검색하기</a></div>
+<article style="margin: 0 2rem;">
+     <!-- 인기순 정렬로 전환 -->
+     {% if popularitySort %}
+     <div style="text-align: left; font-family: 'yg-jalnan'; padding-left: 0.3rem;"><i class="fa fa-sort" aria-hidden="true"></i><span>인기순 정렬</span> / <span><a href="{% url 'keywordSearchResult' %}?sort=new&keywordQuery={{ keywordQuery }}">최신순정렬</a></span></div>
+     <!-- 최신순 정렬로 전환 -->
+     {% else %}
+     <div style="text-align: left; font-family: 'yg-jalnan'; padding-left: 0.3rem;"><i class="fa fa-sort" aria-hidden="true"></i><span><a href="{% url 'keywordSearchResult' %}?sort=popularity&keywordQuery={{ keywordQuery }}">인기순 정렬</a></span> / <span>최신순정렬</span></div>
+     {% endif %}
 
-<!-- 인기순 정렬로 전환 -->
-{% if popularitySort %}
-<div><span>인기순 정렬</span> / <span><a href="{% url 'keywordSearchResult' %}?sort=new&keywordQuery={{ keywordQuery }}">최신순정렬</a></span></div>
-<!-- 최신순 정렬로 전환 -->
-{% else %}
-<div><span><a href="{% url 'keywordSearchResult' %}?sort=popularity&keywordQuery={{ keywordQuery }}">인기순 정렬</a></span> / <span>최신순정렬</span></div>
-{% endif %}
-
+     <div class="reviewContainer">
 <div class="row property__gallery">
      {% for product in searchResult %}
      <div class="col-lg-3 col-md-4 col-sm-6 mix women">
@@ -42,5 +44,8 @@
      </div>
      {% endfor %}
 </div>
+</div>
+</article>
+
 
 {% endblock %}
