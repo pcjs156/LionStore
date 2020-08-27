@@ -1240,24 +1240,25 @@ def mainPage_view(request):
         user_usage = Customer.usage_dict[usage] if Customer.usage_dict[usage] != "기타" else ""
         user_age = Customer.age_dict[age] if Customer.age_dict[age] != "기타" else ""
 
-        userInfoList = list(filter(lambda x: x != '', [user_age, user_job, user_usage]))
-        
+        userInfoList = [("age", user.age, user_age), ("job", user.job, user_job), ("usage", user.usage, user_usage)]
+        userInfoList = list(filter(lambda x: x[-1] != '', userInfoList))
+
         # 최소 1개 이상의 정보는 공개되어야 함
         propertyRecommend = (len(userInfoList) > 0)
         if propertyRecommend:
             picked = picked_field, picked_key, picked_val = random.choice(userInfoList)
             
             if picked_field == "age":
-                picked_reviewers = Customer.objects.filter(age=user_age[1]).exclude(username=user.username)
-                propertyMessage = f"{user_age[-1]} 리뷰어님들의 인기 리뷰입니다."
+                picked_reviewers = Customer.objects.filter(age=picked_key).exclude(username=user.username)
+                propertyMessage = f"{picked_val} 리뷰어님들의 인기 리뷰입니다."
                 content['propertyMessage'] = propertyMessage
             elif picked_field == "job":
-                picked_reviewers = Customer.objects.filter(job=user_job[1]).exclude(username=user.username)
-                propertyMessage = f"{user_job[-1]} 리뷰어님들의 인기 리뷰입니다."
+                picked_reviewers = Customer.objects.filter(job=picked_key).exclude(username=user.username)
+                propertyMessage = f"{picked_val} 리뷰어님들의 인기 리뷰입니다."
                 content['propertyMessage'] = propertyMessage
             elif picked_field == "usage":
-                picked_reviewers = Customer.objects.filter(usage=user_usage[1]).exclude(username=user.username)
-                propertyMessage = f"주 사용처가 {user_usage[-1]}인 리뷰어님들의 인기 리뷰입니다."
+                picked_reviewers = Customer.objects.filter(usage=picked_key).exclude(username=user.username)
+                propertyMessage = f"주 사용처가 {picked_val}인 리뷰어님들의 인기 리뷰입니다."
                 content['propertyMessage'] = propertyMessage
             else:
                 picked_reviewers = []
