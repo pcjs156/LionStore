@@ -41,7 +41,7 @@
                                              </ul>
                                         </div>
                                         <div class="product__item__text">
-                                             <h6><a href="{% url 'reviewDetail' review.id %}">{{ review }}</a></h6>
+                                             <h6>><a href="{% url 'reviewDetail' review.id %}">{{ review }}</a></h6>
                                              <div class="rating">
                                                   <div class="rateit svg" data-rateit-value="{{ review.totalScore }}"
                                                        data-rateit-readonly="true" data-rateit-starwidth="15"
@@ -179,6 +179,7 @@
                                    <div class="rateit svg" data-rateit-value="{{ popularReview.totalScore }}"
                                         data-rateit-readonly="true" data-rateit-starwidth="15"
                                         data-rateit-starheight="15">
+                                       
                                    </div>
                               </div>
                          </div>
@@ -187,6 +188,7 @@
                {% endfor %}
           </div>
      </div>
+     <br><br> <br><br>
 </article>
 
 {% endblock %}
