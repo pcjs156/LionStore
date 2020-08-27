@@ -17,70 +17,96 @@
         font-weight: normal;
         font-style: normal;
     }
-a:link {
-  color:black;
-}  
-a:hover {
-  color: rgb(177, 106, 13);
-}
+    .container {
+        max-width: 100%;
+        width: 100%;
+        margin: 2% auto;
+        text-align: center;
+        padding: auto 2%;
+    }
+    a:link {
+    color:black;
+    }  
+    a:hover {
+    color: rgb(177, 106, 13);
+    }
+    .col-md-4 {
+        padding: 0;
+    }
+    .fa {
+        margin: 0;
+        width: 40px;
+        height: 40px;
+    }
 </style> 
-<div class="gridContainer"
-    style="display: grid; grid-template-rows: 1fr; grid-template-columns: 1fr 2fr 1fr; padding: 1rem;">
-    <div style="text-align: left; margin: auto 2rem;">
-        <a href="{% url 'mainPage' %}"><img src="{% static '/img/common/lionStore_logo.png' %}" alt="사자네 문방구 로고"
-                style="width: 750px; height: 60px"></a>
-    </div>
 
-
-    <div class="footer__newslatter" style="margin-left: 5rem; margin-top: 2em; text-align: left; width: 80%;">
-        <form action="{% url 'keywordSearchResult' %}" method="GET" style="margin-bottom: 4px;">
-            <input type="text" name="keywordQuery" required style="width: 100%;">
-            <input type="text" name="sort" value="popularity" style="display: none; visibility: hidden;" required>
-            <button type="submit" class="site-btn" style="font-family:'NanumSquareRound'; font-size: 19px;">제품명 검색</button>
-        </form>
-    </div>
-
-
-    {% if user.is_authenticated %}
-    <div style="display: grid; grid-template-columns: 3fr 2fr 2fr; padding: 1px auto;">
-
-        <div class="header__menu" style="display: grid; grid-template-rows: 1fr 0fr; text-align: center;">
-            <img class="profileImage" src="{{ user.image.url }}" alt="프로필 이미지"
-                style="width: 31.8px; height: 35px; margin-top: 2rem; margin-left: 3.8rem; margin-bottom: 0.3rem; padding-top: 0.2em;">
-            <ul>
-                <li>
-                    <a href="{% url 'myPage' %}" style="color: black; font-family: 'NanumSquareRound'; font-size: 14px;">마이페이지</a>
-                    <ul class="dropdown"style="text-align: left; font-family: 'NanumSquareRound';">
-                        <li><a href="{% url 'myPageRedirector' 'likeReviews' %}">좋아요한 리뷰</a></li>
-                        <li><a href="{% url 'myPageRedirector' 'likeProducts' %}">좋아요한 제품</a></li>
-                        <li><a href="{% url 'myPageRedirector' 'myReviews' %}">작성한 리뷰 목록</a></li>
-                        {% if user.is_Stationer %}
-                        <li><a href="{% url 'myPageRedirector' 'myWebSellInfos' %}">등록한 판매정보</a></li>
-                        {% endif %}
-                        {% if user.is_WebSeller %}
-                        <li><a href="{% url 'myPageRedirector' 'myStationerSellInfos' %}">등록한 판매정보</a></li>
-                        {% endif %}
-                    </ul>
-                </li>                
-            </ul>
-
+<div class="container" style="padding: 0 2%;">
+    <div class="row">
+        <div class="col-md-2">
+            <a href="{% url 'mainPage' %}"><img src="{% static '/img/common/lionStore_logo.png' %}" alt="사자네 문방구 로고"
+            style="width: 750px; height: 60px"></a>
         </div>
-        <div style="display: grid; grid-template-rows: 1fr 0.7fr ; text-align: center; font-family: 'NanumSquareRound';">
-            <i class="fa fa-sign-out fa-2x" aria-hidden="true" style="margin-top: 2.3rem; margin-right: 1.4rem;"></i>
-            <a href="{% url 'logOut' %}" style="color: black; font-size: 14px; margin-top: 0.15em; margin-right: 1.2rem;">로그아웃</a>
+
+        <div class="col-md-8">
+            <div class="footer__newslatter">
+                <form action="{% url 'keywordSearchResult' %}" method="GET" style="margin-bottom: 4px;">
+                    <input type="text" name="keywordQuery" required style="width: 100%;">
+                    <input type="text" name="sort" value="popularity" style="display: none; visibility: hidden;" required>
+                    <button type="submit" class="site-btn" style="font-family:'NanumSquareRound'; font-size: 19px;">제품명 검색</button>
+                </form>
+            </div>
         </div>
-        <div style="display: grid; grid-template-rows: 1fr 0.7fr; text-align: center; font-family: 'NanumSquareRound';">
-            <i class="fa fa-plus-square fa-2x" aria-hidden="true" style="margin-top: 2.3rem; margin-left: 0.1rem;"></i>
-            <a href="{% url 'newProductRequest' %} " style="color: black; font-size: 14px; padding: 0rem; margin-top: 0.15em; margin-right: 0.4rem;">상품 등록</a>
+
+        <div class="col-md-2">
+            {% if user.is_authenticated %}
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div>
+                            <img class="profileImage" src="{{ user.image.url }}" alt="프로필 이미지" style="width: 40px; height: 40px;">
+                        </div>
+                        <div class="header__menu">
+                            <ul>
+                                <li>
+                                    <a href="{% url 'myPage' %}" style="color: black; font-family: 'NanumSquareRound'; font-size: 14px;">마이페이지</a>
+                                    <ul class="dropdown"style="text-align: left; font-family: 'NanumSquareRound';">
+                                        <li><a href="{% url 'myPageRedirector' 'likeReviews' %}">좋아요한 리뷰</a></li>
+                                        <li><a href="{% url 'myPageRedirector' 'likeProducts' %}">좋아요한 제품</a></li>
+                                        <li><a href="{% url 'myPageRedirector' 'myReviews' %}">작성한 리뷰 목록</a></li>
+                                        {% if user.is_Stationer %}
+                                        <li><a href="{% url 'myPageRedirector' 'myWebSellInfos' %}">등록한 판매정보</a></li>
+                                        {% endif %}
+                                        {% if user.is_WebSeller %}
+                                        <li><a href="{% url 'myPageRedirector' 'myStationerSellInfos' %}">등록한 판매정보</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div><i class="fa fa-sign-out fa-2x" aria-hidden="true"></i></div>
+                        <div><a href="{% url 'logOut' %}" style="color: black; font-family: 'NanumSquareRound'; font-size: 14px;">로그아웃</a></div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div><i class="fa fa-plus-square fa-2x" aria-hidden="true"></i></div>
+                        <div><a href="{% url 'newProductRequest' %} " style="color: black; font-family: 'NanumSquareRound'; font-size: 14px;">상품 등록</a></div>
+                    </div>
+                </div>
+            </div>
+        
+            {% else %}
+                <div style="margin-top: 7%;">
+                    <span><a href="{% url 'selectCustomerType' %}" style="font-family: yg-jalnan;">회원가입 </a></span> /
+                    <span><a href="{% url 'logIn' %} "style="font-family: yg-jalnan;"> 로그인</a></span>
+                </div>
+            {% endif %}        
         </div>
     </div>
-    {% else %}
-    <div style="margin-top: 19px; color:black;">
-        <span><a href="{% url 'selectCustomerType' %}" style="font-family: yg-jalnan;">회원가입 </a></span> /
-        <span><a href="{% url 'logIn' %} "style="font-family: yg-jalnan;"> 로그인</a></span>
-    </div>
-    {% endif %}
 </div>
+
 <nav class="header__menu" style="text-align: center; font-family: 'yg-jalnan'; letter-spacing :1.5px;">
     <ul>
         <li><a href="{% url 'redirectByCategoryName' '볼펜' %}">볼펜</a></li>&nbsp;
