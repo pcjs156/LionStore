@@ -7,17 +7,20 @@
 {% endblock %}
 
 {% block content %}
-<h3>등록 요청한 제품의 수정페이지 입니다.</h3>
-<hr><hr>
+<br>
+<h4 style="text-align: center; padding: 1em 3rem 0 3rem; font-family: 'yg-jalnan'; color:#663e27;">
+    <i class="fa fa-edit"></i>등록 요청한 제품의 수정페이지 입니다.</h4><br>
+    <br>
 
+<div style="text-align: center; font-family: yg-jalnan;">
 <form method="POST">
     {% csrf_token %}
-    제품명 : {{ form.productName }}<br>
-    제조사 : {{ form.productBrand }}<br>
-    제품 설명 <br>
+    제품명 : {{ form.productName }}<br> <br>
+    제조사 : {{ form.productBrand }}<br> <br> <br>
+    제품 설명 <br> <br>
     {{ form.productDescription }}
-    <br>
-    <input class="btn btn-dark" type="submit" value="작성">
+    <br> <br>
+    <input class="btn btn-dark" type="submit" value="작성"> <br> <br>
 </form>
-
+</div>
 {% endblock %}
