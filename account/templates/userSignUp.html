@@ -4,13 +4,40 @@
 {% block head %}
 <title>일반 리뷰어 회원가입 페이지</title>
 <link rel="stylesheet" href="{% static 'css/signUp.css' %}">
+<style>
+    .filebox label {
+        display: inline-block;
+        padding: .5em .75em;
+        color: #999;
+        font-size: inherit;
+        line-height: normal;
+        vertical-align: middle;
+        background-color: #fdfdfd;
+        cursor: pointer;
+        border: 1px solid #ebebeb;
+        border-bottom-color: #e2e2e2;
+        border-radius: .25em;
+    }
+
+    .filebox input[type="file"] {
+        /* 파일 필드 숨기기 */
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        border: 0;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
 <h3 style="text-align: center; padding: 1em 3rem 0 3rem; font-family: 'yg-jalnan'; color:#663e27;">
     A. 안녕하세요,리뷰어님! 회원가입 정보를 기입해주세요.</h3><br><br>
 
-    <!-- 아이디 기입 관련 -->
+<!-- 아이디 기입 관련 -->
 
 <form method="POST" enctype="multipart/form-data" class="checkout__form" style="text-align: center;">
     {% csrf_token %}
@@ -19,7 +46,7 @@
         {{ form.username }}
     </div>
     <span style="color: gray; font-size: 13px;">*ID는 150자 이하 문자, 숫자 그리고 @/./+/-/_만 가능합니다.</span>
-<br><br><br>
+    <br><br><br>
 
     <!-- 패스워드 기입 관련 -->
 
@@ -37,7 +64,7 @@
     </div>
     <br><br>
 
-      <!-- 패스워드 기입 관련 끝-->
+    <!-- 패스워드 기입 관련 끝-->
 
     <div class="checkout__form__input">
         <p>E-MAIL <span>*</span></p>
@@ -57,9 +84,12 @@
 
     <div>
         <p>PROFILE IMAGE</p>
-   <input type="file" name="image" accept="image/*" id="id_image">
+        <!-- <input type="file" name="image" accept="image/*" id="id_image"> -->
+        <div class="filebox">
+            <label for="fileUpload">업로드</label>
+            <input type="file" id="fileUpload" name="image" accept="image/*" id="id_image">
+        </div>
     </div>
-    
     <br>
 
     <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; width: 50%; margin-left: 450px;">
@@ -67,12 +97,12 @@
             <div>AGE</div>
             {{ form.age }}
         </div>
-    
+
         <div>
             <div>JOB</div>
             {{ form.job }}
         </div>
-    
+
         <div>
             <div>USAGE</div>
             {{ form.usage }}
@@ -102,10 +132,24 @@
     </div>
     {{ form.rawTagString }}
     <br>
-    
+
     <input type="submit" class="site-btn" value="다음 단계로">
 </form>
 <br><br> <br> <br>
 
+<script>
+    $(document).ready(function () {
+        var fileTarget = $('.filebox .upload-hidden');
+        fileTarget.on('change', function () { // 값이 변경되면
+            if (window.FileReader) { // modern browser
+                var filename = $(this)[0].files[0].name;
+            } else { // old IE
+                var filename = $(this).val().split('/').pop().split('\\').pop(); // 파일명만 추출
+            }
+            // 추출한 파일명 삽입
+            $(this).siblings('.upload-name').val(filename);
+        });
+    });
+</script>
 
 {% endblock %}
