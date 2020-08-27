@@ -1226,11 +1226,21 @@ def mainPage_view(request):
 
     # 당연히 로그인 하지 않은 유저는 해당 기능을 사용할 수 없다
     if user.is_authenticated:
+        if str(user.job).startswith('('):
+            job = str(user.job)[1:-1].split(', ')[0][1:-1]
+            usage = str(user.usage)[1:-1].split(', ')[0][1:-1]
+            age = str(user.age)[1:-1].split(', ')[0][1:-1]
+        else:
+            job = user.job
+            usage = user.usage
+            age = user.age
+
         # 이하 연령대/직업/주사용용도 기반 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        user_age = ('age', user.age.__str__(), Customer.age_dict[user.age.__str__()])
-        user_job = ('job', user.job.__str__(), Customer.job_dict[user.job.__str__()])
-        user_usage = ('usage', user.usage.__str__(), Customer.usage_dict[user.usage.__str__()])
-        userInfoList = list(filter(lambda x: x[-1] != '기타', [user_age, user_job, user_usage]))
+        user_job = Customer.job_dict[job] if Customer.job_dict[job] != "기타" else ""
+        user_usage = Customer.usage_dict[usage] if Customer.usage_dict[usage] != "기타" else ""
+        user_age = Customer.age_dict[age] if Customer.age_dict[age] != "기타" else ""
+
+        userInfoList = list(filter(lambda x: x != '', [user_age, user_job, user_usage]))
         
         # 최소 1개 이상의 정보는 공개되어야 함
         propertyRecommend = (len(userInfoList) > 0)
@@ -1267,9 +1277,18 @@ def mainPage_view(request):
 
         # 이상 연령대/직업/주사용용도 기반 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         # 이하 관심 펜 기반 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        userInterestPens = [(user.penInterest_1.__str__(), Customer.pen_dict[user.penInterest_1.__str__()]),
-                            (user.penInterest_2.__str__(), Customer.pen_dict[user.penInterest_2.__str__()]),
-                            (user.penInterest_3.__str__(), Customer.pen_dict[user.penInterest_3.__str__()])]
+        if str(user.job).startswith('('):
+            penInterest_1 = str(user.penInterest_1)[1:-1].split(', ')[0][1:-1]
+            penInterest_2 = str(user.penInterest_2)[1:-1].split(', ')[0][1:-1]
+            penInterest_3 = str(user.penInterest_3)[1:-1].split(', ')[0][1:-1]
+        else:
+            penInterest_1 = user.penInterest_1
+            penInterest_2 = user.penInterest_2
+            penInterest_3 = user.penInterest_3
+
+        userInterestPens = [(penInterest_1, Customer.pen_dict[penInterest_1]),
+                            (penInterest_2, Customer.pen_dict[penInterest_2]),
+                            (penInterest_3, Customer.pen_dict[penInterest_3])]
         userInterestPens = list(filter(lambda x: x[-1] != '기타', userInterestPens))
 
         # 최소 1개 이상의 관심 펜은 지정되어야 함
