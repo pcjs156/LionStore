@@ -7,17 +7,28 @@
 {% endblock %}
 
 {% block content %}
+<h4 style="text-align: center; padding: 1em 3rem 0 3rem; font-family: 'yg-jalnan'; color:#663e27;">
+    <i class="fa fa-edit"></i>현재 리뷰에 등록된 이미지를 수정하는 페이지입니다.</h4>
 
-<div>현재 이미지</div>
+<h6 style="text-align: center; padding: 1em 3rem 0 3rem; font-family: 'yg-jalnan'; color:#663e27;">
+    <i class="fa fa-image"></i>현재 이미지 </h6><br>
+
+
+    <div style="text-align: center; font-family: yg-jalnan; font-weight: lighter;">
 <img src="{{ targetImage.url }}" style="width: 20rem; height: 20rem;">
-
+<br><br>
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.reviewImage1 }}
-    <br>
-    <input type="submit" value="수정 완료">
+    <button class="btn btn-warning" style="background-color: #f9d691; border: none;">{{ form.reviewImage1 }}</button>
+    <br><br><br>
+    <input type="submit" class="site-btn" value="수정 완료">
 </form>
-<a href="{% url 'reviewImageDelete' review.id targetImage.url %}"><button>이미지 삭제</button></a>
-<a href="{% url 'reviewDetail' review.id %}"><button>취소</button></a>
-
+<br><br>
+<a href="{% url 'reviewImageDelete' review.id targetImage.url %}">
+    <button class="btn btn-warning" style="background-color: #f9d691; border: none;">이미지 삭제</button></a>
+<a href="{% url 'reviewDetail' review.id %}">
+    <button class="btn btn-warning" style="background-color: #f9d691; border: none;">수정 취소</button></a>
+  
+</div>
+<br><br><br>
 {% endblock %}
