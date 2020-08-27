@@ -966,6 +966,8 @@ def tagSearchResult_view(request):
             self.cnt = cnt
 
     content = dict()
+    
+    tagQuery = request.GET['tagQuery']
 
     if tagQuery:
         if tagQuery:
