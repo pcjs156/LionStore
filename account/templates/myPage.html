@@ -70,7 +70,7 @@
             </tr>
         {% else %}
             {% for review in likeReviewList %}
-            <tr>
+            <tr data-toggle="tooltip" data-placement="bottom" title="{{ review.author.getTooltipMessage }}">
                 <td id="review_author">
                     {{ review.product.author.nickname }}
                 </td>

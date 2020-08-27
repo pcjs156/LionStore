@@ -27,7 +27,7 @@
                     <div class="h4"
                          style="text-align: left; padding: 1em 3rem 0 3rem; font-family: 'yg-jalnan'; color:#663e27;">
                          <i class="fa fa-paw"></i>
-                         회원님과 취향이 비슷한 '{{ reviewer.nickname }}' 님의 리뷰입니다.
+                         회원님과 취향이 비슷한 <span data-toggle="tooltip" data-placement="bottom" title="{{ reviewer.getTooltipMessage }}">'{{ reviewer.nickname }}'</span> 님의 리뷰입니다.
                          <hr>
                     </div>
                     <div class="row property__gallery" style="padding-left: 3em; padding-right: 3em;">
@@ -76,7 +76,7 @@
                                         </ul>
                                    </div>
                                    <div class="product__item__text">
-                                        <h6><a href="{% url 'reviewDetail' review.id %}"">{{ review }}</a></h6>
+                                        <h6><a href="{% url 'reviewDetail' review.id %}" data-toggle="tooltip" data-placement="bottom" title="{{ review.author.getTooltipMessage }}">{{ review }}</a></h6>
                                         <div class="rating">
                                              <div class="rateit svg" data-rateit-value="{{ review.totalScore }}"
                                                   data-rateit-readonly="true" data-rateit-starwidth="15"
@@ -109,7 +109,7 @@
                                         </ul>
                                    </div>
                                    <div class="product__item__text">
-                                        <h6><a href="{% url 'reviewDetail' review.id %}"">{{ review }}</a></h6>
+                                        <h6><a href="{% url 'reviewDetail' review.id %}" data-toggle="tooltip" data-placement="bottom" title="{{ review.author.getTooltipMessage }}">{{ review }}</a></h6>
                                         <div class="rating">
                                              <div class="rateit svg" data-rateit-value="{{ review.totalScore }}"
                                                   data-rateit-readonly="true" data-rateit-starwidth="15"
@@ -146,7 +146,7 @@
                               </ul>
                          </div>
                          <div class="product__item__text">
-                              <h6><a href="{% url 'reviewDetail' newReview.id %}">{{ newReview }}</a></h6>
+                              <h6><a href="{% url 'reviewDetail' newReview.id %}" data-toggle="tooltip" data-placement="bottom" title="{{ newReview.author.getTooltipMessage }}">{{ newReview }}</a></h6>
                               <div class="rating">
                                    <div class="rateit svg" data-rateit-value="{{ newReview.totalScore }}"
                                         data-rateit-readonly="true" data-rateit-starwidth="15"
@@ -176,7 +176,7 @@
                               </ul>
                          </div>
                          <div class="product__item__text">
-                              <h6><a href="{% url 'reviewDetail' popularReview.id %}">{{ popularReview }}</a></h6>
+                              <h6><a href="{% url 'reviewDetail' popularReview.id %}" data-toggle="tooltip" data-placement="bottom" title="{{ popularReview.author.getTooltipMessage }}">{{ popularReview }}</a></h6>
                               <div class="rating">
                                    <div class="rateit svg" data-rateit-value="{{ popularReview.totalScore }}"
                                         data-rateit-readonly="true" data-rateit-starwidth="15"

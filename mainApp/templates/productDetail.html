@@ -67,7 +67,7 @@
                </div>
      
                <div class="product_detail col container">
-                    <div class="product_detail row" style="text-align: left; margin-left: 0.5rem; display: grid; grid-template-rows: 1fr 1.5fr 1fr 0.1fr; width: 100%;">
+                    <div class="product_detail row" style="text-align: left; margin-left: 0.5rem; display: grid; grid-template-rows: 1fr 1fr 1fr 0.1fr; width: 100%;">
                          <div style="margin-bottom: 1rem; ">
                               <div style="font-family: 'yg-jalnan'; font-size: 35px;">{{ product.name }}</div>
                          </div>
@@ -183,7 +183,7 @@
                          </div>
                          <div class="product__item__text">
                               <h6>
-                                   <a href="{% url 'reviewDetail' review.id %}">
+                                   <a href="{% url 'reviewDetail' review.id %}" data-toggle="tooltip" data-placement="bottom" title="{{ review.author.getTooltipMessage }}">
                                         {{ review }}
                                    </a>
                               </h6>

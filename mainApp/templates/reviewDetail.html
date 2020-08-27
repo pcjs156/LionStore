@@ -269,7 +269,7 @@
     <div>
         <div id="tagContainer" style="margin: 0 auto 1rem auto; text-align: right;">
             <div style="font-family: 'yg-jalnan'; color: black;"><i class="fa fa-tags" aria-hidden="true"></i>태그목록</div>
-            {% if productTags %}
+            {% if hasUserTags %}
             {% for tag in productTags %}
             <a class="badge badge-pill badge-warning" href="{% url 'tagProduct' tag.id %}">{{ tag }}</a>
             {% endfor %}
@@ -281,11 +281,11 @@
         <div id="tagContainer" style="margin: 0 auto 1rem auto; text-align: right;">
             <div style="font-family: 'yg-jalnan'; color: black;"><i class="fa fa-tags" aria-hidden="true"></i>리뷰어 태그</div>
             {% if userTags %}
-            {% for tag in userTags %}
-            <a class="badge badge-pill badge-warning" href="{% url 'reviewsByTag' tagName=tag.tagBody %}">{{ tag }}</a>
-            {% endfor %}
+                {% for tag in userTags %}
+                <a class="badge badge-pill badge-warning" href="{% url 'reviewsByTag' tagName=tag.tagBody %}">{{ tag }}</a>
+                {% endfor %}
             {% else %}
-            <span class="badge badge-pill badge-danger">No TAG</span>
+                <span class="badge badge-pill badge-danger">No TAG</span>
             {% endif %}
         </div>
 

@@ -35,7 +35,7 @@
                 </div>
                 <div class="product__item__text">
                     <div>
-                        <a href="{% url 'reviewDetail' review.id %}">
+                        <a href="{% url 'reviewDetail' review.id %}" data-toggle="tooltip" data-placement="bottom" title="{{ review.author.getTooltipMessage }}">
                             {{ review }}
                         </a>
                     </div>

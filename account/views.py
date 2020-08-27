@@ -14,6 +14,8 @@ def selectCustomerType_view(request):
 
 
 def connectTagToUser(user:Customer, rawString:str):
+    if rawString == "":
+        return
     # 일반 str문자열 : 띄어쓰기를 기준으로 태그 정보가 나누어져 있음
     rawTags = rawString.split(' ')
     # 현재 존재하는 태그의 목록
@@ -41,6 +43,12 @@ def connectTagToUser(user:Customer, rawString:str):
 def modifyUserTag(user:Customer, before:str):
     newRawTagString = user.rawTagString
     newTagNames = set(newRawTagString.split(' '))
+    if newRawTagString =="":
+        tags = user.tags.all()
+        for tag in tags:
+            tag.targetCustomer.remove(user)
+        user.tags.clear()
+        return
 
     beforeRawTagString = before
 

@@ -108,6 +108,25 @@ class Customer(AbstractUser):
     for p in PEN:
         pen_dict[str(p)] = p[1]
 
+    def getTooltipMessage(self):
+        # tuple
+        if str(self.job).startswith('('):
+            job = str(self.job)[1:-1].split(', ')[0][1:-1]
+            usage = str(self.usage)[1:-1].split(', ')[0][1:-1]
+            age = str(self.age)[1:-1].split(', ')[0][1:-1]
+        else:
+            job = self.job
+            usage = self.usage
+            age = self.age
+
+        user_job = self.job_dict[job] if self.job_dict[job] != "기타" else ""
+        user_usage = self.usage_dict[usage] if self.usage_dict[usage] != "기타" else ""
+        user_age = self.age_dict[age] if self.age_dict[age] != "기타" else ""
+
+        infos = list(filter(lambda x: x != "", [user_age, user_job, user_usage]))
+
+        return ' | '.join(infos) if len(infos) > 0 else "모든 데이터가 비공개 상태입니다."
+
 
 class CustomerTag(models.Model):
     class Meta:

@@ -483,7 +483,9 @@ def reviewDetail_view(request, review_id):
 
     # 사용자 태그 목록
     userTags = review.author.tags.all()
+    content['hasUserTags'] = (len(userTags) != 0)
     content['userTags'] = userTags
+    print(userTags)
 
     # 댓글 목록
     comments = Comment.objects.filter(review=review).order_by('-pub_date')
