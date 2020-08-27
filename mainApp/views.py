@@ -1259,6 +1259,9 @@ def mainPage_view(request):
                 picked_reviewers = Customer.objects.filter(usage=user_usage[1]).exclude(username=user.username)
                 propertyMessage = f"주 사용처가 {user_usage[-1]}인 리뷰어님들의 인기 리뷰입니다."
                 content['propertyMessage'] = propertyMessage
+            else:
+                picked_reviewers = []
+            
 
             picked_reviews = list()
             for reviewer in picked_reviewers:
