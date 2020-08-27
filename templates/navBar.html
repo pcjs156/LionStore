@@ -17,7 +17,7 @@
         font-weight: normal;
         font-style: normal;
     }
-    .container {
+    .navBarContainer {
         max-width: 100%;
         width: 100%;
         margin: 2% auto;
@@ -40,7 +40,7 @@
     }
 </style> 
 
-<div class="container" style="padding: 0 2%;">
+<div class="navBarContainer" style="padding: 0 2%;">
     <div class="row">
         <div class="col-md-2">
             <a href="{% url 'mainPage' %}"><img src="{% static '/img/common/lionStore_logo.png' %}" alt="사자네 문방구 로고"
@@ -59,7 +59,7 @@
 
         <div class="col-md-2">
             {% if user.is_authenticated %}
-            <div class="container">
+            <div class="navBarContainer">
                 <div class="row">
                     <div class="col-md-4">
                         <div>
