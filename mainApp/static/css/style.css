@@ -945,9 +945,20 @@ ol {
 	color: #666666;
 }
 
-.reviewmodify form input {
-	border: 1.5px solid #66666644;
+.footer__newslatter_2 form input {
+	height: 40px;
+	width: 102%;
+	border: 1.5px solid #e1e1e1;
 	border-radius: 7px;
+	padding-left: 2px;
+	font-size: 14px;
+	color: #666666;
+}
+
+.reviewmodify form input {
+	height: 60px;
+	border: 2px solid #e1e1e1;
+	border-radius: 2px;
 	padding-left: 2px;
 	font-size: 14px;
 	color: #666666;

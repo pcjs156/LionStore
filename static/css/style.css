@@ -946,14 +946,13 @@ ol {
 }
 
 .reviewmodify form input {
-	height: 80px;
-	width: 120%;
-	border: 1.5px solid #66666644;
-	border-radius: 7px;
+	height: 60px;
+	width: 82%;
+	border: 2px solid #e1e1e1;
+	border-radius: 2px;
 	padding-left: 2px;
 	font-size: 14px;
 	color: #666666;
-	background-color: #666666b9;
 }
 
 .footer__newslatter form input::-webkit-input-placeholder {
