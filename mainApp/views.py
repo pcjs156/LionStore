@@ -1261,40 +1261,41 @@ def mainPage_view(request):
                 reviews_byProperty = picked_reviews[:4]
                 content['reviews_byProperty'] = reviews_byProperty
 
-            print(picked_reviews)
-       
         content['propertyRecommend'] = propertyRecommend
 
         # 이상 연령대/직업/주사용용도 기반 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    #     # 이하 관심 펜 기반 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    #     userInterestPens = [(user.penInterest_1, Customer.pen_dict[user.penInterest_1]),
-    #                         (user.penInterest_2, Customer.pen_dict[user.penInterest_2]),
-    #                         (user.penInterest_3, Customer.pen_dict[user.penInterest_3])]
-    #     userInterestPens = list(filter(lambda x: x[-1] != '기타', userInterestPens))
+        # 이하 관심 펜 기반 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        userInterestPens = [(user.penInterest_1.__str__(), Customer.pen_dict[user.penInterest_1.__str__()]),
+                            (user.penInterest_2.__str__(), Customer.pen_dict[user.penInterest_2.__str__()]),
+                            (user.penInterest_3.__str__(), Customer.pen_dict[user.penInterest_3.__str__()])]
+        userInterestPens = list(filter(lambda x: x[-1] != '기타', userInterestPens))
 
-    #     # 최소 1개 이상의 관심 펜은 지정되어야 함
-    #     penInterestRecommend = (len(userInterestPens) > 0)
-    #     if penInterestRecommend:
-    #         picked = picked_key, picked_val = random.choice(userInterestPens)
+        # 최소 1개 이상의 관심 펜은 지정되어야 함
+        penInterestRecommend = (len(userInterestPens) > 0)
+        if penInterestRecommend:
+            picked = picked_key, picked_val = random.choice(userInterestPens)
 
-    #         picked_category = ProductCategory.objects.get(categoryName=picked_val)
-    #         picked_pens = Product.objects.filter(category=picked_category)
-    #         content['penInterestMessage'] = f"{picked_category.categoryName} 카테고리의 인기 리뷰입니다."
+            picked_category = ProductCategory.objects.get(categoryName=picked_val)
+            picked_pens = Product.objects.filter(category=picked_category)
+            content['penInterestMessage'] = f"{picked_category.categoryName} 카테고리의 인기 리뷰입니다."
 
-    #         picked_reviews = list()
-    #         for pen in picked_pens:
-    #             for review in PenReview.objects.filter(product=pen):
-    #                 picked_reviews.append(review)
-    #         picked_reviews.sort(key=lambda x: x.likeCount, reverse=True)
+            picked_reviews = list()
+            for pen in picked_pens:
+                reviewList = PenReview.objects.filter(product=pen)
+                for review in reviewList:
+                    if review.author == user:
+                        continue
+                    picked_reviews.append(review)
+            picked_reviews.sort(key=lambda x: x.likeCount, reverse=True)
 
-    #         # 해당 카테고리에 펜이 없으면(또는 펜은 검색되는데 리뷰가 없으면) 기능 사용 불가
-    #         if len(picked_reviews) == 0:
-    #             penInterestRecommend = False
-    #         else:
-    #             reviews_byPenInterest = picked_reviews[:4]
-    #             content['reviews_byPenInterest'] = reviews_byPenInterest
+            # 해당 카테고리에 펜이 없으면(또는 펜은 검색되는데 리뷰가 없으면) 기능 사용 불가
+            if len(picked_reviews) == 0:
+                penInterestRecommend = False
+            else:
+                reviews_byPenInterest = picked_reviews[:4]
+                content['reviews_byPenInterest'] = reviews_byPenInterest
     
-    #     content['penInterestRecommend'] = penInterestRecommend
+        content['penInterestRecommend'] = penInterestRecommend
             
     return render(request, 'mainPage.html', content)
 
