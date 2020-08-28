@@ -480,6 +480,7 @@ def reviewDetail_view(request, review_id):
     # 상품 태그 목록
     productTags = review.tags.all()
     content['productTags'] = productTags
+    content['hasProductTags'] = (len(productTags) != 0)
 
     # 사용자 태그 목록
     userTags = review.author.tags.all()
