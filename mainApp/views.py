@@ -938,6 +938,7 @@ def keywordSearchResult_view(request):
             if review.product not in searchedReviews:
                 searchResult.append(review.product)
 
+        searchResult = list(set(searchResult))
         # 정렬 | 기본값 : 시간
         if popularitySort:
             searchResult.sort(key=lambda x: x.likeCount)
