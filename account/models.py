@@ -43,6 +43,8 @@ class Customer(AbstractUser):
         ("J0", "기타"),
         ("J1", "학생"),
         ("J2", "아티스트"),
+        ("J3", "자영업"),
+        ("J4", "무직"),
     )
     job = models.CharField(max_length=10, default=("J0", "기타"), blank=False, null=True, choices=JOB, verbose_name="직업")
 
