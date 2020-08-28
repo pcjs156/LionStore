@@ -7,11 +7,17 @@
 {% endblock %}
 
 {% block content %}
+
+
+
 <article style="margin: 3rem 3rem;">
      <p id="link_nav" style="width: 100%; margin-bottom: 1rem;">
           <a href="{% url 'mainPage' %}"><i class="fa fa-home" aria-hidden="true"></i></i>Home</a> >
           <span id="current_location">{{ category.categoryName }}</span>
      </p>
+
+     <h4 style="text-align: center; padding: 1em 3rem 0 3rem; font-family: 'yg-jalnan'; color:#663e27;">
+          <i class="fa fa-pencil"></i>'{{ category.categoryName }}' 카테고리 상품 목록입니다.</h4><br></br>
 
      <!-- 인기순 정렬로 전환 -->
      {% if popularitySort %}

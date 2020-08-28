@@ -8,11 +8,11 @@
 
 {% block content %}
 <article style="padding: 5% 5%;">
-    <p id="link_nav">
+    <p id="link_nav" style="margin-left: -5px;">
         <a href="{% url 'productRequestList' %}"><i class="fa fa-list" aria-hidden="true"></i></i>Product Request</a> >
         <span id="current_location">Product Request Detail</span>
     </p>
-
+<br><br><br>
     <div>제품명: {{ productRequest.productName }}</div>
     <hr>
     <div>제조사: {{ productRequest.productBrand }}</div>

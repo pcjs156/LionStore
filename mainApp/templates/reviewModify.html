@@ -66,7 +66,7 @@
 <div id="mainContainer container" style="width: 80%; margin: 2rem auto; padding: 2rem 5%;">
     <div class="product_detail col container">
         <div class="product_detail row" style="text-align: left; display: grid; grid-template-rows: 1fr 0.4fr; width: 100%;">
-            <p class="h2" style="text-align: left; font-family: 'yg-jalnan'; color: hsl(32, 81%, 44%);">리뷰수정하기</p>
+            <p class="h2" style="text-align: left; font-family: 'yg-jalnan'; color: hsl(32, 81%, 44%);">리뷰 수정하기</p>
             <div class="footer__newslatter_2" style="text-align: left; width: 100%;">
                 <form action="{% url 'reviewUpdate' review.id %}" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
