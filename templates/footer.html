@@ -12,10 +12,12 @@
     </div>
 
     <div class="linkContainer" style="font-family: 'yg-jalnan'; font-size: 15px; color:#663e27;">
-        <span onclick="play()">박유빈</span> | <span onclick="playKSE()">김시은</span> | 이현수 | 이예진 | <span onclick="playKYJ()">강영진</span> <br> 
+        <span onclick="play()">박유빈</span> | <span onclick="playKSE()">김시은</span> | <span onclick="playLHS()">이현수</span> | <span onclick="playLEJ()">이예진</span> | <span onclick="playKYJ()">강영진</span> <br> 
         <audio id='audio_play' src="{% static 'sounds/catSound.wav' %}"></audio> 
         <audio id='audio_play_kyj' src="{% static 'sounds/Lion-Roar.wav' %}"></audio> 
         <audio id='audio_play_kse' src="{% static 'sounds/sheep.wav' %}"></audio> 
+        <audio id='audio_play_lej' src="{% static 'sounds/bark.wav' %}"></audio> 
+        <audio id='audio_play_lhs' src="{% static 'sounds/duck.wav' %}"></audio> 
     </div>
 
     
@@ -62,6 +64,24 @@
     }
     function playKSE() { 
         var audio = document.getElementById('audio_play_kse'); 
+        if (audio.paused) { 
+            audio.play(); 
+        }else{ 
+            audio.pause(); 
+            audio.currentTime = 0 
+        } 
+    }
+    function playLEJ() { 
+        var audio = document.getElementById('audio_play_lej'); 
+        if (audio.paused) { 
+            audio.play(); 
+        }else{ 
+            audio.pause(); 
+            audio.currentTime = 0 
+        } 
+    }
+    function playLHS() { 
+        var audio = document.getElementById('audio_play_lhs'); 
         if (audio.paused) { 
             audio.play(); 
         }else{ 
