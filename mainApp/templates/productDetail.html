@@ -317,7 +317,7 @@
      
      <hr style="width: 70%;">
      
-     <div id="videoContainer" style="margin: 2rem aut o;">
+     <div id="videoContainer" style="margin: 2rem auto 5rem auto;">
           <div style="font-family: 'yg-jalnan'; text-align: center; font-size: large;"><i class="fa fa-youtube-play" aria-hidden="true"></i>관련 영상</div>
           {% if hasNoVideos %}
           <div style="font-family: 'yg-jalnan'; text-align: center; font-size: smaller; color: gray;">아직 관련 영상이 없네요 ㅠㅠ</div>
@@ -325,13 +325,13 @@
           <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel" style="text-align: center;">
                <div class="carousel-inner">
                  <div class="carousel-item active">
-                    <iframe style="margin: 0 auto;" src="https://www.youtube.com/embed/{{ firstVideoHash }}" frameborder="0"
+                    <iframe style="margin: 0 auto; width: 40%;" src="https://www.youtube.com/embed/{{ firstVideoHash }}" frameborder="0"
                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                </div>
      
                {% for linkHash in videoLinkHashs %}
                <div class="carousel-item">
-                    <iframe style="margin: 0 auto;" src="https://www.youtube.com/embed/{{ linkHash }}" frameborder="0"
+                    <iframe style="margin: 0 auto; width: 40%;" src="https://www.youtube.com/embed/{{ linkHash }}" frameborder="0"
                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                </div>
                {% endfor %}
