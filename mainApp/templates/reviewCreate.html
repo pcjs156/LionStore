@@ -140,11 +140,11 @@
         <div class="product_detail row" style="text-align: left; display: grid; grid-template-rows: 1fr 1.5fr;">
             <br>
             <p class="h5" style="text-align: left; font-family: 'yg-jalnan';"><i class="fa fa-pencil"></i>장점</p>
-            <textarea class="noresize" name="goodPoint" id="goodPoint">{{form.goodPoint}}</textarea>
+            <textarea class="noresize">{{review.goodPoint}}</textarea>
             <br>
             <br>
             <p class="h5" style="text-align: left; font-family: 'yg-jalnan';"><i class="fa fa-pencil"></i>단점</p>
-            <textarea class="noresize" name="weakPoint" id="weakPoint">{{form.weakPoint}}</textarea>
+            <textarea class="noresize" name="weakPoint" id="weakPoint">{{review.weakPoint}}</textarea>
             <br>
             <br>
         </div>
@@ -153,7 +153,7 @@
     <div class="product_detail col container">
         <div class="product_detail row" style="text-align: left; display: grid; grid-template-rows: 1fr 1.5fr;">
             <p class="h5" style="text-align: left; font-family: 'yg-jalnan';"><i class="fa fa-pencil"></i>태그(공백 문자로 구분됩니다.)</p>
-            <textarea class="tag" name="rawTagString" id="rawTagString">{{ form.rawTagString }}</textarea>   
+            <textarea class="tag" name="rawTagString" id="rawTagString">{{ review.rawTagString }}</textarea>   
             <br><br>
         </div>
     </div>
@@ -213,3 +213,4 @@
 </div>
 <br> <br> <br>
 {% endblock %}
+
