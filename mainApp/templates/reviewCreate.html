@@ -5,63 +5,63 @@
 <title>새 리뷰 작성</title>
 <!-- 계정 유형과 관계 없이 로그인만 되어 있으면 리뷰 작성이 가능함
      해당 템플릿은 제품 상세 정보(productDetail.html)에서 접근 가능한 템플릿. -->
+     <style>
+        #mainContainer {
+             width: 80%;
+             text-align: center;
+             margin: 2rem auto;
+        }
+        #product_image {
+             display: block;
+             max-width: 700px;
+             max-height: 550px;
+             width: auto;
+             height: auto;
+        }
+        #no_review_message {
+             text-align: center;
+        }
+        #no_review_message div {
+             font-family: 'yg-jalnan';
+             color:#663e27;
+        }
+        iframe {
+             display:block; 
+             width:70vw; 
+             height: 80vh
+        }
+        @font-face {
+           font-family: 'yg-jalnan';
+           src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff');
+           font-weight: normal;
+           font-style: normal;
+       }
+    
+       @font-face {
+           font-family: 'NanumSquareRound';
+           src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff') format('woff');
+           font-weight: normal;
+           font-style: normal;
+       }
+    
+       textarea.noresize {
+           border: 1.5px solid #66666644; 
+           width: 100%; 
+           height: 140px;
+           border-radius: 7px; 
+           resize: none
+       }
+    
+       textarea.tag {
+           border: 1.5px solid #66666644; 
+           width: 100%; 
+           height: 80px;
+           border-radius: 7px; 
+           resize: none
+       }
+    
+    </style>
 {% endblock %}
-<style>
-    #mainContainer {
-         width: 80%;
-         text-align: center;
-         margin: 2rem auto;
-    }
-    #product_image {
-         display: block;
-         max-width: 700px;
-         max-height: 550px;
-         width: auto;
-         height: auto;
-    }
-    #no_review_message {
-         text-align: center;
-    }
-    #no_review_message div {
-         font-family: 'yg-jalnan';
-         color:#663e27;
-    }
-    iframe {
-         display:block; 
-         width:70vw; 
-         height: 80vh
-    }
-    @font-face {
-       font-family: 'yg-jalnan';
-       src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff');
-       font-weight: normal;
-       font-style: normal;
-   }
-
-   @font-face {
-       font-family: 'NanumSquareRound';
-       src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff') format('woff');
-       font-weight: normal;
-       font-style: normal;
-   }
-
-   textarea.noresize {
-       border: 1.5px solid #66666644; 
-       width: 100%; 
-       height: 140px;
-       border-radius: 7px; 
-       resize: none
-   }
-
-   textarea.tag {
-       border: 1.5px solid #66666644; 
-       width: 100%; 
-       height: 80px;
-       border-radius: 7px; 
-       resize: none
-   }
-
-</style>
 
 {% block content %}
 <div id="mainContainer container" style="width: 80%; margin: 2rem auto; padding: 2rem 5%;">
@@ -84,7 +84,6 @@
         <div class="scoreContainer" style="margin-top: 1.5rem;">
             <div class="row">
                 <div class="col">
-                    <p class="h5" style="text-align: left; font-family: 'yg-jalnan';"><i class="fa fa-pencil"></i>부분별 총점</p>
                     <div class="h6" style="font-family: 'yg-jalnan'; font-weight: bold;">그립감</div>
                     <input type="rating" name="grip" value="{{ review.grip.score }}" required="" id="id_grip" min="0" max="5" step="1" style="display: none;">
                     <div id="star_id_grade" class="rateit svg" data-rateit-backingfld="#id_grip" data-rateit-starwidth="15"
@@ -150,12 +149,12 @@
             <br>
         </div>
     </div>
+    <hr>
     <div class="product_detail col container">
         <div class="product_detail row" style="text-align: left; display: grid; grid-template-rows: 1fr 1.5fr;">
             <p class="h5" style="text-align: left; font-family: 'yg-jalnan';"><i class="fa fa-pencil"></i>태그(공백 문자로 구분됩니다.)</p>
             <textarea class="tag" name="rawTagString" id="rawTagString">{{ form.rawTagString }}</textarea>   
             <br><br>
-            </form>
         </div>
     </div>
     <div class="product_detail col container">
